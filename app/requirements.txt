@@ -1,0 +1,4 @@
+# requirements.txt
+
+Flask
+python-dotenv
