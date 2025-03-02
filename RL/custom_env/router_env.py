@@ -5,9 +5,10 @@ from typing import Optional
 
 import gymnasium as gym
 import numpy as np
-from .actions import Acciones
-from gymnasium.spaces import Box, Discrete
+from gymnasium.spaces import Box, Dict, Discrete
 from gymnasium.utils import seeding
+
+from .actions import Acciones
 from .states import MaquinaDeEstados
 
 
@@ -28,18 +29,19 @@ class RouterEnv(gym.Env):
         self.rate: float = velocidad_procesamiento * \
             duraction_step  # bytes por step de procesamiento
         # self.attack_probability = 0.8
-        self.ocupacion_limite = 0.8
 
         self._set_initial_values(seed)
         # TODO mirar el espacio de observacion y limitar cada uno de los valores
 
-        self.observation_space = Box(
-            low=0, high=1, dtype=np.float32)  # Ocupacion cola
-
+        self.observation_space = Dict({
+            "OcupacionCola": Box(low=0, high=1, dtype=np.float32),
+            "Descartados": Box(low=0, high=np.inf, dtype=np.int16),  
+        })
         self.action_space = Discrete(len(Acciones))
 
     def _set_initial_values(self, seed):
         self.queue = deque(maxlen=self.max_len)
+        self.descartados: int = 0
         # self.step_durations: list[float] = []
         self._np_random, self._np_random_seed = seeding.np_random(seed)
         self.current_action: Acciones = Acciones.PERMITIR
@@ -57,7 +59,11 @@ class RouterEnv(gym.Env):
         return observation, info
 
     def _get_obs(self):
-        return np.array([self.get_ocupacion()], dtype=np.float32)
+        return {
+            "OcupacionCola": np.array([self.get_ocupacion()],dtype=np.float32),
+            "Descartados": np.array([self.descartados],dtype=np.int16),
+        }
+        return np.array([self.get_ocupacion(),2], dtype=np.float32)
 
     def _get_info(self):
         # npack, tam_total, ocu_act, *_ = self.calculate_queue_stats()
@@ -69,7 +75,6 @@ class RouterEnv(gym.Env):
             "TamañoTotal": self.get_tam_ocu(),
             "Action": self.current_action,
             "OcupacionActual": self.get_ocupacion(),
-            "LimiteOcupación": self.ocupacion_limite
         }}
 
     def calculate_queue_stats(self):
@@ -131,6 +136,7 @@ class RouterEnv(gym.Env):
         self.procesar_por_tamaño()
 
         reward: float = self.get_reward(descartados, action)
+        self.descartados = descartados
         observation = self._get_obs()
         # True si se desvía del comportamiento normal para abortar, necesitaría un reset
         truncated = False
@@ -165,7 +171,7 @@ class RouterEnv(gym.Env):
                     break
                 # Nuevo paquete
                 paquete = self.queue[0]
-                assert p2 != paquete
+                #assert p2 != paquete
                 # Calcula los mb que faltan por procesar
                 self.mb_restantes = paquete["SIZE"]
             else:
@@ -190,90 +196,36 @@ class RouterEnv(gym.Env):
     def get_reward(self, descartados, action: Acciones) -> float:
         reward = 0.0
         # Penaliza por ocupacion
+        #reward -= descartados * 2
+        #reward += action.value
         actual: float = self.get_ocupacion()
+        #reward += actual*5
+        # TODO: hacer que cuanto menos este ocupado y mas este sea peor, y que por el centro sea mejor
 
-        if actual > self.ocupacion_limite:
-            factor_penalizacion: float = 4.0
-            # Calculamos cuánto se excede la ocupación (normalizado entre 0 y 1)
-            exceso: float = (actual - self.ocupacion_limite) / \
-                (1 - self.ocupacion_limite)
+        # Penalización severa por descartar paquetes
+        # Probar con la lista guardando las recompensas anteriores
 
-            # Cuando la ocupación es alta:
-            # - Penalizamos fuertemente permitir (valor 1)
-            # - Premiaremos denegar (valor -1)
-            if action == Acciones.PERMITIR:
-                # Penalización base + extra proporcional al exceso
-                reward -= factor_penalizacion * (1 + exceso)
-            elif action == Acciones.DENEGAR:
-                # Premia la acción de denegar: se suma una recompensa que decrece si el exceso es muy alto
-                reward += factor_penalizacion * (1 + (1 - exceso))
+        if actual > 0.80 and descartados > 5:
+            if action == Acciones.DENEGAR:  # Deny traffic
+                return 1  # Positive reward for blocking under high load
             else:
-                raise ValueError(f"Unknown action {action}")
+                return -2  # Negative reward for allowing under high load
+        elif actual < 0.50 and descartados < 5:
+            if action == Acciones.PERMITIR:  # Allow traffic
+                return 1  # Positive reward for allowing under low load
+            else:
+                return -1  # Negative reward for blocking under low load
         else:
-            # Cuando la ocupación es baja (por debajo del umbral):
-            # - Premiaremos permitir (acción normal)
-            # - Penalizamos denegar, ya que se estaría negando cuando no hace falta
-            if action == Acciones.PERMITIR:
-                reward += 1.0
-            elif action == Acciones.DENEGAR:
-                # Aquí se penaliza la acción de denegar.
-                # Se usa self.action_count para escalar la penalización, pero puedes ajustar este factor.
-                reward -= self.action_count * 0.1
-            else:
-                raise ValueError(f"Unknown action {action}")
+            return 0  # Neutral reward for intermediate cases
+        """
 
-        """if actual > self.ocupacion_limite:
-            penalizacion: float = np.power(
-                (actual-self.ocupacion_limite)/(1-self.ocupacion_limite), 1)  # Entre 0 y 1
-            factor_penalizacion: float = 2
-            reward -= penalizacion*factor_penalizacion
-            if action.value > 0:
-                reward -= factor_penalizacion
+        if descartados > 0 and action == Acciones.PERMITIR:
+            reward -= 100.0
         else:
-            if action.value >= 0:
-                reward += 1
-            else:
-                reward += -1*self.action_count*1
-            """
-        # TODO Cuando la recompensa de la accion sea negativa y la cola esta por debajo de cierto umbral penalizar
+            reward += 10.0
+        """
         return reward
-        """
-        reward = 0
-        mult_ocu=300
-        mult_descar=2
-
-        #Penaliza por ocupacion
-        actual: float = self.get_ocupacion()
-        if actual > self.ocupacion_media:
-            penalizacion_ocupacion: float = np.square(
-                np.subtract(actual, self.ocupacion_media))*mult_ocu
-
-            reward -= penalizacion_ocupacion
-        else:
-            reward += 20
-            
-        #Penaliza por descartados
-        reward -= descartados*mult_descar
-
-        if action.value >= 0:
-            reward += action.value  # recompensa si la acción tiene recompensa positiva
-        else:
-            # penalizar si la acción tiene recompensa negativa y se repite varias veces
-            reward += action.value*self.action_count
-        """
-
-    def prueba(self):
-        return
-        reward = 0.0
-        # Penaliza por ocupacion
-        actual: float = self.get_ocupacion()
-        if actual > self.ocupacion_limite:
-            min_pen = 0.3
-            max_pen = 2
-            reward -= (actual - self.ocupacion_limite) * (max_pen -
-                                                          min_pen) / (1 - self.ocupacion_limite) + min_pen
-        else:
-            reward += 2
+        
 
 from gymnasium.envs.registration import register
 
