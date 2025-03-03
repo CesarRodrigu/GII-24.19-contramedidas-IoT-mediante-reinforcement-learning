@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from calendar import c
 from collections import deque
 from typing import Optional
 
@@ -75,6 +76,7 @@ class RouterEnv(gym.Env):
             "TamañoTotal": self.get_tam_ocu(),
             "Action": self.current_action,
             "OcupacionActual": self.get_ocupacion(),
+            "Descartados": self.descartados,
         }}
 
     def calculate_queue_stats(self):
@@ -128,6 +130,7 @@ class RouterEnv(gym.Env):
 
     def step(self, action_num: int):
 
+        self.descartados = 0 
         action: Acciones = Acciones.int_to_action(action_num)
         self.registrar_accion(action)
 
@@ -205,19 +208,32 @@ class RouterEnv(gym.Env):
         # Penalización severa por descartar paquetes
         # Probar con la lista guardando las recompensas anteriores
 
-        if actual > 0.80 and descartados > 5:
-            if action == Acciones.DENEGAR:  # Deny traffic
-                return 1  # Positive reward for blocking under high load
+        #reward += (1-actual)*10
+        # TODO probar a separar la recompensa de descartados por los que son porque no entran o los que son porque se descartan
+        if descartados > 0:
+            if action == Acciones.PERMITIR:
+                reward -= (descartados**2) * 2.0
             else:
-                return -2  # Negative reward for allowing under high load
-        elif actual < 0.50 and descartados < 5:
-            if action == Acciones.PERMITIR:  # Allow traffic
-                return 1  # Positive reward for allowing under low load
-            else:
-                return -1  # Negative reward for blocking under low load
+                reward -= (descartados) * 1.0
         else:
-            return 0  # Neutral reward for intermediate cases
+            reward += 1.0
         """
+        c = 100
+        if action == Acciones.PERMITIR :
+            if descartados == 0:
+                reward += c*2
+            else:
+                reward -= c*4
+        else:
+            reward -= c*2
+
+        match action:
+            case Acciones.PERMITIR:
+                reward += 5.0
+            case Acciones.DENEGAR:
+                reward -= 2.0
+            case _:
+                reward += 0.0
 
         if descartados > 0 and action == Acciones.PERMITIR:
             reward -= 100.0
