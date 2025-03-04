@@ -210,11 +210,12 @@ class RouterEnv(gym.Env):
 
         #reward += (1-actual)*10
         # TODO probar a separar la recompensa de descartados por los que son porque no entran o los que son porque se descartan
+        c=0.25
         if descartados > 0:
             if action == Acciones.PERMITIR:
-                reward -= (descartados**2) * 2.0
+                reward -= (descartados**2) * c*2
             else:
-                reward -= (descartados) * 1.0
+                reward -= (descartados) * c
         else:
             reward += 1.0
         """
