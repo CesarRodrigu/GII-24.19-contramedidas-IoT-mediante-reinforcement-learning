@@ -195,6 +195,8 @@ class RouterEnv(gym.Env):
     def render(self, mode='human'):
         # Renderizar el entorno
         return super().render(mode=mode)
+    def registro_Estados(self):
+        return self.maquina.get_Registro()
 
     def get_reward(self, descartados, action: Acciones) -> float:
         reward = 0.0
