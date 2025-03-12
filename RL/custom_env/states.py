@@ -39,6 +39,8 @@ class MaquinaDeEstados:
         else:
             paquetes = self.DoS.generate_packets()
         return paquetes
+    def get_Registro(self) -> list[Estado]:
+        return self.registro_estados
 
 
 class Estado(ABC):
