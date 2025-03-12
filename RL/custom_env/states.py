@@ -11,11 +11,11 @@ from .packet_generators import DOS_Packet_Generator, Packet_Generator
 
 class MaquinaDeEstados:
     def __init__(self, generador: np.random.Generator = seeding.np_random(seed=None)[0]):
-        self.estado: Estado = EstadoNormal
-        self.estados_posibles: tuple[type[Estado]] = (
-            EstadoNormal,
-            EstadoAtaque)
-        self.registro_estados: list[Estado] = []
+        self.estado: BaseState = NormalState
+        self.estados_posibles: tuple[type[BaseState]] = (
+            NormalState,
+            AttackState)
+        self.registro_estados: list[BaseState] = []
         self._np_random = generador
         self.normal = Packet_Generator(seed=None)
         self.DoS = DOS_Packet_Generator(seed=None)
@@ -34,23 +34,23 @@ class MaquinaDeEstados:
         self.registro_estados.append(self.estado.__name__)
 
     def generate_packets(self):
-        if self.estado == EstadoNormal:
+        if self.estado == NormalState:
             paquetes = self.normal.generate_packets()
         else:
             paquetes = self.DoS.generate_packets()
         return paquetes
-    def get_Registro(self) -> list[Estado]:
+    def get_Registro(self) -> list[BaseState]:
         return self.registro_estados
 
 
-class Estado(ABC):
+class BaseState(ABC):
     @classmethod
     @abstractmethod
     def cambiar(cls, maquina: MaquinaDeEstados):
         """Método de clase que cambiará el estado"""
         if maquina.get_random() < cls.probCambiar():
             # Elegir aleatoriamente un nuevo estado diferente al actual
-            new_state: Estado = maquina.get_random_choice(
+            new_state: BaseState = maquina.get_random_choice(
                 cls.get_estados_posibles(maquina.estados_posibles))
             maquina.estado = new_state
 
@@ -63,19 +63,19 @@ class Estado(ABC):
     @classmethod
     @abstractmethod
     @cache
-    def get_estados_posibles(cls, estados) -> list[Estado]:
+    def get_estados_posibles(cls, estados) -> list[BaseState]:
         """Método de clase que devuelve los estados posibles"""
         return list(set(estados).difference({cls}))
 
 
-class EstadoNormal(Estado):
+class NormalState(BaseState):
     @classmethod
     @override
     def probCambiar(cls):
         return 0.1
 
 
-class EstadoAtaque(Estado):
+class AttackState(BaseState):
     @classmethod
     @override
     def probCambiar(cls):
