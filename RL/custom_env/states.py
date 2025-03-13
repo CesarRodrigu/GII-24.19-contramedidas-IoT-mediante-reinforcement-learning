@@ -16,9 +16,10 @@ class MaquinaDeEstados:
             NormalState,
             AttackState)
         self.registro_estados: list[BaseState] = []
+
         self._np_random = generador
-        self.normal = Packet_Generator(seed=None)
-        self.DoS = DOS_Packet_Generator(seed=None)
+        self.normal = Packet_Generator(generator=generador)
+        self.DoS = DOS_Packet_Generator(generator=generador)
 
     def get_random(self):
         return self._np_random.random()
