@@ -11,11 +11,12 @@ from .packet_generators import DOS_Packet_Generator, Packet_Generator
 
 class MaquinaDeEstados:
     def __init__(self, generador: np.random.Generator = seeding.np_random(seed=None)[0]):
-        self.estado: Estado = NormalState
-        self.estados_posibles: tuple[type[Estado]] = (
+        self.estado: BaseState = NormalState
+        self.estados_posibles: tuple[type[BaseState]] = (
             NormalState,
             AttackState)
-        self.registro_estados: list[Estado] = []
+        self.registro_estados: list[BaseState] = []
+
         self._np_random = generador
         self.normal = Packet_Generator(generator=generador)
         self.DoS = DOS_Packet_Generator(generator=generador)
@@ -39,18 +40,18 @@ class MaquinaDeEstados:
         else:
             paquetes = self.DoS.generate_packets()
         return paquetes
-    def get_Registro(self) -> list[Estado]:
+    def get_Registro(self) -> list[BaseState]:
         return self.registro_estados
 
 
-class Estado(ABC):
+class BaseState(ABC):
     @classmethod
     @abstractmethod
     def cambiar(cls, maquina: MaquinaDeEstados):
         """Método de clase que cambiará el estado"""
         if maquina.get_random() < cls.probCambiar():
             # Elegir aleatoriamente un nuevo estado diferente al actual
-            new_state: Estado = maquina.get_random_choice(
+            new_state: BaseState = maquina.get_random_choice(
                 cls.get_estados_posibles(maquina.estados_posibles))
             maquina.estado = new_state
 
@@ -63,19 +64,19 @@ class Estado(ABC):
     @classmethod
     @abstractmethod
     @cache
-    def get_estados_posibles(cls, estados) -> list[Estado]:
+    def get_estados_posibles(cls, estados) -> list[BaseState]:
         """Método de clase que devuelve los estados posibles"""
         return list(set(estados).difference({cls}))
 
 
-class NormalState(Estado):
+class NormalState(BaseState):
     @classmethod
     @override
     def probCambiar(cls):
         return 0.1
 
 
-class AttackState(Estado):
+class AttackState(BaseState):
     @classmethod
     @override
     def probCambiar(cls):
