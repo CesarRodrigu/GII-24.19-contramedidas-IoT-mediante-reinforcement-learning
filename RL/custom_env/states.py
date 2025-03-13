@@ -11,14 +11,14 @@ from .packet_generators import DOS_Packet_Generator, Packet_Generator
 
 class MaquinaDeEstados:
     def __init__(self, generador: np.random.Generator = seeding.np_random(seed=None)[0]):
-        self.estado: Estado = EstadoNormal
+        self.estado: Estado = NormalState
         self.estados_posibles: tuple[type[Estado]] = (
-            EstadoNormal,
-            EstadoAtaque)
+            NormalState,
+            AttackState)
         self.registro_estados: list[Estado] = []
         self._np_random = generador
-        self.normal = Packet_Generator(seed=None)
-        self.DoS = DOS_Packet_Generator(seed=None)
+        self.normal = Packet_Generator(generator=generador)
+        self.DoS = DOS_Packet_Generator(generator=generador)
 
     def get_random(self):
         return self._np_random.random()
@@ -34,7 +34,7 @@ class MaquinaDeEstados:
         self.registro_estados.append(self.estado.__name__)
 
     def generate_packets(self):
-        if self.estado == EstadoNormal:
+        if self.estado == NormalState:
             paquetes = self.normal.generate_packets()
         else:
             paquetes = self.DoS.generate_packets()
@@ -68,14 +68,14 @@ class Estado(ABC):
         return list(set(estados).difference({cls}))
 
 
-class EstadoNormal(Estado):
+class NormalState(Estado):
     @classmethod
     @override
     def probCambiar(cls):
         return 0.1
 
 
-class EstadoAtaque(Estado):
+class AttackState(Estado):
     @classmethod
     @override
     def probCambiar(cls):

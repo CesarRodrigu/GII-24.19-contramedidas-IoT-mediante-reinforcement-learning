@@ -18,15 +18,17 @@ class Packet_Generator():
                  min_port: int = 0, max_port: int = 4000,
                  min_protocol: int = 0, max_protocol: int = 100,
                  min_rate: int = 4, max_rate: int = 24,  # Paquetes/segundo
-                 seed: int = None,
-                 step_dur: float = 1e-3  # En segundos
+                 step_dur: float = 1e-3,  # En segundos,
+                 generator: np.random.Generator = None
                  ):
 
         assert np.sum(self.probs) == 1
         assert len(self.sizes) == len(self.probs)
         assert min_rate <= max_rate
-
-        self._np_random, _ = seeding.np_random(seed)
+        if generator is not None:
+            self._np_random = generator
+        else:
+            self._np_random, _ = seeding.np_random()
         indice: int = self._np_random.choice(len(self.sizes), p=self.probs)
 
         min_size, max_size = self.sizes[indice]
@@ -84,16 +86,16 @@ class DOS_Packet_Generator(Packet_Generator):
                  min_port=0, max_port=4000,
                  min_protocol=0, max_protocol=100,
                  min_rate=10_000, max_rate=10_300,
-                 seed=None,
-                 step_dur=1e-3  # En segundos
+                 step_dur=1e-3,  # En segundos,
+                 generator: np.random.Generator = None
                  ):
-        ip: int = np.random.default_rng(seed).integers(min_ip, max_ip)
+        ip: int = generator.integers(min_ip, max_ip)
         super().__init__(ip, ip,
                          min_port, max_port,
                          min_protocol, max_protocol,
                          min_rate, max_rate,
-                         seed,
-                         step_dur
+                         step_dur,
+                         generator
                          )
 
 
