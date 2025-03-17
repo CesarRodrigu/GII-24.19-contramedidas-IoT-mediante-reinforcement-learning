@@ -29,11 +29,9 @@ class RouterEnv(gym.Env):
         velocidad_procesamiento: float = 5e6/8  # bytes por segundo de procesamiento
         self.rate: float = velocidad_procesamiento * \
             duraction_step  # bytes por step de procesamiento
-        # self.attack_probability = 0.8
 
         self._set_initial_values(seed)
-        # TODO mirar el espacio de observacion y limitar cada uno de los valores
-
+        
         self.observation_space = Dict({
             "OcupacionCola": Box(low=0, high=1, dtype=np.float32),
             "Descartados": Box(low=0, high=np.inf, dtype=np.int16),  
@@ -77,7 +75,8 @@ class RouterEnv(gym.Env):
             "Action": self.current_action,
             "OcupacionActual": self.get_ocupacion(),
             "Descartados": self.descartados,
-        }}
+        },
+        }
 
     def calculate_queue_stats(self):
         tam_total = 0
