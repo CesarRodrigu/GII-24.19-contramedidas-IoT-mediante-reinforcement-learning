@@ -21,10 +21,10 @@ class MaquinaDeEstados:
         self.normal = Packet_Generator(generator=generador)
         self.DoS = DOS_Packet_Generator(generator=generador)
 
-    def get_random(self):
+    def get_random(self) -> float:
         return self._np_random.random()
 
-    def get_estado(self):
+    def get_estado(self) -> BaseState:
         return self.estado
 
     def get_random_choice(self, choices):
@@ -34,13 +34,13 @@ class MaquinaDeEstados:
         self.estado.cambiar(self)
         self.registro_estados.append(self.estado.__name__)
 
-    def generate_packets(self):
+    def generate_packets(self) -> list[dict[str, int]]:
         if self.estado == NormalState:
             paquetes = self.normal.generate_packets()
         else:
             paquetes = self.DoS.generate_packets()
         return paquetes
-    def get_Registro(self) -> list[BaseState]:
+    def get_registro(self) -> list[BaseState]:
         return self.registro_estados
 
 
