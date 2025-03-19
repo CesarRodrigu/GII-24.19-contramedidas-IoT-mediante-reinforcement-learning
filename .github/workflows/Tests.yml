@@ -19,8 +19,9 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Install tox and any other packages
         run: pip install tox
-      - name: Run tox
-        run: tox -c ./RL/tox.ini -e py
+      - name: Run tests with tox
+        working-directory: RL
+        run: tox -e py
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v4
         env:
