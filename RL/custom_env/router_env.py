@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from calendar import c
 from collections import deque
 from typing import Optional
 
@@ -62,35 +61,18 @@ class RouterEnv(gym.Env):
             "OcupacionCola": np.array([self.get_ocupacion()],dtype=np.float32),
             "Descartados": np.array([self.descartados],dtype=np.int16),
         }
-        return np.array([self.get_ocupacion(),2], dtype=np.float32)
 
     def _get_info(self):
-        # npack, tam_total, ocu_act, *_ = self.calculate_queue_stats()
-        npack = len(self.queue)
         return {"Stats": {
             # "Queue": np.array(self.queue),
             "EstadoMaquina": self.maquina.get_estado().__name__,
-            "NumPaquetes": npack,
+            "NumPaquetes":  len(self.queue),
             "TamañoTotal": self.get_tam_ocu(),
             "Action": self.current_action,
             "OcupacionActual": self.get_ocupacion(),
             "Descartados": self.descartados,
         },
         }
-
-    def calculate_queue_stats(self):
-        tam_total = 0
-        for paquete in self.queue:
-            tam_total += int(paquete["SIZE"])
-        tam_promedio: float = tam_total / \
-            len(self.queue) if len(self.queue) > 0 else 0.0
-
-        num_packets: int = len(self.queue)
-        ocu_act: float = self.get_ocupacion()
-
-        return np.array([ocu_act], dtype=np.float32)
-        return np.array([num_packets, tam_total, ocu_act,
-                         Acciones.action_to_int(self.current_action), self.action_count], dtype=np.float32)
 
     def get_tam_ocu(self):
         tam_total = 0.0
@@ -161,19 +143,13 @@ class RouterEnv(gym.Env):
         tam_procesado = 0.0
         # Calcula los mb que faltan por procesar
 
-        if self.mb_restantes == -1 and len(self.queue) > 0:
-            paquete = self.queue[0]
-            self.mb_restantes = paquete["SIZE"]
-
         while tam_procesado < self.rate and len(self.queue) > 0:
             if self.mb_restantes == 0:
-                p2 = self.queue.popleft()  # Quita el paquete que se ha procesado
+                self.queue.popleft()  # Quita el paquete que se ha procesado
                 if len(self.queue) == 0:
-                    self.mb_restantes == -1
                     break
                 # Nuevo paquete
                 paquete = self.queue[0]
-                #assert p2 != paquete
                 # Calcula los mb que faltan por procesar
                 self.mb_restantes = paquete["SIZE"]
             else:
@@ -199,22 +175,6 @@ class RouterEnv(gym.Env):
 
     def get_reward(self, descartados, action: Acciones) -> float:
         reward = 0.0
-        # Penaliza por ocupacion
-        #reward -= descartados * 2
-        #reward += action.value
-        actual: float = self.get_ocupacion()
-        #reward += actual*5
-        # TODO: hacer que cuanto menos este ocupado y mas este sea peor, y que por el centro sea mejor
-
-        # Penalización severa por descartar paquetes
-        # Probar con la lista guardando las recompensas anteriores
-
-        #reward += (1-actual)*10
-        # TODO probar a separar la recompensa de descartados por los que son porque no entran o los que son porque se descartan
-
-
-
-
 
         c=0.25
         if descartados > 0:

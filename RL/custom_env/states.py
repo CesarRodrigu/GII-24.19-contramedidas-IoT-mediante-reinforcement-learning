@@ -19,7 +19,7 @@ class MaquinaDeEstados:
 
         self._np_random = generador
         self.normal = Packet_Generator(generator=generador)
-        self.DoS = DOS_Packet_Generator(generator=generador)
+        self.dos = DOS_Packet_Generator(generator=generador)
 
     def get_random(self) -> float:
         return self._np_random.random()
@@ -38,7 +38,7 @@ class MaquinaDeEstados:
         if self.estado == NormalState:
             paquetes = self.normal.generate_packets()
         else:
-            paquetes = self.DoS.generate_packets()
+            paquetes = self.dos.generate_packets()
         return paquetes
     def get_registro(self) -> list[BaseState]:
         return self.registro_estados
@@ -46,7 +46,6 @@ class MaquinaDeEstados:
 
 class BaseState(ABC):
     @classmethod
-    @abstractmethod
     def cambiar(cls, maquina: MaquinaDeEstados):
         """Método de clase que cambiará el estado"""
         if maquina.get_random() < cls.probCambiar():
@@ -62,7 +61,6 @@ class BaseState(ABC):
         pass
 
     @classmethod
-    @abstractmethod
     @cache
     def get_estados_posibles(cls, estados) -> list[BaseState]:
         """Método de clase que devuelve los estados posibles"""

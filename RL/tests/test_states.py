@@ -22,7 +22,7 @@ class TestMaquinaDeEstados:
         ) == NormalState, f"Initial state should be {NormalState.__name__}"
         assert self.machine.get_registro() == [], "Register should be empty"
         assert self.machine.normal, "Normal packet generator should not be None"
-        assert self.machine.DoS, "DoS packet generator should not be None"
+        assert self.machine.dos, "DoS packet generator should not be None"
 
     def test_get_random(self):
         for _ in range(10):
