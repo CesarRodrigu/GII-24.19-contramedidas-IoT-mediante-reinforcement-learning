@@ -6,6 +6,7 @@ from gymnasium.utils.env_checker import check_env
 from custom_env.router_env import RouterEnv
 from custom_env.actions import Acciones
 from custom_env.states import BaseState
+from custom_env.router_env import reward
 
 
 class TestRouterEnv:
@@ -25,14 +26,14 @@ class TestRouterEnv:
             RouterEnv(max_len=0-1)
 
     def test_get_reward(self):
-        allow_0: float = self.env.get_reward(0, Acciones.PERMITIR)
-        deny_0: float = self.env.get_reward(0, Acciones.DENEGAR)
+        allow_0: float = reward(0, Acciones.PERMITIR)
+        deny_0: float = reward(0, Acciones.DENEGAR)
 
-        allow_1: float = self.env.get_reward(1, Acciones.PERMITIR)
-        deny_1: float = self.env.get_reward(1, Acciones.DENEGAR)
+        allow_1: float = reward(1, Acciones.PERMITIR)
+        deny_1: float = reward(1, Acciones.DENEGAR)
 
-        allow_100: float = self.env.get_reward(100, Acciones.PERMITIR)
-        deny_100: float = self.env.get_reward(100, Acciones.DENEGAR)
+        allow_100: float = reward(100, Acciones.PERMITIR)
+        deny_100: float = reward(100, Acciones.DENEGAR)
 
         rewards: list[float] = [allow_0, deny_0,
                                 allow_1, deny_1,

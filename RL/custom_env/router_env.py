@@ -49,6 +49,8 @@ class RouterEnv(gym.Env):
         self.uds_tiempo_pasado: float = 0.0
         self.mb_restantes: float = -1.0
 
+        self.last_ocupacion: float = 0.0
+
         self.maquina = MaquinaDeEstados(self._np_random)
 
     def reset(self, seed: Optional[int] = None, options: Optional[dict] = None):
@@ -123,6 +125,8 @@ class RouterEnv(gym.Env):
 
         reward: float = self.get_reward(descartados, action)
         self.descartados = descartados
+        self.last_ocupacion = self.get_ocupacion()
+
         observation = self._get_obs()
         # True si se desvía del comportamiento normal para abortar, necesitaría un reset
         truncated = False
@@ -176,15 +180,23 @@ class RouterEnv(gym.Env):
     def registro_Estados(self) -> list[BaseState]:
         return self.maquina.get_registro()
 
-    def get_reward(self, descartados, action: Acciones) -> float:
-        reward = 0.0
+    def get_reward(self, descartados: int, action: Acciones) -> float:
+        return reward(descartados,  action)
 
-        c = 0.25
-        if descartados > 0:
-            if action == Acciones.PERMITIR:
-                reward -= (descartados**2) * c*2
-            else:
-                reward -= (descartados) * c
+
+def reward(descartados: int,
+           action: Acciones,
+           ocu_actual: float = 0.0,
+           c: float = 0.4,
+           c2: float = 0.25
+           ) -> float:
+
+    reward = 0.0
+    if descartados > 0:
+        if action == Acciones.PERMITIR:
+            reward -= (descartados**2) * c
         else:
-            reward += 1.0
-        return reward
+            reward -= (descartados) * c2
+    else:
+        reward += 1.0
+    return reward
