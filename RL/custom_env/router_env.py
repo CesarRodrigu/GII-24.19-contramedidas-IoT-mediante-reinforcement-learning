@@ -181,14 +181,16 @@ class RouterEnv(gym.Env):
         return self.maquina.get_registro()
 
     def get_reward(self, descartados: int, action: Acciones) -> float:
-        return reward(descartados,  action)
+        return reward(descartados,  action, self.get_ocupacion(),self.last_ocupacion)
 
 
 def reward(descartados: int,
            action: Acciones,
-           ocu_actual: float = 0.0,
+           ocu_actual: float=0.0,
+           ocu_ant: float=0.0,
            c: float = 0.4,
-           c2: float = 0.25
+           c2: float = 0.25,
+           c3: float = 1.0
            ) -> float:
 
     reward = 0.0
@@ -197,6 +199,8 @@ def reward(descartados: int,
             reward -= (descartados**2) * c
         else:
             reward -= (descartados) * c2
+        mejora: float = ocu_ant - ocu_actual
+        reward += mejora * c3
     else:
         reward += 1.0
     return reward
