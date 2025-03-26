@@ -8,6 +8,8 @@ import numpy as np
 from gymnasium.spaces import Box, Dict, Discrete
 from gymnasium.utils import seeding
 
+from .states import BaseState
+
 from .actions import Acciones
 from .states import MaquinaDeEstados
 
@@ -30,10 +32,10 @@ class RouterEnv(gym.Env):
             duraction_step  # bytes por step de procesamiento
 
         self._set_initial_values(seed)
-        
+
         self.observation_space = Dict({
             "OcupacionCola": Box(low=0, high=1, dtype=np.float32),
-            "Descartados": Box(low=0, high=np.inf, dtype=np.int16),  
+            "Descartados": Box(low=0, high=np.inf, dtype=np.int16),
         })
         self.action_space = Discrete(len(Acciones))
 
@@ -58,8 +60,8 @@ class RouterEnv(gym.Env):
 
     def _get_obs(self):
         return {
-            "OcupacionCola": np.array([self.get_ocupacion()],dtype=np.float32),
-            "Descartados": np.array([self.descartados],dtype=np.int16),
+            "OcupacionCola": np.array([self.get_ocupacion()], dtype=np.float32),
+            "Descartados": np.array([self.descartados], dtype=np.int16),
         }
 
     def _get_info(self):
@@ -74,7 +76,7 @@ class RouterEnv(gym.Env):
         },
         }
 
-    def get_tam_ocu(self):
+    def get_tam_ocu(self) -> float:
         tam_total = 0.0
         for paquete in self.queue:
             tam_total += float(paquete["SIZE"])
@@ -111,7 +113,7 @@ class RouterEnv(gym.Env):
 
     def step(self, action_num: int):
 
-        self.descartados = 0 
+        self.descartados = 0
         action: Acciones = Acciones.int_to_action(action_num)
         self.registrar_accion(action)
 
@@ -170,13 +172,14 @@ class RouterEnv(gym.Env):
     def render(self, mode='human'):
         # Renderizar el entorno
         return super().render(mode=mode)
-    def registro_Estados(self):
+
+    def registro_Estados(self) -> list[BaseState]:
         return self.maquina.get_registro()
 
     def get_reward(self, descartados, action: Acciones) -> float:
         reward = 0.0
 
-        c=0.25
+        c = 0.25
         if descartados > 0:
             if action == Acciones.PERMITIR:
                 reward -= (descartados**2) * c*2

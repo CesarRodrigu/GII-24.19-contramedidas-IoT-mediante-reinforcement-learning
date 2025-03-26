@@ -1,6 +1,7 @@
 import numpy as np
 from gymnasium.spaces import Box, Dict
 from gymnasium.utils import seeding
+from numpy.random import Generator
 
 
 class Packet_Generator():
@@ -89,26 +90,17 @@ class DOS_Packet_Generator(Packet_Generator):
                  step_dur=1e-3,  # En segundos,
                  generator: np.random.Generator = None
                  ):
-        ip: int = generator.integers(min_ip, max_ip)
+        
+        if generator is not None:
+            self._np_random: Generator = generator
+        else:
+            self._np_random, _ = seeding.np_random()
+
+        ip: int = self._np_random.integers(min_ip, max_ip)
         super().__init__(ip, ip,
                          min_port, max_port,
                          min_protocol, max_protocol,
                          min_rate, max_rate,
                          step_dur,
-                         generator
+                         self._np_random
                          )
-
-
-class DDOS_Packet_Generator(Packet_Generator):
-    def __init__(self,
-                 min_ip=0, max_ip=2000,
-                 min_port=0, max_port=4000,
-                 min_protocol=0, max_protocol=100,
-                 min_size=5, max_size=15,
-                 min_rate=2, max_rate=10):
-        raise NotImplementedError("DDOS Packet Generator not implemented")
-        super().__init__(min_ip, max_ip,
-                         min_port, max_port,
-                         min_protocol, max_protocol,
-                         min_size, max_size,
-                         min_rate, max_rate)
