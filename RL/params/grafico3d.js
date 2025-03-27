@@ -171,17 +171,19 @@ function actualizarGrafico() {
 // Crear una función de debounce con un retraso de 500 ms
 const actualizarGraficoDebounced = debounce(actualizarGrafico, 100);
 
-// Eventos para los sliders
-document.querySelectorAll("input[type=range]").forEach(slider => {
-    slider.addEventListener("input", actualizarGraficoDebounced);
-});
+document.addEventListener('DOMContentLoaded', () => {
+    // Eventos para los sliders
+    document.querySelectorAll("input[type=range]").forEach(slider => {
+        slider.addEventListener("input", actualizarGraficoDebounced);
+    });
 
-// Eventos para los checkboxes
-document.getElementById("checkboxPermitir").addEventListener("change", actualizarGraficoDebounced);
-document.getElementById("checkboxDenegar").addEventListener("change", actualizarGraficoDebounced);
+    // Eventos para los checkboxes
+    document.getElementById("checkboxPermitir").addEventListener("change", actualizarGraficoDebounced);
+    document.getElementById("checkboxDenegar").addEventListener("change", actualizarGraficoDebounced);
 
-// Inicialización del gráfico al cargar la página
-document.addEventListener("DOMContentLoaded", () => {
+    // Inicialización del gráfico al cargar la página
     // Crear el gráfico con los valores predeterminados
     crearGrafico3D();
 });
+
+module.exports = { reward };
