@@ -1,67 +1,107 @@
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 20px;
+	font-family: Arial, sans-serif;
+	text-align: center;
+	background-color: #f4f4f4;
+	margin: 0;
+	padding: 20px;
 }
 
 h2 {
-    color: #333;
+	color: #333;
+}
+
+.parent {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    gap: 20px;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    box-sizing: border-box;
+	
 }
 
 #slider-container {
-    margin: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+	width: auto;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	height: auto;
+	box-sizing: border-box;
+	justify-content: space-between; /* Distribuir elementos verticalmente */
+	margin-left: 0; /* Eliminar alineación a la derecha */
 }
 
 label {
-    font-weight: bold;
-    margin: 10px 0;
+	font-weight: bold;
+	margin: 10px 0;
 }
 
 input[type="range"] {
-    width: 300px;
-    margin-bottom: 10px;
+	width: 100%;
+	margin-bottom: 10px;
 }
 
 #checkboxes-container {
-    margin-top: 20px;
+	margin-top: 20px;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 10px;
+	justify-items: start;
 }
 
-label {
-    font-size: 18px;
-    margin: 10px;
+#checkboxes-container label {
+	font-size: 18px;
+	margin: 0;
 }
 
 input[type="checkbox"] {
-    margin: 0 10px;
+	margin: 0 10px;
 }
 
 button {
-    padding: 10px 20px;
-    margin: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+	padding: 10px 20px;
+	margin: 10px;
+	font-size: 16px;
+	cursor: pointer;
+	background-color: #4caf50;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	transition: background-color 0.3s;
 }
 
 button:hover {
-    background-color: #45a049;
+	background-color: #45a049;
 }
 
 #grafico3d {
-    width: 800px;
-    height: 600px;
-    margin: auto;
-    background: white;
+    width: auto; /* Ajustar el ancho relativo al contenedor */
+    height: 60vh; /* Ajustar el alto relativo a la altura de la ventana */
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    padding: 10px;
+    padding: 0; /* Eliminar padding para que el contenido ocupe todo el espacio */
+    display: flex; /* Asegurar que el contenido interno se ajuste */
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+	.parent {
+		flex-direction: column;
+		align-items: center;
+	}
+
+	#slider-container {
+		align-items: center;
+		margin-left: 0; /* Resetear alineación en pantallas pequeñas */
+	}
+
+	#grafico3d {
+		width: 100%;
+		height: auto;
+	}
 }
