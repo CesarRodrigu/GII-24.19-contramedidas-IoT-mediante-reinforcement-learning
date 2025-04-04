@@ -12,3 +12,6 @@
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=CesarRodrigu_GII-24.19-contramedidas-IoT-mediante-reinforcement-learning&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=CesarRodrigu_GII-24.19-contramedidas-IoT-mediante-reinforcement-learning)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=CesarRodrigu_GII-24.19-contramedidas-IoT-mediante-reinforcement-learning&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=CesarRodrigu_GII-24.19-contramedidas-IoT-mediante-reinforcement-learning)
 [![CodeQL](https://github.com/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning/actions/workflows/github-code-scanning/codeql)
+![GitHub language count](https://img.shields.io/github/languages/count/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning)
+![GitHub top language](https://img.shields.io/github/languages/top/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning)

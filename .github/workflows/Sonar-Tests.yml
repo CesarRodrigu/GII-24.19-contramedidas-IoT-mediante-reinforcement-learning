@@ -1,0 +1,88 @@
+name: Build and Analyze with SonarCloud
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    
+env:
+  PY_P_DIR: RL
+permissions:
+  contents: read
+jobs:
+  python-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install Python dependencies and Run Tests
+        run: |
+          pip install tox
+          tox -c ./${{ env.PY_P_DIR }}/tox.ini -e py --parallel auto
+      - name: Save Python Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-coverage
+          path: ${{ env.PY_P_DIR }}/coverage-reports/coverage.xml
+          retention-days: 3
+          
+  javascript-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1 
+      - name: Run yarn and install
+        run: yarn
+        working-directory: ./${{ env.PY_P_DIR }}
+      - name: Test and coverage
+        run: yarn jest --coverage
+        working-directory: ./${{ env.PY_P_DIR }}
+        
+      - name: Save JavaScript Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: javascript-coverage
+          path: |
+           ./${{ env.PY_P_DIR }}/coverage/lcov.info
+          retention-days: 3 
+
+  sonar:
+    needs: [python-tests,javascript-build] 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download Python Coverage Report
+        uses: actions/download-artifact@v4
+        with:
+          name: python-coverage
+          path: ${{ env.PY_P_DIR }}/coverage-reports/
+
+      - name: Download JavaScript Coverage Report
+        uses: actions/download-artifact@v4
+        with:
+          name: javascript-coverage
+          path: ./${{ env.PY_P_DIR }}/coverage/
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

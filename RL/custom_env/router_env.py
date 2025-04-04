@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from calendar import c
 from collections import deque
 from typing import Optional
 
@@ -8,6 +7,8 @@ import gymnasium as gym
 import numpy as np
 from gymnasium.spaces import Box, Dict, Discrete
 from gymnasium.utils import seeding
+
+from .states import BaseState
 
 from .actions import Acciones
 from .states import MaquinaDeEstados
@@ -31,10 +32,10 @@ class RouterEnv(gym.Env):
             duraction_step  # bytes por step de procesamiento
 
         self._set_initial_values(seed)
-        
+
         self.observation_space = Dict({
             "OcupacionCola": Box(low=0, high=1, dtype=np.float32),
-            "Descartados": Box(low=0, high=np.inf, dtype=np.int16),  
+            "Descartados": Box(low=0, high=np.inf, dtype=np.int16),
         })
         self.action_space = Discrete(len(Acciones))
 
@@ -48,6 +49,8 @@ class RouterEnv(gym.Env):
         self.uds_tiempo_pasado: float = 0.0
         self.mb_restantes: float = -1.0
 
+        self.last_ocupacion: float = 0.0
+
         self.maquina = MaquinaDeEstados(self._np_random)
 
     def reset(self, seed: Optional[int] = None, options: Optional[dict] = None):
@@ -59,18 +62,15 @@ class RouterEnv(gym.Env):
 
     def _get_obs(self):
         return {
-            "OcupacionCola": np.array([self.get_ocupacion()],dtype=np.float32),
-            "Descartados": np.array([self.descartados],dtype=np.int16),
+            "OcupacionCola": np.array([self.get_ocupacion()], dtype=np.float32),
+            "Descartados": np.array([self.descartados], dtype=np.int16),
         }
-        return np.array([self.get_ocupacion(),2], dtype=np.float32)
 
     def _get_info(self):
-        # npack, tam_total, ocu_act, *_ = self.calculate_queue_stats()
-        npack = len(self.queue)
         return {"Stats": {
             # "Queue": np.array(self.queue),
             "EstadoMaquina": self.maquina.get_estado().__name__,
-            "NumPaquetes": npack,
+            "NumPaquetes":  len(self.queue),
             "TamañoTotal": self.get_tam_ocu(),
             "Action": self.current_action,
             "OcupacionActual": self.get_ocupacion(),
@@ -78,21 +78,7 @@ class RouterEnv(gym.Env):
         },
         }
 
-    def calculate_queue_stats(self):
-        tam_total = 0
-        for paquete in self.queue:
-            tam_total += int(paquete["SIZE"])
-        tam_promedio: float = tam_total / \
-            len(self.queue) if len(self.queue) > 0 else 0.0
-
-        num_packets: int = len(self.queue)
-        ocu_act: float = self.get_ocupacion()
-
-        return np.array([ocu_act], dtype=np.float32)
-        return np.array([num_packets, tam_total, ocu_act,
-                         Acciones.action_to_int(self.current_action), self.action_count], dtype=np.float32)
-
-    def get_tam_ocu(self):
+    def get_tam_ocu(self) -> float:
         tam_total = 0.0
         for paquete in self.queue:
             tam_total += float(paquete["SIZE"])
@@ -129,7 +115,7 @@ class RouterEnv(gym.Env):
 
     def step(self, action_num: int):
 
-        self.descartados = 0 
+        self.descartados = 0
         action: Acciones = Acciones.int_to_action(action_num)
         self.registrar_accion(action)
 
@@ -139,6 +125,8 @@ class RouterEnv(gym.Env):
 
         reward: float = self.get_reward(descartados, action)
         self.descartados = descartados
+        self.last_ocupacion = self.get_ocupacion()
+
         observation = self._get_obs()
         # True si se desvía del comportamiento normal para abortar, necesitaría un reset
         truncated = False
@@ -161,19 +149,13 @@ class RouterEnv(gym.Env):
         tam_procesado = 0.0
         # Calcula los mb que faltan por procesar
 
-        if self.mb_restantes == -1 and len(self.queue) > 0:
-            paquete = self.queue[0]
-            self.mb_restantes = paquete["SIZE"]
-
         while tam_procesado < self.rate and len(self.queue) > 0:
             if self.mb_restantes == 0:
-                p2 = self.queue.popleft()  # Quita el paquete que se ha procesado
+                self.queue.popleft()  # Quita el paquete que se ha procesado
                 if len(self.queue) == 0:
-                    self.mb_restantes == -1
                     break
                 # Nuevo paquete
                 paquete = self.queue[0]
-                #assert p2 != paquete
                 # Calcula los mb que faltan por procesar
                 self.mb_restantes = paquete["SIZE"]
             else:
@@ -194,54 +176,34 @@ class RouterEnv(gym.Env):
     def render(self, mode='human'):
         # Renderizar el entorno
         return super().render(mode=mode)
-    def registro_Estados(self):
+
+    def registro_Estados(self) -> list[BaseState]:
         return self.maquina.get_registro()
 
-    def get_reward(self, descartados, action: Acciones) -> float:
-        reward = 0.0
-        # Penaliza por ocupacion
-        #reward -= descartados * 2
-        #reward += action.value
-        actual: float = self.get_ocupacion()
-        #reward += actual*5
-        # TODO: hacer que cuanto menos este ocupado y mas este sea peor, y que por el centro sea mejor
+    def get_reward(self, descartados: int, action: Acciones) -> float:
+        return reward(descartados,  action, self.get_ocupacion(),self.last_ocupacion)
 
-        # Penalización severa por descartar paquetes
-        # Probar con la lista guardando las recompensas anteriores
 
-        #reward += (1-actual)*10
-        # TODO probar a separar la recompensa de descartados por los que son porque no entran o los que son porque se descartan
-        c=0.25
-        if descartados > 0:
-            if action == Acciones.PERMITIR:
-                reward -= (descartados**2) * c*2
-            else:
-                reward -= (descartados) * c
+def reward(descartados: int,
+           action: Acciones,
+           ocu_actual: float=0.0,
+           ocu_ant: float=0.0,
+           c: float = 0.4,
+           c2: float = 0.25,
+           c3: float = 1.0,
+           c4: float = 1.0
+           ) -> float:
+
+    reward = 0.0
+    if descartados > 0:
+        if action == Acciones.PERMITIR:
+            reward -= (descartados**2) * c
         else:
-            reward += 1.0
-        """
-        c = 100
-        if action == Acciones.PERMITIR :
-            if descartados == 0:
-                reward += c*2
-            else:
-                reward -= c*4
-        else:
-            reward -= c*2
+            reward -= (descartados) * c2
 
-        match action:
-            case Acciones.PERMITIR:
-                reward += 5.0
-            case Acciones.DENEGAR:
-                reward -= 2.0
-            case _:
-                reward += 0.0
-
-        if descartados > 0 and action == Acciones.PERMITIR:
-            reward -= 100.0
-        else:
-            reward += 10.0
-        """
-        return reward
-        
-
+        mejora: float = ocu_ant - ocu_actual
+        reward += mejora *ocu_actual* c3
+    
+    reward += (1.0 - ocu_actual) *c4
+    # Añadir la carga actual
+    return reward

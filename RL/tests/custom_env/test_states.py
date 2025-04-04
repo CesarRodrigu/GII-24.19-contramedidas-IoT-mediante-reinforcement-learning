@@ -1,10 +1,7 @@
-from copy import deepcopy
-from matplotlib.pylab import Generator
 import pytest
-from unittest.mock import patch, MagicMock
-import numpy as np
+from custom_env.states import (AttackState, BaseState, MaquinaDeEstados,
+                               NormalState)
 from gymnasium.utils import seeding
-from custom_env.states import MaquinaDeEstados, NormalState, AttackState, Packet_Generator, DOS_Packet_Generator
 
 
 class TestMaquinaDeEstados:
@@ -22,7 +19,7 @@ class TestMaquinaDeEstados:
         ) == NormalState, f"Initial state should be {NormalState.__name__}"
         assert self.machine.get_registro() == [], "Register should be empty"
         assert self.machine.normal, "Normal packet generator should not be None"
-        assert self.machine.DoS, "DoS packet generator should not be None"
+        assert self.machine.dos, "DoS packet generator should not be None"
 
     def test_get_random(self):
         for _ in range(10):
@@ -61,3 +58,51 @@ class TestMaquinaDeEstados:
         )) == 2, "Register should have two entries after two state changes"
         assert self.machine.get_registro()[1] in [
             NormalState.__name__, AttackState.__name__], "Register should contain the state name"
+
+    def test_generate_packets(self):
+        self.machine = MaquinaDeEstados(self.generator)
+
+        packets: list[dict[str, int]] = self.machine.generate_packets()
+        assert isinstance(packets, list), "Packets should be a list"
+        self.machine.estado = AttackState
+
+        packets = self.machine.generate_packets()
+        assert isinstance(packets, list), "Packets should be a list"
+
+
+class TestBaseState:
+    def setup_method(self):
+        self.generator, self.seed = seeding.np_random(seed=None)
+
+    def test_cambiar(self):
+        self.machine = MaquinaDeEstados(self.generator)
+
+        prev_state: BaseState = self.machine.get_estado()
+        prev_state.probCambiar = lambda: 1.0
+
+        for _ in range(10):
+            prev_state.cambiar(self.machine)
+            state: BaseState = self.machine.get_estado()
+            assert state != prev_state, "State should be different from previous state"
+            prev_state = state
+            assert issubclass(
+                state, BaseState), "State should be an instance of BaseState"
+            assert prev_state.probCambiar() > 0, "Probability should be greater than 0"
+            prev_state.probCambiar = lambda: 1.0
+
+    def test_probCambiar(self):
+        assert BaseState.probCambiar() is None, "Default probability should be None"
+
+    def test_get_estados_posibles(self):
+        states: tuple[type[NormalState], type[AttackState]] = (
+            NormalState,
+            AttackState)
+        size: int = len(states)
+        for state in states:
+            assert state in states, "State should be in the list of states"
+
+            assert len(state.get_estados_posibles(states)) == size - \
+                1, "Default implementation should return an empty list"
+            assert state.get_estados_posibles(states) == [
+                s for s in states if s != state], "Default implementation should return the others states"
+            

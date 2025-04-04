@@ -1,0 +1,18 @@
+{
+	"name": "contramedidas-iot",
+	"version": "1.0.0",
+	"description": "Proyecto de contramedidas para dispositivos IoT mediante reinforcement learning",
+	"scripts": {
+		"test": "jest --coverage"
+	},
+	"author": "César Rodríguez Villagrá",
+	"dependencies": {},
+	"devDependencies": {
+		"jest": "^29.7.0",
+		"jest-environment-jsdom": "^29.7.0"
+	},
+	"jest": {
+		"testEnvironment": "jsdom",
+		"transform": {}
+	}
+}
