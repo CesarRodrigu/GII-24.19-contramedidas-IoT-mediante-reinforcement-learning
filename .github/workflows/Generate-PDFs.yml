@@ -12,6 +12,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     env:
       FILE_NAME: memoria  
       FILE_NAME2: anexos 
