@@ -200,9 +200,10 @@ def reward(descartados: int,
             reward -= (descartados**2) * c
         else:
             reward -= (descartados) * c2
+
         mejora: float = ocu_ant - ocu_actual
-        reward += mejora * c3
-    else:
-        reward += (1.0 - ocu_actual) *c4
-        # Añadir la carga actual
+        reward += mejora *ocu_actual* c3
+    
+    reward += (1.0 - ocu_actual) *c4
+    # Añadir la carga actual
     return reward

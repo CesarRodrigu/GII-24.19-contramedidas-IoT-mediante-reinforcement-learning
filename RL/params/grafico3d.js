@@ -6,7 +6,7 @@ const Action = Object.freeze({
 // Función de reward (recompensa)
 function reward(descartados, ocu_actual, action, ocu_ant, coeficientes) {
 	let { c, c2, c3, c4 } = coeficientes; // Desempaquetando objeto
-	console.log("Descartados", descartados);
+
 	let reward = 0.0;
 	if (descartados > 0) {
 		if (action === Action.PERMITIR) {
@@ -14,11 +14,11 @@ function reward(descartados, ocu_actual, action, ocu_ant, coeficientes) {
 		} else {
 			reward -= descartados * c2;
 		}
+
 		let mejora = ocu_ant - ocu_actual;
 		reward += mejora * c3;
-	} else {
-		reward += (1.0 - ocu_actual) * c4;
 	}
+	reward += (1.0 - ocu_actual) * c4;
 
 	return reward;
 }
@@ -69,8 +69,8 @@ function generarDatosSuperficie(x, y, coeficientes, accion) {
 		recompensas.push(filaZ);
 	});
 
-	console.log("x,y, recompensa", { x, y, recompensas });
-	console.log("minZ, maxZ, accion", { minZ, maxZ, accion });
+
+
 	return { recompensas, minZ, maxZ };
 }
 
@@ -94,7 +94,7 @@ function crearPlanoSuperficie(x, y, coeficientes, accion) {
 		name: accion === Action.PERMITIR ? "Permitir" : "Denegar",
 	};
 
-	return { datos, trace };
+	return trace;
 }
 function roundDecimal(numero, decimales) {
 	const factor = Math.pow(10, decimales);
@@ -119,7 +119,7 @@ function crearGrafico3D(precision = 10) {
 	let x = [];
 	let y = [];
 	const max_lim = document.getElementById("lim").value;
-	console.log("max_lim", max_lim);
+
 	for (let p = 0.0; p <= max_lim; p += max_lim / precision) {
 		// Paquetes entrantes en %
 		x.push(roundDecimal(p, 2));
@@ -130,29 +130,18 @@ function crearGrafico3D(precision = 10) {
 	}
 	// Si el checkbox de "Permitir" está marcado, creamos el gráfico correspondiente
 	if (mostrarPermitir) {
-		let { datos, trace } = crearPlanoSuperficie(
-			x,
-			y,
-			coeficientes,
-			Action.PERMITIR
-		);
-
+		let trace = crearPlanoSuperficie(x, y, coeficientes, Action.PERMITIR);
 		// Actualizamos el minZ y maxZ global
-		if (datos.minZ < minZGlobal) minZGlobal = datos.minZ;
-		if (datos.maxZ > maxZGlobal) maxZGlobal = datos.maxZ;
+		if (trace.cmin < minZGlobal) minZGlobal = trace.cmin;
+		if (trace.cmax > maxZGlobal) maxZGlobal = trace.cmax;
 		traces.push(trace);
 	}
 
 	// Si el checkbox de "Denegar" está marcado, creamos el gráfico correspondiente
 	if (mostrarDenegar) {
-		let { datos, trace } = crearPlanoSuperficie(
-			x,
-			y,
-			coeficientes,
-			Action.DENEGAR
-		);
-		if (datos.minZ < minZGlobal) minZGlobal = datos.minZ;
-		if (datos.maxZ > maxZGlobal) maxZGlobal = datos.maxZ;
+		let trace = crearPlanoSuperficie(x, y, coeficientes, Action.DENEGAR);
+		if (trace.cmin < minZGlobal) minZGlobal = trace.cmin;
+		if (trace.cmax > maxZGlobal) maxZGlobal = trace.cmax;
 		traces.push(trace);
 	}
 
@@ -183,23 +172,23 @@ function crearGrafico3D(precision = 10) {
 
 	let layout = {
 		title: {
-			text: "Reward en función de Descartados y Ocupación",
+			text: "Reward en función de %  Paquetes entrantes y Ocupación",
 			font: {},
 		},
 		scene: {
 			xaxis: { title: { text: "% paquetes entrantes" }, automargin: true },
 			yaxis: { title: { text: "% Ocupación" }, automargin: true },
-			zaxis: { title: { text: "Recompensa" }, automargin: true},
+			zaxis: { title: { text: "Recompensa" }, automargin: true },
 		},
 		margin: {
-			b:0,
-			l:0,
-			r:0,
-			t:40,
+			b: 0,
+			l: 0,
+			r: 0,
+			t: 40,
 		},
 		autosize: true,
 	};
-	Plotly.react("grafico3d", traces, layout, { responsive: true });
+	Plotly.react("grafico3d", traces, layout);
 }
 // Función de debounce para retrasar la ejecución de la actualización
 function debounce(func, wait) {
@@ -219,7 +208,6 @@ function actualizarGrafico() {
 	const precision =
 		parseInt(document.getElementById("precision").value, 10) - 1;
 	crearGrafico3D(precision);
-	console.log("actualizarGrafico() ejecutada");
 }
 function actualizarSliders() {
 	const ids = ["precision", "c", "c2", "c3", "c4", "lim"];
@@ -229,6 +217,7 @@ function actualizarSliders() {
 			document.getElementById(id).value;
 	}
 }
+
 const actualizarGraficoDebounced = debounce(() => {
 	actualizarSliders(); // Actualiza los sliders antes de crear el gráfico
 	actualizarGrafico();
@@ -254,4 +243,18 @@ document.addEventListener("DOMContentLoaded", () => {
 	crearGrafico3D();
 });
 
-module.exports = { reward };
+// Verificar si estamos en un entorno Node.js
+if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
+    module.exports = {
+        reward,
+        calc_descartados,
+        Action,
+        generarDatosSuperficie,
+        crearPlanoSuperficie,
+        roundDecimal,
+        debounce,
+		actualizarSliders,
+		actualizarGrafico,
+		actualizarGraficoDebounced,
+    };
+}

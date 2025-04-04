@@ -10,28 +10,26 @@ h2 {
 	color: #333;
 }
 
+/* Ajustar el diseño para que el slider-container esté a la izquierda del gráfico */
 .parent {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: stretch;
-    gap: 20px;
-    width: 100%;
-    max-width: 100%;
-    height: auto;
-    box-sizing: border-box;
-	
+    justify-content: center; /* Centrar horizontalmente el contenido */
+    align-items: center; /* Centrar verticalmente el contenido */
+    height: fit-content; /* Ocupa toda la altura de la pantalla */
+    width: 100%; /* Ocupa todo el ancho de la pantalla */
+    margin: 0; /* Eliminar márgenes */
+    padding: 0; /* Eliminar padding */
+    box-sizing: border-box; /* Incluir padding y bordes en el cálculo del tamaño */
+    gap: 20px; /* Espaciado entre los elementos hijos */
+	flex-wrap: wrap; /* Permitir que los elementos se envuelvan en pantallas pequeñas */
 }
 
 #slider-container {
-	width: auto;
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	height: auto;
-	box-sizing: border-box;
-	justify-content: space-between; /* Distribuir elementos verticalmente */
-	margin-left: 0; /* Eliminar alineación a la derecha */
+    position: relative; /* Posicionamiento relativo dentro del flujo */
+    width: auto; /* Ancho fijo para el contenedor de sliders */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinear los elementos dentro del slider-container a la izquierda */
 }
 
 label {
@@ -79,7 +77,7 @@ button:hover {
 
 #grafico3d {
     width: auto; /* Ajustar el ancho relativo al contenedor */
-    height: 60vh; /* Ajustar el alto relativo a la altura de la ventana */
+    height: min-content; /* Ajustar el alto relativo a la altura de la ventana */
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     padding: 0; /* Eliminar padding para que el contenido ocupe todo el espacio */
@@ -87,6 +85,7 @@ button:hover {
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
+    flex-grow: 1; /* Permitir que el gráfico ocupe el espacio restante */
 }
 
 @media (max-width: 768px) {
@@ -101,7 +100,7 @@ button:hover {
 	}
 
 	#grafico3d {
-		width: 100%;
+		width: 00%;
 		height: auto;
 	}
 }
