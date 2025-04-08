@@ -1,7 +1,6 @@
 const fs = require("fs");
 const path = require("path");
 
-// Importaciones en una sola línea
 const {
 	reward,
 	calc_descartados,
@@ -15,7 +14,6 @@ const {
 	actualizarGraficoDebounced,
 } = require("../../params/grafico3d.js");
 
-// Verificar que las importaciones existen
 if (
 	!reward ||
 	!calc_descartados ||
@@ -31,11 +29,10 @@ if (
 	console.error(
 		"Error: Alguna de las importaciones desde 'grafico3d.js' no se encuentra correctamente exportada."
 	);
-	process.exit(1); // Finaliza el proceso con un error
+	process.exit(1);
 }
 
 beforeEach(() => {
-	// Cargar el contenido de Params.html en el DOM
 	const html = fs.readFileSync(
 		path.resolve(__dirname, "../../params/Params.html"),
 		"utf8"
@@ -216,7 +213,6 @@ test("actualizarSliders should update the text content of elements with the corr
 				2
 			);
 		}
-		console.log(randomValue);
 		randomValues.push(randomValue);
 	});
 

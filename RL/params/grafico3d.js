@@ -16,9 +16,11 @@ function reward(descartados, ocu_actual, action, ocu_ant, coeficientes) {
 		}
 
 		let mejora = ocu_ant - ocu_actual;
-		reward += mejora * c3;
+		reward += mejora *ocu_actual* c3;
+
+	}else{
+		reward += (1.0 - ocu_actual) * c4;
 	}
-	reward += (1.0 - ocu_actual) * c4;
 
 	return reward;
 }

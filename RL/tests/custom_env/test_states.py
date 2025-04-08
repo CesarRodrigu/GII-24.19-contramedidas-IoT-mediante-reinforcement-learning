@@ -78,7 +78,7 @@ class TestBaseState:
         self.machine = MaquinaDeEstados(self.generator)
 
         prev_state: BaseState = self.machine.get_estado()
-        prev_state.probCambiar = lambda: 1.0
+        prev_state.prob_cambiar = lambda: 1.0
 
         for _ in range(10):
             prev_state.cambiar(self.machine)
@@ -87,11 +87,11 @@ class TestBaseState:
             prev_state = state
             assert issubclass(
                 state, BaseState), "State should be an instance of BaseState"
-            assert prev_state.probCambiar() > 0, "Probability should be greater than 0"
-            prev_state.probCambiar = lambda: 1.0
+            assert prev_state.prob_cambiar() > 0, "Probability should be greater than 0"
+            prev_state.prob_cambiar = lambda: 1.0
 
-    def test_probCambiar(self):
-        assert BaseState.probCambiar() is None, "Default probability should be None"
+    def test_prob_cambiar(self):
+        assert BaseState.prob_cambiar() is None, "Default probability should be None"
 
     def test_get_estados_posibles(self):
         states: tuple[type[NormalState], type[AttackState]] = (
