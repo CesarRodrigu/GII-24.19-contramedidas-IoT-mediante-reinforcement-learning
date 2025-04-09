@@ -87,20 +87,3 @@ button:hover {
     box-sizing: border-box;
     flex-grow: 1; /* Permitir que el gráfico ocupe el espacio restante */
 }
-
-@media (max-width: 768px) {
-	.parent {
-		flex-direction: column;
-		align-items: center;
-	}
-
-	#slider-container {
-		align-items: center;
-		margin-left: 0; /* Resetear alineación en pantallas pequeñas */
-	}
-
-	#grafico3d {
-		width: 00%;
-		height: auto;
-	}
-}

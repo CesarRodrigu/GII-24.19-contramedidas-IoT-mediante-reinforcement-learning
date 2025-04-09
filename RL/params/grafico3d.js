@@ -2,10 +2,13 @@ const Action = Object.freeze({
 	PERMITIR: 0,
 	DENEGAR: 1,
 });
+const tamCola = 250;
+const vProcesamiento = 5e6 / 8;
+const duration_step = 1e-3;
 
 // Función de reward (recompensa)
 function reward(descartados, ocu_actual, action, ocu_ant, coeficientes) {
-	let { c, c2, c3, c4 } = coeficientes; // Desempaquetando objeto
+	let { c, c2, c3, c4 } = coeficientes;
 
 	let reward = 0.0;
 	if (descartados > 0) {
@@ -16,26 +19,14 @@ function reward(descartados, ocu_actual, action, ocu_ant, coeficientes) {
 		}
 
 		let mejora = ocu_ant - ocu_actual;
-		reward += mejora *ocu_actual* c3;
-
-	}else{
+		reward += mejora * ocu_actual * c3;
+	} else {
 		reward += (1.0 - ocu_actual) * c4;
 	}
 
 	return reward;
 }
-function reward_funtion(
-	ocu_actual,
-	action,
-	ocu_ant,
-	coeficientes,
-	paquetes_entrantes
-) {
-	const descartados = calc_descartados(ocu_actual, paquetes_entrantes, action); // Paquetes descartados
-	return reward(descartados, ocu_actual, action, ocu_ant, coeficientes);
-}
 function calc_descartados(ocu_actual, paquetes_entrantes, accion) {
-	const tamCola = 250;
 	let descartados = 0;
 	if (accion == Action.DENEGAR) {
 		descartados = paquetes_entrantes * tamCola;
@@ -50,7 +41,22 @@ function calc_descartados(ocu_actual, paquetes_entrantes, accion) {
 	}
 	return Math.round(descartados);
 }
-
+function reward_funtion(
+	ocu_actual,
+	action,
+	ocu_ant,
+	coeficientes,
+	paquetes_entrantes
+) {
+	const descartados = calc_descartados(ocu_actual, paquetes_entrantes, action);
+	return reward(descartados, ocu_actual, action, ocu_ant, coeficientes);
+}
+function calcular_ocu_actual(ocu_ant, paquetes_entrantes, action) {
+	if (action == Action.PERMITIR) {
+		ocu = Math.min(1.0, ocu_ant + paquetes_entrantes);
+	}
+	return ocu - (duration_step * vProcesamiento) / tamCola;
+}
 // Generar datos para el gráfico de superficie con una acción seleccionada
 function generarDatosSuperficie(x, y, coeficientes, accion) {
 	let recompensas = []; // Matriz de recompensas
@@ -60,18 +66,16 @@ function generarDatosSuperficie(x, y, coeficientes, accion) {
 	x.forEach((p) => {
 		let filaZ = [];
 		y.forEach((o) => {
-			let recompensa = reward_funtion(o, accion, o + 0.1, coeficientes, p); // Paquetes entrantes en %
+			ocu_act = calcular_ocu_actual(o, p, accion);
+			let recompensa = reward_funtion(ocu_act, accion, o, coeficientes, p); // Paquetes entrantes en %
 			filaZ.push(recompensa);
 
-			// Actualizamos el valor mínimo y máximo de Z
 			if (recompensa < minZ) minZ = recompensa;
 			if (recompensa > maxZ) maxZ = recompensa;
 		});
 
 		recompensas.push(filaZ);
 	});
-
-
 
 	return { recompensas, minZ, maxZ };
 }
@@ -178,9 +182,9 @@ function crearGrafico3D(precision = 10) {
 			font: {},
 		},
 		scene: {
-			xaxis: { title: { text: "% paquetes entrantes" }, automargin: true },
-			yaxis: { title: { text: "% Ocupación" }, automargin: true },
-			zaxis: { title: { text: "Recompensa" }, automargin: true },
+			xaxis: { title: { text: "% paquetes entrantes" } },
+			yaxis: { title: { text: "% Ocupación" } },
+			zaxis: { title: { text: "Recompensa" } },
 		},
 		margin: {
 			b: 0,
@@ -190,7 +194,15 @@ function crearGrafico3D(precision = 10) {
 		},
 		autosize: true,
 	};
-	Plotly.react("grafico3d", traces, layout);
+	Plotly.react("grafico3d", traces, layout, {
+		responsive: true,
+		scrollZoom: true,
+		config: {
+			scrollZoom: true,
+			displayModeBar: true,
+			staticPlot: false,
+		},
+	});
 }
 // Función de debounce para retrasar la ejecución de la actualización
 function debounce(func, wait) {
@@ -220,10 +232,13 @@ function actualizarSliders() {
 	}
 }
 
-const actualizarGraficoDebounced = debounce(() => {
-	actualizarSliders(); // Actualiza los sliders antes de crear el gráfico
-	actualizarGrafico();
-}, 100); // Tiempo en milisegundos
+function actualizarGraficoDebounced(debounceTime = 100) {
+	return debounce(() => {
+		actualizarSliders();
+		actualizarGrafico();
+	}, debounceTime);
+}
+
 
 document.addEventListener("DOMContentLoaded", () => {
 	actualizarSliders();
@@ -240,23 +255,26 @@ document.addEventListener("DOMContentLoaded", () => {
 		.getElementById("checkboxDenegar")
 		.addEventListener("change", actualizarGrafico);
 
-	// Inicialización del gráfico al cargar la página
-	// Crear el gráfico con los valores predeterminados
 	crearGrafico3D();
 });
 
+
 // Verificar si estamos en un entorno Node.js
 if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
-    module.exports = {
-        reward,
-        calc_descartados,
-        Action,
-        generarDatosSuperficie,
-        crearPlanoSuperficie,
-        roundDecimal,
-        debounce,
+	module.exports = {
+		reward,
+		calc_descartados,
+		Action,
+		generarDatosSuperficie,
+		crearPlanoSuperficie,
+		roundDecimal,
+		debounce,
 		actualizarSliders,
 		actualizarGrafico,
 		actualizarGraficoDebounced,
-    };
+		calcular_ocu_actual,
+		tamCola,
+		duration_step,
+		vProcesamiento,
+	};
 }
