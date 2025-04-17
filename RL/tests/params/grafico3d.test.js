@@ -1,7 +1,6 @@
 const fs = require("fs");
 const path = require("path");
 
-// Importaciones en una sola línea
 const {
 	reward,
 	calc_descartados,
@@ -13,9 +12,13 @@ const {
 	actualizarSliders,
 	actualizarGrafico,
 	actualizarGraficoDebounced,
+	calcular_ocu_actual,
+	tamCola,
+	duration_step,
+	vProcesamiento,
+	tamPaquete,
 } = require("../../params/grafico3d.js");
 
-// Verificar que las importaciones existen
 if (
 	!reward ||
 	!calc_descartados ||
@@ -26,16 +29,20 @@ if (
 	!debounce ||
 	!actualizarSliders ||
 	!actualizarGrafico ||
-	!actualizarGraficoDebounced
+	!actualizarGraficoDebounced ||
+	!calcular_ocu_actual ||
+	!tamCola ||
+	!duration_step ||
+	!vProcesamiento ||
+	!tamPaquete
 ) {
 	console.error(
 		"Error: Alguna de las importaciones desde 'grafico3d.js' no se encuentra correctamente exportada."
 	);
-	process.exit(1); // Finaliza el proceso con un error
+	process.exit(1);
 }
 
 beforeEach(() => {
-	// Cargar el contenido de Params.html en el DOM
 	const html = fs.readFileSync(
 		path.resolve(__dirname, "../../params/Params.html"),
 		"utf8"
@@ -46,7 +53,7 @@ beforeEach(() => {
 	require("../../params/grafico3d.js");
 });
 
-test("reward funtion must be a funtion", () => {
+test("reward function must be a function", () => {
 	expect(typeof reward).toBe("function"); // Asegurarse de que reward es una función
 });
 const testDescartadosCases = [
@@ -61,6 +68,12 @@ const testDescartadosCases = [
 		paquetes_entrantes: 1.0,
 		action: Action.PERMITIR,
 		expected: 0.0,
+	},
+	{
+		ocupacion: 1.0,
+		paquetes_entrantes: 1.0,
+		action: Action.PERMITIR,
+		expected: 1.0 * tamCola,
 	},
 ];
 test.each(testDescartadosCases)(
@@ -77,7 +90,7 @@ const testRewardCases = [
 		ocu_actual: 0.5,
 		action: Action.PERMITIR,
 		ocu_ant: 0.0,
-		coeficientes: { c: 0, c2: 0, c3: 0, c4: 0 },
+		coeficientes: { c: 0, c2: 0, c3: 0, c4: 0 ,c5: 0 },
 		expected: 0.0,
 	},
 	{
@@ -85,7 +98,7 @@ const testRewardCases = [
 		ocu_actual: 0.5,
 		action: Action.PERMITIR,
 		ocu_ant: 0.0,
-		coeficientes: { c: 0, c2: 0, c3: 0, c4: 0 },
+		coeficientes: { c: 0, c2: 0, c3: 0, c4: 0 ,c5: 0 },
 		expected: 0.0,
 	},
 ];
@@ -113,7 +126,7 @@ test("Action.PERMITIR constant should be defined and equal to 0", () => {
 test("crearDatosSuperficie should return an array of arrays and x and y must be the same as parameters", () => {
 	const x = [0.1, 0.2, 0.3];
 	const y = [0.1, 0.2, 0.3];
-	const coeficientes = { c: 1, c2: 1, c3: 1, c4: 1 };
+	const coeficientes = { c: 1, c2: 1, c3: 1, c4: 1 , c5: 1 };
 
 	let acciones = [Action.PERMITIR, Action.DENEGAR];
 
@@ -136,7 +149,7 @@ test("crearDatosSuperficie should return an array of arrays and x and y must be 
 test("crearPlanoSuperficie should return a trace", () => {
 	const x = [0.1, 0.2, 0.3];
 	const y = [0.1, 0.2, 0.3];
-	const coeficientes = { c: 1, c2: 1, c3: 1, c4: 1 };
+	const coeficientes = { c: 1, c2: 1, c3: 1, c4: 1 , c5: 1 };
 	let acciones = [Action.PERMITIR, Action.DENEGAR];
 
 	acciones.forEach((action) => {
@@ -157,24 +170,25 @@ test("crearPlanoSuperficie should return a trace", () => {
 	});
 });
 
-test("roundDecimal should round numbers to the specified number of decimal places", () => {
-	const testCases = [
-		{ numero: 1.2345, decimales: 2, expected: 1.23 },
-		{ numero: 1.2355, decimales: 2, expected: 1.24 },
-		{ numero: 1.2, decimales: 3, expected: 1.2 },
-		{ numero: 0.123456, decimales: 4, expected: 0.1235 },
-		{ numero: -1.2345, decimales: 2, expected: -1.23 },
-		{ numero: -1.2355, decimales: 2, expected: -1.24 },
-		{ numero: 0, decimales: 2, expected: 0 },
-		{ numero: 1.5, decimales: 0, expected: 2 },
-		{ numero: 1.4, decimales: 0, expected: 1 },
-	];
+const testRoundDecimalCases = [
+	{ numero: 1.2345, decimales: 2, expected: 1.23 },
+	{ numero: 1.2355, decimales: 2, expected: 1.24 },
+	{ numero: 1.2, decimales: 3, expected: 1.2 },
+	{ numero: 0.123456, decimales: 4, expected: 0.1235 },
+	{ numero: -1.2345, decimales: 2, expected: -1.23 },
+	{ numero: -1.2355, decimales: 2, expected: -1.24 },
+	{ numero: 0, decimales: 2, expected: 0 },
+	{ numero: 1.5, decimales: 0, expected: 2 },
+	{ numero: 1.4, decimales: 0, expected: 1 },
+];
 
-	testCases.forEach(({ numero, decimales, expected }) => {
+test.each(testRoundDecimalCases)(
+	"roundDecimal(numero: $numero, decimales: $decimales) debería retornar $expected",
+	({ numero, decimales, expected }) => {
 		const result = roundDecimal(numero, decimales);
 		expect(result).toBe(expected);
-	});
-});
+	}
+);
 
 test("debounce should delay execution and use latest arguments", (done) => {
 	const mockFunction = jest.fn();
@@ -199,7 +213,7 @@ test("debounce should delay execution and use latest arguments", (done) => {
 });
 
 test("actualizarSliders should update the text content of elements with the corresponding slider values", () => {
-	const ids = ["precision", "c", "c2", "c3", "c4", "lim"];
+	const ids = ["precision", "c", "c2", "c3", "c4", "c5", "lim"];
 	let randomValues = [];
 
 	ids.forEach((id) => {
@@ -216,7 +230,6 @@ test("actualizarSliders should update the text content of elements with the corr
 				2
 			);
 		}
-		console.log(randomValue);
 		randomValues.push(randomValue);
 	});
 
@@ -238,6 +251,13 @@ test("actualizarGrafico", () => {
 	} catch (error) {
 		expect(error).toBeInstanceOf(ReferenceError);
 	}
+	try {
+		document.getElementById("checkboxPermitir").checked = false;
+		document.getElementById("checkboxDenegar").checked = false;
+		actualizarGrafico();
+	} catch (error) {
+		expect(error).toBeInstanceOf(ReferenceError);
+	}
 });
 
 test("DOM fully loaded and initialized", () => {
@@ -252,4 +272,34 @@ test("actualizarGraficoDebounced", () => {
 	} catch (error) {
 		expect(error).toBeInstanceOf(ReferenceError);
 	}
+});
+
+const testCalcularOcuActualCases = [
+	{
+		ocu_ant: 0.5,
+		paquetes_entrantes: 0.3,
+		action: Action.PERMITIR,
+		expected: 0.8 - (duration_step * vProcesamiento) / (tamCola * tamPaquete)
+	},
+];
+test.each(testCalcularOcuActualCases)(
+	"calcular_ocu_actual(ocu_ant: $ocu_ant, paquetes_entrantes: $paquetes_entrantes, action: $action) debería retornar $expected",
+	({ ocu_ant, paquetes_entrantes, action, expected }) => {
+		const result = calcular_ocu_actual(ocu_ant, paquetes_entrantes, action);
+		expect(result).toBe(expected);
+	}
+);
+
+test("Ensure correct global variables are defined", () => {
+	expect(typeof tamCola).toBe("number");
+	expect(tamCola).toBeGreaterThan(0);
+
+	expect(typeof duration_step).toBe("number");
+	expect(duration_step).toBeGreaterThan(0);
+
+	expect(typeof vProcesamiento).toBe("number");
+	expect(vProcesamiento).toBeGreaterThan(0);
+
+	expect(typeof tamPaquete).toBe("number");
+	expect(tamPaquete).toBeGreaterThan(0);
 });

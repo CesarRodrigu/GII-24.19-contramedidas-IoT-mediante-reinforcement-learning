@@ -11,7 +11,7 @@ from .packet_generators import DOS_Packet_Generator, Packet_Generator
 
 class MaquinaDeEstados:
     def __init__(self, generador: np.random.Generator = seeding.np_random(seed=None)[0]):
-        self.estado: BaseState = NormalState
+        self.estado: type[BaseState] = NormalState
         self.estados_posibles: tuple[type[BaseState]] = (
             NormalState,
             AttackState)
@@ -40,6 +40,7 @@ class MaquinaDeEstados:
         else:
             paquetes = self.dos.generate_packets()
         return paquetes
+
     def get_registro(self) -> list[BaseState]:
         return self.registro_estados
 
@@ -48,7 +49,7 @@ class BaseState(ABC):
     @classmethod
     def cambiar(cls, maquina: MaquinaDeEstados):
         """Método de clase que cambiará el estado"""
-        if maquina.get_random() < cls.probCambiar():
+        if maquina.get_random() < cls.prob_cambiar():
             # Elegir aleatoriamente un nuevo estado diferente al actual
             new_state: BaseState = maquina.get_random_choice(
                 cls.get_estados_posibles(maquina.estados_posibles))
@@ -56,7 +57,7 @@ class BaseState(ABC):
 
     @classmethod
     @abstractmethod
-    def probCambiar(cls) -> float:
+    def prob_cambiar(cls) -> float:
         """Método de clase que devuelve la probabilidad de cambio de estado"""
         pass
 
@@ -70,13 +71,12 @@ class BaseState(ABC):
 class NormalState(BaseState):
     @classmethod
     @override
-    def probCambiar(cls):
+    def prob_cambiar(cls):
         return 0.1
 
 
 class AttackState(BaseState):
     @classmethod
     @override
-    def probCambiar(cls):
+    def prob_cambiar(cls):
         return 0.05
-

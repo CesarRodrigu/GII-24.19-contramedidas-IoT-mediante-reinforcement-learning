@@ -48,6 +48,7 @@ input[type="range"] {
 	grid-template-columns: 1fr 1fr;
 	gap: 10px;
 	justify-items: start;
+	flex-grow: 1;
 }
 
 #checkboxes-container label {
@@ -85,22 +86,5 @@ button:hover {
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    flex-grow: 1; /* Permitir que el gráfico ocupe el espacio restante */
-}
-
-@media (max-width: 768px) {
-	.parent {
-		flex-direction: column;
-		align-items: center;
-	}
-
-	#slider-container {
-		align-items: center;
-		margin-left: 0; /* Resetear alineación en pantallas pequeñas */
-	}
-
-	#grafico3d {
-		width: 00%;
-		height: auto;
-	}
+    flex-grow: 2; /* Permitir que el gráfico ocupe el espacio restante */
 }

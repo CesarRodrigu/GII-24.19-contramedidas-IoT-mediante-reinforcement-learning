@@ -1,12 +1,12 @@
-name: Generate PDFs form LaTex
+name: Generate PDFs from LaTeX
 
 on:
   push:
     branches:
-      - main   
+      - main
     paths:
-      - 'docs/source/**'        
-      - '!docs/pdf/**'   
+      - "docs/source/**"
+      - "!docs/pdfs/**"
   workflow_dispatch:
 
 jobs:
@@ -15,8 +15,8 @@ jobs:
     permissions:
       contents: write
     env:
-      FILE_NAME: memoria  
-      FILE_NAME2: anexos 
+      FILE_NAME: memoria
+      FILE_NAME2: anexos
       OUT_DIR: docs/pdfs
       WORK_DIR: docs/source
 

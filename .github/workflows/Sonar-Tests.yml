@@ -12,7 +12,7 @@ on:
     paths-ignore:
       - 'docs/**'
   workflow_dispatch:
-    
+
 env:
   PY_P_DIR: RL
 permissions:
@@ -27,10 +27,10 @@ jobs:
           fetch-depth: 1
 
       - name: Set up Python 3.12
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-          cache: 'pip'
+          python-version: "3.12"
+          cache: "pip"
 
       - name: Install Python dependencies and Run Tests
         run: |
@@ -42,31 +42,31 @@ jobs:
           name: python-coverage
           path: ${{ env.PY_P_DIR }}/coverage-reports/coverage.xml
           retention-days: 3
-          
+
   javascript-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1 
+          fetch-depth: 1
       - name: Run yarn and install
         run: yarn
         working-directory: ./${{ env.PY_P_DIR }}
       - name: Test and coverage
         run: yarn jest --coverage
         working-directory: ./${{ env.PY_P_DIR }}
-        
+
       - name: Save JavaScript Build Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: javascript-coverage
           path: |
-           ./${{ env.PY_P_DIR }}/coverage/lcov.info
-          retention-days: 3 
+            ./${{ env.PY_P_DIR }}/coverage/lcov.info
+          retention-days: 3
 
   sonar:
-    needs: [python-tests,javascript-build] 
+    needs: [python-tests, javascript-build]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository

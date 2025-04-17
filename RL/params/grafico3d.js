@@ -2,40 +2,40 @@ const Action = Object.freeze({
 	PERMITIR: 0,
 	DENEGAR: 1,
 });
+const tamCola = 250;
+const vProcesamiento = 5e6 / 8;
+const duration_step = 1e-3;
+const tamPaquete = 200;
 
 // Función de reward (recompensa)
 function reward(descartados, ocu_actual, action, ocu_ant, coeficientes) {
-	let { c, c2, c3, c4 } = coeficientes; // Desempaquetando objeto
+	let { c, c2, c3, c4, c5 } = coeficientes; // Define c5 with a default value
+	console.log("coeficientes", c, c2, c3, c4, c5);
+	//Mirar la ocupacion actual que sale negativa
+	console.log("action, actual, anterior", action, ocu_actual, ocu_ant);
+	console.log("descartados", descartados);
 
 	let reward = 0.0;
 	if (descartados > 0) {
 		if (action === Action.PERMITIR) {
-			reward -= descartados ** 2 * c;
+			reward -= descartados ** 2 * c + c5;
+			//c5 puede ser + o -
 		} else {
 			reward -= descartados * c2;
 		}
 
 		let mejora = ocu_ant - ocu_actual;
-		reward += mejora * c3;
+		reward += mejora * ocu_actual * c3;
+		//Mirar a ver si es cuadratico y hacerlo segun accion
+	} else {
+		reward += (1.0 - ocu_actual) * c4;
 	}
-	reward += (1.0 - ocu_actual) * c4;
 
 	return reward;
 }
-function reward_funtion(
-	ocu_actual,
-	action,
-	ocu_ant,
-	coeficientes,
-	paquetes_entrantes
-) {
-	const descartados = calc_descartados(ocu_actual, paquetes_entrantes, action); // Paquetes descartados
-	return reward(descartados, ocu_actual, action, ocu_ant, coeficientes);
-}
-function calc_descartados(ocu_actual, paquetes_entrantes, accion) {
-	const tamCola = 250;
+function calc_descartados(ocu_actual, paquetes_entrantes, action) {
 	let descartados = 0;
-	if (accion == Action.DENEGAR) {
+	if (action == Action.DENEGAR) {
 		descartados = paquetes_entrantes * tamCola;
 	} else {
 		let desc = 0;
@@ -48,7 +48,28 @@ function calc_descartados(ocu_actual, paquetes_entrantes, accion) {
 	}
 	return Math.round(descartados);
 }
-
+function reward_function(
+	ocu_actual,
+	action,
+	ocu_ant,
+	coeficientes,
+	paquetes_entrantes
+) {
+	const descartados = calc_descartados(ocu_actual, paquetes_entrantes, action);
+	return reward(descartados, ocu_actual, action, ocu_ant, coeficientes);
+}
+function calcular_ocu_actual(ocu_ant, paquetes_entrantes, action) {
+	console.log("Dentro", ocu_ant, paquetes_entrantes, action);
+	//TODO mirar representar la anterior
+	let ocu = ocu_ant;
+	if (action == Action.PERMITIR) {
+		ocu = Math.min(1.0, ocu_ant + paquetes_entrantes);
+	}
+	return Math.max(
+		0.0,
+		ocu - (duration_step * vProcesamiento) / (tamCola * tamPaquete)
+	);
+}
 // Generar datos para el gráfico de superficie con una acción seleccionada
 function generarDatosSuperficie(x, y, coeficientes, accion) {
 	let recompensas = []; // Matriz de recompensas
@@ -58,18 +79,24 @@ function generarDatosSuperficie(x, y, coeficientes, accion) {
 	x.forEach((p) => {
 		let filaZ = [];
 		y.forEach((o) => {
-			let recompensa = reward_funtion(o, accion, o + 0.1, coeficientes, p); // Paquetes entrantes en %
+			const ocu_act = calcular_ocu_actual(o, p, accion);
+			console.assert(
+				o >= 0 && o <= 1,
+				"Ocupación anterior no puede ser negativa " + o
+			);
+			console.assert(
+				ocu_act >= 0 && ocu_act <= 1,
+				"Ocupación actual no puede ser negativa " + ocu_act
+			);
+			let recompensa = reward_function(ocu_act, accion, o, coeficientes, p); // Paquetes entrantes en %
 			filaZ.push(recompensa);
 
-			// Actualizamos el valor mínimo y máximo de Z
 			if (recompensa < minZ) minZ = recompensa;
 			if (recompensa > maxZ) maxZ = recompensa;
 		});
 
 		recompensas.push(filaZ);
 	});
-
-
 
 	return { recompensas, minZ, maxZ };
 }
@@ -106,6 +133,7 @@ function crearGrafico3D(precision = 10) {
 		c2: parseFloat(document.getElementById("c2").value),
 		c3: parseFloat(document.getElementById("c3").value),
 		c4: parseFloat(document.getElementById("c4").value),
+		c5: parseFloat(document.getElementById("c5").value),
 	};
 
 	// Obtenemos si se ha seleccionado cada checkbox
@@ -176,9 +204,9 @@ function crearGrafico3D(precision = 10) {
 			font: {},
 		},
 		scene: {
-			xaxis: { title: { text: "% paquetes entrantes" }, automargin: true },
-			yaxis: { title: { text: "% Ocupación" }, automargin: true },
-			zaxis: { title: { text: "Recompensa" }, automargin: true },
+			xaxis: { title: { text: "% Paquetes entrantes" } },
+			yaxis: { title: { text: "% Ocupación Anterior" } },
+			zaxis: { title: { text: "Recompensa" } },
 		},
 		margin: {
 			b: 0,
@@ -188,7 +216,15 @@ function crearGrafico3D(precision = 10) {
 		},
 		autosize: true,
 	};
-	Plotly.react("grafico3d", traces, layout);
+	Plotly.react("grafico3d", traces, layout, {
+		responsive: true,
+		scrollZoom: true,
+		config: {
+			scrollZoom: true,
+			displayModeBar: true,
+			staticPlot: false,
+		},
+	});
 }
 // Función de debounce para retrasar la ejecución de la actualización
 function debounce(func, wait) {
@@ -210,7 +246,7 @@ function actualizarGrafico() {
 	crearGrafico3D(precision);
 }
 function actualizarSliders() {
-	const ids = ["precision", "c", "c2", "c3", "c4", "lim"];
+	const ids = ["precision", "c", "c2", "c3", "c4", "c5", "lim"];
 
 	for (let id of ids) {
 		document.getElementById(`val-${id}`).textContent =
@@ -238,23 +274,26 @@ document.addEventListener("DOMContentLoaded", () => {
 		.getElementById("checkboxDenegar")
 		.addEventListener("change", actualizarGrafico);
 
-	// Inicialización del gráfico al cargar la página
-	// Crear el gráfico con los valores predeterminados
 	crearGrafico3D();
 });
 
 // Verificar si estamos en un entorno Node.js
 if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
-    module.exports = {
-        reward,
-        calc_descartados,
-        Action,
-        generarDatosSuperficie,
-        crearPlanoSuperficie,
-        roundDecimal,
-        debounce,
+	module.exports = {
+		reward,
+		calc_descartados,
+		Action,
+		generarDatosSuperficie,
+		crearPlanoSuperficie,
+		roundDecimal,
+		debounce,
 		actualizarSliders,
 		actualizarGrafico,
 		actualizarGraficoDebounced,
-    };
+		calcular_ocu_actual,
+		tamCola,
+		duration_step,
+		vProcesamiento,
+		tamPaquete,
+	};
 }
