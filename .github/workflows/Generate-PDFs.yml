@@ -23,8 +23,6 @@ jobs:
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v4
-        with:
-          persist-credentials: true
 
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v3
@@ -38,10 +36,18 @@ jobs:
           mkdir -p ${{ env.OUT_DIR }}
           mv ${{ env.WORK_DIR }}/${{ env.FILE_NAME }}.pdf ${{ env.OUT_DIR }}/${{ env.FILE_NAME }}.pdf
           mv ${{ env.WORK_DIR }}/${{ env.FILE_NAME2 }}.pdf ${{ env.OUT_DIR }}/${{ env.FILE_NAME2 }}.pdf
+          
+      - name: Set up SSH for Deploy Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-      - name: Commit and push PDF
+      - name: Commit and push PDF using SSH
         run: |
           git config --global user.name "Automated PDF Generator GitHub Actions"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add ${{ env.OUT_DIR }}/${{ env.FILE_NAME }}.pdf ${{ env.OUT_DIR }}/${{ env.FILE_NAME2 }}.pdf 
-          git diff --staged --quiet || (git commit -m "Update compiled ${{ env.FILE_NAME }}.pdf and ${{ env.FILE_NAME2 }}.pdf" && git push)
+          git remote set-url origin git@github.com:${{ github.repository }}.git
+          git add ${{ env.OUT_DIR }}/${{ env.FILE_NAME }}.pdf ${{ env.OUT_DIR }}/${{ env.FILE_NAME2 }}.pdf
+          git diff --staged --quiet || (git commit -m "Update compiled ${{ env.FILE_NAME }}.pdf and ${{ env.FILE_NAME2 }}.pdf" && git push origin main)
