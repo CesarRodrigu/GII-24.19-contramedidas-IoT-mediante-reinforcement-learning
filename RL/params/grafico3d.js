@@ -5,21 +5,28 @@ const Action = Object.freeze({
 const tamCola = 250;
 const vProcesamiento = 5e6 / 8;
 const duration_step = 1e-3;
+const tamPaquete = 200;
 
 // Función de reward (recompensa)
 function reward(descartados, ocu_actual, action, ocu_ant, coeficientes) {
-	let { c, c2, c3, c4 } = coeficientes;
+	let { c, c2, c3, c4, c5 } = coeficientes; // Define c5 with a default value
+	console.log("coeficientes", c, c2, c3, c4, c5);
+	//Mirar la ocupacion actual que sale negativa
+	console.log("action, actual, anterior", action, ocu_actual, ocu_ant);
+	console.log("descartados", descartados);
 
 	let reward = 0.0;
 	if (descartados > 0) {
 		if (action === Action.PERMITIR) {
-			reward -= descartados ** 2 * c;
+			reward -= descartados ** 2 * c + c5;
+			//c5 puede ser + o -
 		} else {
 			reward -= descartados * c2;
 		}
 
 		let mejora = ocu_ant - ocu_actual;
 		reward += mejora * ocu_actual * c3;
+		//Mirar a ver si es cuadratico y hacerlo segun accion
 	} else {
 		reward += (1.0 - ocu_actual) * c4;
 	}
@@ -41,7 +48,7 @@ function calc_descartados(ocu_actual, paquetes_entrantes, accion) {
 	}
 	return Math.round(descartados);
 }
-function reward_funtion(
+function reward_function(
 	ocu_actual,
 	action,
 	ocu_ant,
@@ -52,10 +59,13 @@ function reward_funtion(
 	return reward(descartados, ocu_actual, action, ocu_ant, coeficientes);
 }
 function calcular_ocu_actual(ocu_ant, paquetes_entrantes, action) {
+	console.log("Dentro", ocu_ant, paquetes_entrantes, action);
+	//TODO mirar representar la anterior
+	let ocu = ocu_ant;
 	if (action == Action.PERMITIR) {
 		ocu = Math.min(1.0, ocu_ant + paquetes_entrantes);
 	}
-	return ocu - (duration_step * vProcesamiento) / tamCola;
+	return ocu - (duration_step * vProcesamiento) / (tamCola * tamPaquete);
 }
 // Generar datos para el gráfico de superficie con una acción seleccionada
 function generarDatosSuperficie(x, y, coeficientes, accion) {
@@ -66,8 +76,12 @@ function generarDatosSuperficie(x, y, coeficientes, accion) {
 	x.forEach((p) => {
 		let filaZ = [];
 		y.forEach((o) => {
-			ocu_act = calcular_ocu_actual(o, p, accion);
-			let recompensa = reward_funtion(ocu_act, accion, o, coeficientes, p); // Paquetes entrantes en %
+			const ocu_act = calcular_ocu_actual(o, p, accion);
+			console.assert(
+				ocu_act >= 0 && ocu_act <= 1,
+				"Ocupación actual no puede ser negativa"
+			);
+			let recompensa = reward_function(ocu_act, accion, o, coeficientes, p); // Paquetes entrantes en %
 			filaZ.push(recompensa);
 
 			if (recompensa < minZ) minZ = recompensa;
@@ -112,6 +126,7 @@ function crearGrafico3D(precision = 10) {
 		c2: parseFloat(document.getElementById("c2").value),
 		c3: parseFloat(document.getElementById("c3").value),
 		c4: parseFloat(document.getElementById("c4").value),
+		c5: parseFloat(document.getElementById("c5").value),
 	};
 
 	// Obtenemos si se ha seleccionado cada checkbox
@@ -224,7 +239,7 @@ function actualizarGrafico() {
 	crearGrafico3D(precision);
 }
 function actualizarSliders() {
-	const ids = ["precision", "c", "c2", "c3", "c4", "lim"];
+	const ids = ["precision", "c", "c2", "c3", "c4", "c5", "lim"];
 
 	for (let id of ids) {
 		document.getElementById(`val-${id}`).textContent =
@@ -232,13 +247,10 @@ function actualizarSliders() {
 	}
 }
 
-function actualizarGraficoDebounced(debounceTime = 100) {
-	return debounce(() => {
-		actualizarSliders();
-		actualizarGrafico();
-	}, debounceTime);
-}
-
+const actualizarGraficoDebounced = debounce(() => {
+	actualizarSliders(); // Actualiza los sliders antes de crear el gráfico
+	actualizarGrafico();
+}, 100); // Tiempo en milisegundos
 
 document.addEventListener("DOMContentLoaded", () => {
 	actualizarSliders();
@@ -258,7 +270,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	crearGrafico3D();
 });
 
-
 // Verificar si estamos en un entorno Node.js
 if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
 	module.exports = {
@@ -276,5 +287,6 @@ if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
 		tamCola,
 		duration_step,
 		vProcesamiento,
+		tamPaquete,
 	};
 }

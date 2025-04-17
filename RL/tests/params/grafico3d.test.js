@@ -16,6 +16,7 @@ const {
 	tamCola,
 	duration_step,
 	vProcesamiento,
+	tamPaquete,
 } = require("../../params/grafico3d.js");
 
 if (
@@ -32,7 +33,8 @@ if (
 	!calcular_ocu_actual ||
 	!tamCola ||
 	!duration_step ||
-	!vProcesamiento
+	!vProcesamiento ||
+	!tamPaquete
 ) {
 	console.error(
 		"Error: Alguna de las importaciones desde 'grafico3d.js' no se encuentra correctamente exportada."
@@ -51,7 +53,7 @@ beforeEach(() => {
 	require("../../params/grafico3d.js");
 });
 
-test("reward funtion must be a funtion", () => {
+test("reward function must be a function", () => {
 	expect(typeof reward).toBe("function"); // Asegurarse de que reward es una función
 });
 const testDescartadosCases = [
@@ -88,7 +90,7 @@ const testRewardCases = [
 		ocu_actual: 0.5,
 		action: Action.PERMITIR,
 		ocu_ant: 0.0,
-		coeficientes: { c: 0, c2: 0, c3: 0, c4: 0 },
+		coeficientes: { c: 0, c2: 0, c3: 0, c4: 0 ,c5: 0 },
 		expected: 0.0,
 	},
 	{
@@ -96,7 +98,7 @@ const testRewardCases = [
 		ocu_actual: 0.5,
 		action: Action.PERMITIR,
 		ocu_ant: 0.0,
-		coeficientes: { c: 0, c2: 0, c3: 0, c4: 0 },
+		coeficientes: { c: 0, c2: 0, c3: 0, c4: 0 ,c5: 0 },
 		expected: 0.0,
 	},
 ];
@@ -124,7 +126,7 @@ test("Action.PERMITIR constant should be defined and equal to 0", () => {
 test("crearDatosSuperficie should return an array of arrays and x and y must be the same as parameters", () => {
 	const x = [0.1, 0.2, 0.3];
 	const y = [0.1, 0.2, 0.3];
-	const coeficientes = { c: 1, c2: 1, c3: 1, c4: 1 };
+	const coeficientes = { c: 1, c2: 1, c3: 1, c4: 1 , c5: 1 };
 
 	let acciones = [Action.PERMITIR, Action.DENEGAR];
 
@@ -147,7 +149,7 @@ test("crearDatosSuperficie should return an array of arrays and x and y must be 
 test("crearPlanoSuperficie should return a trace", () => {
 	const x = [0.1, 0.2, 0.3];
 	const y = [0.1, 0.2, 0.3];
-	const coeficientes = { c: 1, c2: 1, c3: 1, c4: 1 };
+	const coeficientes = { c: 1, c2: 1, c3: 1, c4: 1 , c5: 1 };
 	let acciones = [Action.PERMITIR, Action.DENEGAR];
 
 	acciones.forEach((action) => {
@@ -211,7 +213,7 @@ test("debounce should delay execution and use latest arguments", (done) => {
 });
 
 test("actualizarSliders should update the text content of elements with the corresponding slider values", () => {
-	const ids = ["precision", "c", "c2", "c3", "c4", "lim"];
+	const ids = ["precision", "c", "c2", "c3", "c4", "c5", "lim"];
 	let randomValues = [];
 
 	ids.forEach((id) => {
@@ -277,7 +279,7 @@ const testCalcularOcuActualCases = [
 		ocu_ant: 0.5,
 		paquetes_entrantes: 0.3,
 		action: Action.PERMITIR,
-		expected: 0.8 - (duration_step * vProcesamiento) / tamCola,
+		expected: 0.8 - (duration_step * vProcesamiento) / (tamCola * tamPaquete)
 	},
 ];
 test.each(testCalcularOcuActualCases)(
@@ -290,6 +292,14 @@ test.each(testCalcularOcuActualCases)(
 
 test("Ensure correct global variables are defined", () => {
 	expect(typeof tamCola).toBe("number");
+	expect(tamCola).toBeGreaterThan(0);
+
 	expect(typeof duration_step).toBe("number");
+	expect(duration_step).toBeGreaterThan(0);
+
 	expect(typeof vProcesamiento).toBe("number");
+	expect(vProcesamiento).toBeGreaterThan(0);
+
+	expect(typeof tamPaquete).toBe("number");
+	expect(tamPaquete).toBeGreaterThan(0);
 });
