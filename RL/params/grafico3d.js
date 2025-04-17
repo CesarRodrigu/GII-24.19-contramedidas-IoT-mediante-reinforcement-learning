@@ -33,9 +33,9 @@ function reward(descartados, ocu_actual, action, ocu_ant, coeficientes) {
 
 	return reward;
 }
-function calc_descartados(ocu_actual, paquetes_entrantes, accion) {
+function calc_descartados(ocu_actual, paquetes_entrantes, action) {
 	let descartados = 0;
-	if (accion == Action.DENEGAR) {
+	if (action == Action.DENEGAR) {
 		descartados = paquetes_entrantes * tamCola;
 	} else {
 		let desc = 0;
@@ -65,7 +65,10 @@ function calcular_ocu_actual(ocu_ant, paquetes_entrantes, action) {
 	if (action == Action.PERMITIR) {
 		ocu = Math.min(1.0, ocu_ant + paquetes_entrantes);
 	}
-	return ocu - (duration_step * vProcesamiento) / (tamCola * tamPaquete);
+	return Math.max(
+		0.0,
+		ocu - (duration_step * vProcesamiento) / (tamCola * tamPaquete)
+	);
 }
 // Generar datos para el gráfico de superficie con una acción seleccionada
 function generarDatosSuperficie(x, y, coeficientes, accion) {
@@ -78,8 +81,12 @@ function generarDatosSuperficie(x, y, coeficientes, accion) {
 		y.forEach((o) => {
 			const ocu_act = calcular_ocu_actual(o, p, accion);
 			console.assert(
+				o >= 0 && o <= 1,
+				"Ocupación anterior no puede ser negativa " + o
+			);
+			console.assert(
 				ocu_act >= 0 && ocu_act <= 1,
-				"Ocupación actual no puede ser negativa"
+				"Ocupación actual no puede ser negativa " + ocu_act
 			);
 			let recompensa = reward_function(ocu_act, accion, o, coeficientes, p); // Paquetes entrantes en %
 			filaZ.push(recompensa);
@@ -197,8 +204,8 @@ function crearGrafico3D(precision = 10) {
 			font: {},
 		},
 		scene: {
-			xaxis: { title: { text: "% paquetes entrantes" } },
-			yaxis: { title: { text: "% Ocupación" } },
+			xaxis: { title: { text: "% Paquetes entrantes" } },
+			yaxis: { title: { text: "% Ocupación Anterior" } },
 			zaxis: { title: { text: "Recompensa" } },
 		},
 		margin: {

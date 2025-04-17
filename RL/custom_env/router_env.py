@@ -25,11 +25,11 @@ class RouterEnv(gym.Env):
 
         self.max_len: int = max_len
 
-        duraction_step: float = 1.0
-        duraction_step *= 1e-3  # En segundos
+        duration_step: float = 1.0
+        duration_step *= 1e-3  # En segundos
         velocidad_procesamiento: float = 5e6/8  # bytes por segundo de procesamiento
         self.rate: float = velocidad_procesamiento * \
-            duraction_step  # bytes por step de procesamiento
+            duration_step  # bytes por step de procesamiento
 
         self._set_initial_values(seed)
 
@@ -181,31 +181,30 @@ class RouterEnv(gym.Env):
         return self.maquina.get_registro()
 
     def get_reward(self, descartados: int, action: Acciones) -> float:
-        return reward(descartados,  action, self.get_ocupacion(),self.last_ocupacion)
+        return reward(descartados,  action, self.get_ocupacion(), self.last_ocupacion)
 
 
 def reward(descartados: int,
            action: Acciones,
-           ocu_actual: float=0.0,
-           ocu_ant: float=0.0,
+           ocu_actual: float = 0.0,
+           ocu_ant: float = 0.0,
            c: float = 0.4,
            c2: float = 0.25,
            c3: float = 0.15,
-           c4: float = 1.0
+           c4: float = 1.0,
+           c5: float = 0.0,
            ) -> float:
 
     reward = 0.0
     if descartados > 0:
         if action == Acciones.PERMITIR:
-            reward -= (descartados**2) * c
+            reward -= (descartados**2) * c + c5
         else:
             reward -= (descartados) * c2
 
         mejora: float = ocu_ant - ocu_actual
-        reward += mejora *ocu_actual* c3
+        reward += mejora * ocu_actual * c3
     else:
-        reward += (1.0 - ocu_actual) *c4
+        reward += (1.0 - ocu_actual) * c4
     # Añadir la carga actual
     return reward
-#Sin el else los paquetes no sobuen del 0,2
-#Con el else y recompensando por la ocupacion actua l, los paquetes no sobran del 0,4, con c3= 1
