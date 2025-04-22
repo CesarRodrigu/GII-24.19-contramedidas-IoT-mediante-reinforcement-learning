@@ -17,6 +17,7 @@ const {
 	duration_step,
 	vProcesamiento,
 	tamPaquete,
+	calcularInterseccion,
 } = require("../../params/grafico3d.js");
 
 if (
@@ -34,7 +35,8 @@ if (
 	!tamCola ||
 	!duration_step ||
 	!vProcesamiento ||
-	!tamPaquete
+	!tamPaquete ||
+	!calcularInterseccion
 ) {
 	console.error(
 		"Error: Alguna de las importaciones desde 'grafico3d.js' no se encuentra correctamente exportada."
@@ -90,7 +92,7 @@ const testRewardCases = [
 		ocu_actual: 0.5,
 		action: Action.PERMITIR,
 		ocu_ant: 0.0,
-		coeficientes: { c: 0, c2: 0, c3: 0, c4: 0 ,c5: 0 },
+		coeficientes: { c: 0, c2: 0, c3: 0, c4: 0, c5: 0 },
 		expected: 0.0,
 	},
 	{
@@ -98,7 +100,7 @@ const testRewardCases = [
 		ocu_actual: 0.5,
 		action: Action.PERMITIR,
 		ocu_ant: 0.0,
-		coeficientes: { c: 0, c2: 0, c3: 0, c4: 0 ,c5: 0 },
+		coeficientes: { c: 0, c2: 0, c3: 0, c4: 0, c5: 0 },
 		expected: 0.0,
 	},
 ];
@@ -126,7 +128,7 @@ test("Action.PERMITIR constant should be defined and equal to 0", () => {
 test("crearDatosSuperficie should return an array of arrays and x and y must be the same as parameters", () => {
 	const x = [0.1, 0.2, 0.3];
 	const y = [0.1, 0.2, 0.3];
-	const coeficientes = { c: 1, c2: 1, c3: 1, c4: 1 , c5: 1 };
+	const coeficientes = { c: 1, c2: 1, c3: 1, c4: 1, c5: 1 };
 
 	let acciones = [Action.PERMITIR, Action.DENEGAR];
 
@@ -149,7 +151,7 @@ test("crearDatosSuperficie should return an array of arrays and x and y must be 
 test("crearPlanoSuperficie should return a trace", () => {
 	const x = [0.1, 0.2, 0.3];
 	const y = [0.1, 0.2, 0.3];
-	const coeficientes = { c: 1, c2: 1, c3: 1, c4: 1 , c5: 1 };
+	const coeficientes = { c: 1, c2: 1, c3: 1, c4: 1, c5: 1 };
 	let acciones = [Action.PERMITIR, Action.DENEGAR];
 
 	acciones.forEach((action) => {
@@ -279,7 +281,7 @@ const testCalcularOcuActualCases = [
 		ocu_ant: 0.5,
 		paquetes_entrantes: 0.3,
 		action: Action.PERMITIR,
-		expected: 0.8 - (duration_step * vProcesamiento) / (tamCola * tamPaquete)
+		expected: 0.8 - (duration_step * vProcesamiento) / (tamCola * tamPaquete),
 	},
 ];
 test.each(testCalcularOcuActualCases)(
@@ -303,3 +305,81 @@ test("Ensure correct global variables are defined", () => {
 	expect(typeof tamPaquete).toBe("number");
 	expect(tamPaquete).toBeGreaterThan(0);
 });
+
+const testCalcularInterseccionCases = [
+	{
+		datosPermitir: {
+			x: [0.1, 0.2, 0.3],
+			y: [0.1, 0.2, 0.3],
+			z: [
+				[1, 2, 3],
+				[4, 5, 6],
+				[7, 8, 9],
+			],
+		},
+		datosDenegar: {
+			x: [0.1, 0.2, 0.3],
+			y: [0.1, 0.2, 0.3],
+			z: [
+				[1, 2, 3],
+				[4, 5, 6],
+				[7, 8, 9],
+			],
+		},
+		tolerancia: 0.1,
+		expected: {
+			x: [0.1, 0.2, 0.3, 0.1, 0.2, 0.3, 0.1, 0.2, 0.3],
+			y: [0.1, 0.1, 0.1, 0.2, 0.2, 0.2, 0.3, 0.3, 0.3],
+			z: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+		},
+	},
+	{
+		datosPermitir: {
+			x: [0.1, 0.2],
+			y: [0.1, 0.2],
+			z: [
+				[1, 2],
+				[3, 4],
+			],
+		},
+		datosDenegar: {
+			x: [0.1, 0.2],
+			y: [0.1, 0.2],
+			z: [
+				[1.05, 2.05],
+				[3.05, 4.05],
+			],
+		},
+		tolerancia: 0.1,
+		expected: {
+			x: [0.1, 0.2, 0.1, 0.2],
+			y: [0.1, 0.1, 0.2, 0.2],
+			z: [1.025, 2.025, 3.025, 4.025],
+		},
+	},
+];
+
+test.each(testCalcularInterseccionCases)(
+	"calcularInterseccion(datosPermitir: $datosPermitir, datosDenegar: $datosDenegar, tolerancia: $tolerancia) debería retornar $expected",
+	({ datosPermitir, datosDenegar, tolerancia, expected }) => {
+		expect(datosPermitir.x).toEqual(datosDenegar.x);
+		expect(datosPermitir.y).toEqual(datosDenegar.y);
+
+		const result = calcularInterseccion(
+			datosPermitir,
+			datosDenegar,
+			tolerancia
+		);
+		let tuplasExp = [];
+		expected.x.forEach((item, index) => {
+			tuplasExp.push([item, expected.y[index], expected.z[index]]);
+		});
+		let tuplasResult = [];
+		result.x.forEach((item, index) => {
+			tuplasResult.push([item, result.y[index], result.z[index]]);
+		});
+
+		// Validar las coordenadas x, y y z
+		expect(tuplasResult.sort()).toEqual(tuplasExp.sort());
+	}
+);

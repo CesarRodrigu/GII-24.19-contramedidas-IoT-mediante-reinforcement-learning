@@ -139,10 +139,6 @@ function calcularInterseccion(datosPermitir, datosDenegar, tolerancia) {
 	console.log(datosPermitir.x == datosDenegar.x);
 	let puntosInterseccion = { x: [], y: [], z: [] };
 
-	if (!Array.isArray(datosPermitir.z) || !Array.isArray(datosDenegar.z)) {
-		console.error("datosPermitir.z or datosDenegar.z is not a valid 2D array.");
-		return puntosInterseccion;
-	}
 	// console.log("datosPermitir.z", datosPermitir.z);
 	// console.log("datosDenegar.z", datosDenegar.z);
 	x.forEach((xi, indexi) => {
@@ -152,9 +148,6 @@ function calcularInterseccion(datosPermitir, datosDenegar, tolerancia) {
 			// console.log("z1, z2", z1, z2);
 
 			if (Math.abs(z1 - z2) <= tolerancia) {
-				if (z1 > 1000 || z2 > 1000) {
-					console.log("Valores fuera de rango", z1, z2);
-				}
 				puntosInterseccion.x.push(xi);
 				puntosInterseccion.y.push(yi);
 				puntosInterseccion.z.push((z1 + z2) / 2);
@@ -360,5 +353,6 @@ if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
 		duration_step,
 		vProcesamiento,
 		tamPaquete,
+		calcularInterseccion,
 	};
 }
