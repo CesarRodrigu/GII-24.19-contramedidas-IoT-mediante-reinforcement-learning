@@ -10,10 +10,10 @@ const tamPaquete = 200;
 // Función de reward (recompensa)
 function reward(descartados, ocu_actual, action, ocu_ant, coeficientes) {
 	let { c, c2, c3, c4, c5 } = coeficientes; // Define c5 with a default value
-	console.log("coeficientes", c, c2, c3, c4, c5);
+	//console.log("coeficientes", c, c2, c3, c4, c5);
 	//Mirar la ocupacion actual que sale negativa
-	console.log("action, actual, anterior", action, ocu_actual, ocu_ant);
-	console.log("descartados", descartados);
+	//console.log("action, actual, anterior", action, ocu_actual, ocu_ant);
+	//console.log("descartados", descartados);
 
 	let reward = 0.0;
 	if (descartados > 0) {
@@ -59,7 +59,7 @@ function reward_function(
 	return reward(descartados, ocu_actual, action, ocu_ant, coeficientes);
 }
 function calcular_ocu_actual(ocu_ant, paquetes_entrantes, action) {
-	console.log("Dentro", ocu_ant, paquetes_entrantes, action);
+	//console.log("Dentro", ocu_ant, paquetes_entrantes, action);
 	//TODO mirar representar la anterior
 	let ocu = ocu_ant;
 	if (action == Action.PERMITIR) {
@@ -127,7 +127,40 @@ function roundDecimal(numero, decimales) {
 	const factor = Math.pow(10, decimales);
 	return Math.round(numero * factor) / factor;
 }
-function crearGrafico3D(precision = 10) {
+function calcularInterseccion(datosPermitir, datosDenegar, tolerancia) {
+	let x = datosPermitir.x;
+	let y = datosPermitir.y;
+
+	console.assert(
+		datosPermitir.x == datosDenegar.x && datosPermitir.y == datosDenegar.y,
+		"X and Y coordinates must be the same for both datasets."
+	);
+	console.log(x, y);
+	console.log(datosPermitir.x == datosDenegar.x);
+	let puntosInterseccion = { x: [], y: [], z: [] };
+
+	// console.log("datosPermitir.z", datosPermitir.z);
+	// console.log("datosDenegar.z", datosDenegar.z);
+	x.forEach((xi, indexi) => {
+		y.forEach((yi, indexj) => {
+			let z1 = datosPermitir.z[indexj][indexi];
+			let z2 = datosDenegar.z[indexj][indexi];
+			// console.log("z1, z2", z1, z2);
+
+			if (Math.abs(z1 - z2) <= tolerancia) {
+				puntosInterseccion.x.push(xi);
+				puntosInterseccion.y.push(yi);
+				puntosInterseccion.z.push((z1 + z2) / 2);
+				// console.log("Intersecciones", xi, yi, z1, z2);
+			}
+		});
+	});
+
+	// console.log("puntosInterseccion", puntosInterseccion);
+	return puntosInterseccion;
+}
+
+function crearGrafico3D(precision = 10, tolerancia = 100) {
 	let coeficientes = {
 		c: parseFloat(document.getElementById("c").value),
 		c2: parseFloat(document.getElementById("c2").value),
@@ -156,34 +189,57 @@ function crearGrafico3D(precision = 10) {
 		//Ocupacion
 		y.push(roundDecimal(o, 2));
 	}
-	// Si el checkbox de "Permitir" está marcado, creamos el gráfico correspondiente
+	console.log("x, y", x, y);
+	let datosPermitir = null;
+	let datosDenegar = null;
+
 	if (mostrarPermitir) {
+		datosPermitir = generarDatosSuperficie(x, y, coeficientes, Action.PERMITIR);
 		let trace = crearPlanoSuperficie(x, y, coeficientes, Action.PERMITIR);
-		// Actualizamos el minZ y maxZ global
 		if (trace.cmin < minZGlobal) minZGlobal = trace.cmin;
 		if (trace.cmax > maxZGlobal) maxZGlobal = trace.cmax;
 		traces.push(trace);
 	}
 
-	// Si el checkbox de "Denegar" está marcado, creamos el gráfico correspondiente
 	if (mostrarDenegar) {
+		datosDenegar = generarDatosSuperficie(x, y, coeficientes, Action.DENEGAR);
 		let trace = crearPlanoSuperficie(x, y, coeficientes, Action.DENEGAR);
 		if (trace.cmin < minZGlobal) minZGlobal = trace.cmin;
 		if (trace.cmax > maxZGlobal) maxZGlobal = trace.cmax;
 		traces.push(trace);
 	}
 
+	if (datosPermitir && datosDenegar) {
+		const interseccion = calcularInterseccion(traces[0], traces[1], tolerancia);
+		let traceInterseccion = {
+			x: interseccion.x,
+			y: interseccion.y,
+			z: interseccion.z,
+			mode: "markers",
+			type: "scatter3d",
+			marker: {
+				color: "red",
+				size: 4,
+				symbol: "circle",
+			},
+			name: "Intersección",
+		};
+		traces.push(traceInterseccion);
+	}
+
 	// Si no se selecciona ningún checkbox, mostramos un mensaje o mantenemos el gráfico vacío
 
 	// Aplicamos el rango global de minZ y maxZ a ambos gráficos
 	traces.forEach((trace) => {
-		trace.cmin = minZGlobal;
-		trace.cmax = maxZGlobal;
-		trace.colorbar.tickvals = [minZGlobal, maxZGlobal];
-		trace.colorbar.ticktext = [
-			`${minZGlobal.toFixed(0)}`,
-			`${maxZGlobal.toFixed(0)}`,
-		];
+		if (trace.name !== "Intersección") {
+			trace.cmin = minZGlobal;
+			trace.cmax = maxZGlobal;
+			trace.colorbar.tickvals = [minZGlobal, maxZGlobal];
+			trace.colorbar.ticktext = [
+				`${minZGlobal.toFixed(0)}`,
+				`${maxZGlobal.toFixed(0)}`,
+			];
+		}
 	});
 
 	if (traces.length === 0) {
@@ -241,12 +297,12 @@ function debounce(func, wait) {
 function actualizarGrafico() {
 	actualizarSliders();
 	// Volver a crear el gráfico
-	const precision =
-		parseInt(document.getElementById("precision").value, 10) - 1;
-	crearGrafico3D(precision);
+	const precision = parseInt(document.getElementById("precision").value, 10);
+	const tolerancia = parseInt(document.getElementById("tol").value, 10);
+	crearGrafico3D(precision, tolerancia);
 }
 function actualizarSliders() {
-	const ids = ["precision", "c", "c2", "c3", "c4", "c5", "lim"];
+	const ids = ["precision", "tol", "c", "c2", "c3", "c4", "c5", "lim"];
 
 	for (let id of ids) {
 		document.getElementById(`val-${id}`).textContent =
@@ -274,7 +330,9 @@ document.addEventListener("DOMContentLoaded", () => {
 		.getElementById("checkboxDenegar")
 		.addEventListener("change", actualizarGrafico);
 
-	crearGrafico3D();
+	const precision = parseInt(document.getElementById("precision").value, 10);
+	const tolerancia = parseInt(document.getElementById("tol").value, 10);
+	crearGrafico3D(precision, tolerancia);
 });
 
 // Verificar si estamos en un entorno Node.js
@@ -295,5 +353,6 @@ if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
 		duration_step,
 		vProcesamiento,
 		tamPaquete,
+		calcularInterseccion,
 	};
 }
