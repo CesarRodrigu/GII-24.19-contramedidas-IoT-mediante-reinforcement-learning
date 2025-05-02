@@ -16,8 +16,15 @@ Las acciones de GitHub (GitHub Actions) son una herramienta de integración cont
     \item \textbf{Dependabot:} Dependabot es una herramienta de GitHub que ayuda a mantener las dependencias del proyecto actualizadas y seguras, en este caso solo está configurada para que actualice las dependencias si se ha detectado una vulnerabilidad en alguna de ellas. Dependabot crea automáticamente una solicitud de incorporación de cambios para corregirlas, sugiriendo la versión que corrige esa vulnerabilidad.
 \end{itemize}
 
-\subsection{Reglas del repositorio}
+\subsection{Políticas de seguridad}
 En el repositorio se ha añadido un conjunto de reglas(ruleset), en el su función es asegurar que todos los cambios se realicen de manera controlada. En la que se ha definido una restricción para que no se pueda realizar un borrado de código no autorizado, y que todos los cambios realizados en el código se realicen mediante una solicitud de incorporación de cambios(pull request), en la que automáticamente realiza una solicitud de revisión de código a copilot y se ejecutan las GitHub Actions ya descritas.
+
+También hay una opción de poder reportar fallos de seguridad si se han detectado en el código para que se puedan corregir lo más rápidamente posible.
+Los escaneos de seguridad que se realizan sobre el código del repositorio principalmente se enfocan en la deteccion de paquetes vulnerables, vulnerabilidades en código y de secretos (credenciales y claves de acceso que no deberían estar en el código fuente).
+
+\subsection{SonarQube}
+SonarQube es una herramienta de análisis de código estático que permite detectar errores, vulnerabilidades y problemas de calidad en el código fuente y proporcionar métricas de calidad de software. En el proyecto de \href{https://sonarcloud.io/project/overview?id=CesarRodrigu_GII-24.19-contramedidas-IoT-mediante-reinforcement-learning}{SonarQube} se pueden ver cómo se ha evoluccionado en los problemas de calidad de código, en la cobertura y en las duplicaciones de código. Proporciona una forma muy visual de ver la calidad del código mediante insignias(badges) incluidas en el \href{https://github.com/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning/blob/57-inicio-del-proceso-de-documentaci%C3%B3n-de-la-memoria/README.md}{README} del repositorio.
+
 
 \section{Compilación, instalación y ejecución del proyecto}
 
