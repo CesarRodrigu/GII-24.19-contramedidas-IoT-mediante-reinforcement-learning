@@ -6,6 +6,19 @@
 
 \section{Manual del programador}
 
+En la parte de gestión del \href{https://github.com/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning}{repositorio GitHub}, se ha realizado mediante un \href{https://github.com/users/CesarRodrigu/projects/6}{proyecto de GitHub} en el que se ha realizado la gestión de tareas(issues) y la planificación de las mismas, en las que la mayoría se han convertido en ramas de desarrollo para añadir los cambios propuestos.
+\subsection{Acciones de GitHub}
+Las acciones de GitHub (GitHub Actions) son una herramienta de integración continua y entrega continua (CI/CD) que permite automatizar tareas en el flujo de trabajo de desarrollo de software. En este proyecto se han utilizado para realizar pruebas automáticas del código, pruebas de calidad y la Compilación de la documentación de formato LaTeX a PDF. A continuación se describen las acciones implementadas:
+\begin{itemize}
+    \item \textbf{Compilación de la documentación:} Se ha creado una acción que compila la documentación del proyecto en formato LaTeX a PDF. Esta acción se ejecuta cada vez que se realiza un push a la rama principal del repositorio en el que se han cambiado los archivos fuente de la propia documentación.
+    \item \textbf{SonarQube:} Para las pruebas de calidad de código, se ha implementado SonarQube, que permite analizar el código en busca de errores, vulnerabilidades y problemas de calidad, según las reglas definidas en el proyecto. Cada vez que se añaden cambios a una incorporación de cambios o a la rama principal, se ejecuta una acción que analiza el código, ejecuta los test relacionados para obtener su cobertura y genera un informe de calidad. Este informe se puede consultar en la página de \href{https://sonarcloud.io/project/overview?id=CesarRodrigu_GII-24.19-contramedidas-IoT-mediante-reinforcement-learning}{SonarCloud del proyecto}.
+    \item \textbf{CodeQL:} GitHub CodeQL es una herramienta de análisis de código estático que permite detectar vulnerabilidades y errores en el código fuente. Cuando detecta un error suguiere una posible solución mediante Copilot. Esta acción se ejecuta por cada incorporación de cambios al repositorio.
+    \item \textbf{Dependabot:} Dependabot es una herramienta de GitHub que ayuda a mantener las dependencias del proyecto actualizadas y seguras, en este caso solo está configurada para que actualice las dependencias si se ha detectado una vulnerabilidad en alguna de ellas. Dependabot crea automáticamente una solicitud de incorporación de cambios para corregirlas, sugiriendo la versión que corrige esa vulnerabilidad.
+\end{itemize}
+
+\subsection{Reglas del repositorio}
+En el repositorio se ha añadido un conjunto de reglas(ruleset), en el su función es asegurar que todos los cambios se realicen de manera controlada. En la que se ha definido una restricción para que no se pueda realizar un borrado de código no autorizado, y que todos los cambios realizados en el código se realicen mediante una solicitud de incorporación de cambios(pull request), en la que automáticamente realiza una solicitud de revisión de código a copilot y se ejecutan las GitHub Actions ya descritas.
+
 \section{Compilación, instalación y ejecución del proyecto}
 
 \section{Pruebas del sistema}
