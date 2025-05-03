@@ -5,19 +5,50 @@ on:
     branches:
       - main
     paths-ignore:
-      - 'docs/**'
+      - "docs/**"
   pull_request:
     branches:
       - main
     paths-ignore:
-      - 'docs/**'
+      - "docs/**"
   workflow_dispatch:
 
 env:
   PY_P_DIR: RL
+  MVN_P_DIR: backend
+
 permissions:
   contents: read
 jobs:
+  java-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: "zulu"
+          cache: "maven"
+
+      - name: Load .env variables
+        run: sed '/^#/d' .env >> $GITHUB_ENV
+
+      - name: Build and Test with Maven
+        run: mvn clean verify -f ${{ env.MVN_P_DIR }}/pom.xml -Dspring.profiles.active=coverage -Pcoverage -T 4C
+
+      - name: Save Java Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-coverage
+          path: |
+            ${{ env.MVN_P_DIR }}/target/site/jacoco/
+            ${{ env.MVN_P_DIR }}/target/classes/
+          retention-days: 3
   python-tests:
     runs-on: ubuntu-latest
     steps:
@@ -66,7 +97,7 @@ jobs:
           retention-days: 3
 
   sonar:
-    needs: [python-tests, javascript-build]
+    needs: [python-tests, javascript-build, java-build]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -85,6 +116,12 @@ jobs:
         with:
           name: javascript-coverage
           path: ./${{ env.PY_P_DIR }}/coverage/
+
+      - name: Download Java Coverage Report
+        uses: actions/download-artifact@v4
+        with:
+          name: java-coverage
+          path: ${{ env.MVN_P_DIR }}/target/
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@v5
