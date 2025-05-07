@@ -51,12 +51,11 @@ beforeEach(() => {
 	);
 	document.body.innerHTML = html;
 
-	// Simular la ejecución del script después de cargar el DOM
 	require("../../params/grafico3d.js");
 });
 
 test("reward function must be a function", () => {
-	expect(typeof reward).toBe("function"); // Asegurarse de que reward es una función
+	expect(typeof reward).toBe("function");
 });
 const testDescartadosCases = [
 	{

@@ -188,11 +188,11 @@ def reward(descartados: int,
            action: Acciones,
            ocu_actual: float = 0.0,
            ocu_ant: float = 0.0,
-           c: float = 0.4,
-           c2: float = 0.25,
+           c: float = 0.2,
+           c2: float = 0.1,
            c3: float = 0.15,
-           c4: float = 1.0,
-           c5: float = 0.0,
+           c4: float = 0.2,
+           c5: float = 10.0,
            ) -> float:
 
     reward = 0.0
@@ -205,6 +205,8 @@ def reward(descartados: int,
         mejora: float = ocu_ant - ocu_actual
         reward += mejora * ocu_actual * c3
     else:
-        reward += (1.0 - ocu_actual) * c4
-    # Añadir la carga actual
+        if action == Acciones.PERMITIR:
+            reward += (1.0 - ocu_actual) * c4 
+        else:
+            reward += (1.0 - ocu_actual) * c4 * 0.75
     return reward

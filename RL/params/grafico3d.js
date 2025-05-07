@@ -7,28 +7,24 @@ const vProcesamiento = 5e6 / 8;
 const duration_step = 1e-3;
 const tamPaquete = 200;
 
-// Función de reward (recompensa)
 function reward(descartados, ocu_actual, action, ocu_ant, coeficientes) {
-	let { c, c2, c3, c4, c5 } = coeficientes; // Define c5 with a default value
-	//console.log("coeficientes", c, c2, c3, c4, c5);
-	//Mirar la ocupacion actual que sale negativa
-	//console.log("action, actual, anterior", action, ocu_actual, ocu_ant);
-	//console.log("descartados", descartados);
-
+	let { c, c2, c3, c4, c5 } = coeficientes;
 	let reward = 0.0;
 	if (descartados > 0) {
 		if (action === Action.PERMITIR) {
 			reward -= descartados ** 2 * c + c5;
-			//c5 puede ser + o -
 		} else {
 			reward -= descartados * c2;
 		}
 
 		let mejora = ocu_ant - ocu_actual;
 		reward += mejora * ocu_actual * c3;
-		//Mirar a ver si es cuadratico y hacerlo segun accion
 	} else {
-		reward += (1.0 - ocu_actual) * c4;
+		if (action === Action.PERMITIR) {
+			reward += (1.0 - ocu_actual) * c4;
+		}else{
+			reward += (1.0 - ocu_actual) * c4 * 0.5;
+		}
 	}
 
 	return reward;
