@@ -190,9 +190,9 @@ def reward(descartados: int,
            ocu_ant: float = 0.0,
            c: float = 0.2,
            c2: float = 0.1,
-           c3: float = 0.15,
-           c4: float = 0.2,
-           c5: float = 10.0,
+           c3: float = 0.01,
+           c4: float = 5.0,
+           c5: float = 0.0,
            ) -> float:
 
     reward = 0.0
@@ -209,4 +209,4 @@ def reward(descartados: int,
             reward += (1.0 - ocu_actual) * c4 
         else:
             reward += (1.0 - ocu_actual) * c4 * 0.75
-    return reward
+    return round(reward, 2)
