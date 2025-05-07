@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html th:lang="${#locale}" lang="en-US" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <title></title>
+</head>
+<body>
+<nav class="navbar navbar-expand-md fixed-top bg-body-tertiary" th:fragment="header">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/}" th:text="#{header.home}">Main page</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarContent" aria-controls="navbarContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" th:classappend="${module == 'home'} ? 'active'" th:href="@{/}"
+                       th:text="#{nav.home}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:classappend="${module == 'manage_users'} ? 'active'"
+                       th:href="@{/manageUsers}" th:text="#{nav.manage_users}">Manage users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:classappend="${module == 'api_calls'} ? 'active'" th:href="@{/api-table}"
+                       th:text="#{nav.api_calls}">Api calls</a>
+                </li>
+            </ul>
+
+            <div class="d-flex align-items-center">
+                <div class="dropdown lang-menu me-3">
+                    <button class="btn dropdown-toggle d-flex align-items-center" id="selectedLang"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <img th:src="@{'/images/flags/' + ${#locale.language} + '.svg'}" alt="icon" width="32"
+                             height="32" class="me-2" />
+                        <span th:text="#{'language.'+${#locale.language}}">English</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#" class="dropdown-item" th:href="@{/?lang=es}">
+                                <img th:src="@{images/flags/es.svg}" alt="Español" width="32" height="32"
+                                     class="me-2" />
+                                <span th:text="#{language.es}">Español</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-item" th:href="@{/?lang=en}">
+                                <img th:src="@{images/flags/en.svg}" alt="English" width="32" height="32"
+                                     class="me-2" />
+                                <span th:text="#{language.en}">English</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div th:if="${true}">
+                    <a th:href="@{/signin}"
+                       th:class="'btn me-2 ' + (${module} == 'signin' ? 'btn-primary' : 'btn-outline-primary')">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>
+                        <span th:text="#{auth.signin}">Sign in</span>
+                    </a>
+                    <a th:href="@{/signup}"
+                       th:class="'btn ' + (${module} == 'signup' ? 'btn-primary' : 'btn-outline-primary')">
+                        <i class="bi bi-person-plus me-2"></i>
+                        <span th:text="#{auth.signup}">Sign up</span>
+                    </a>
+                </div>
+
+                <div class="dropdown text-end" th:if="${false}">
+                    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <img th:src="@{/favicon-32x32.png}" alt="profile"
+                             width="32" height="32" class="rounded-circle">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end text-small">
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="bi bi-folder-plus me-2"></i>New project...
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="bi bi-gear me-2"></i>Settings
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="bi bi-person-circle me-2"></i>Profile
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <form th:action="@{/logout}" method="post">
+                                <button type="submit" class="dropdown-item">
+                                    <i class="bi bi-box-arrow-right me-2"></i>
+                                    <span th:text="#{auth.logout}">Logout</span>
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

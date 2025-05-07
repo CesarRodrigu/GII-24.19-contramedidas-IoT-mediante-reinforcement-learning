@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html th:lang="${#locale}" lang="en-US"
+      layout:decorate="~{fragments/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{dashboard.title}">Main</title>
+</head>
+<body>
+<main layout:fragment="contenido">
+    <div class="container py-5">
+        <div class="container py-5">
+            <th:block th:if="${error}">
+                <div th:replace="~{fragments/alert :: alert(${type}, ${error})}">
+                    Alert fallback
+                </div>
+            </th:block>
+        </div>
+        <h1 class="text-center mb-5" th:text="#{dashboard.heading}">📊 Reinforcement Learning Model Statistics</h1>
+
+        <div class="rl-section text-center">
+            <div class="card rl-card p-4">
+                <h2 class="section-title" th:text="#{dashboard.agent.architecture.title}">🧠 Agent Architecture</h2>
+                <img src="/images/RedInicial.png" alt="Initial network" class="rl-img mt-3">
+                <p class="mt-3 text-muted" th:text="#{dashboard.agent.architecture.description}">
+                    Network structure used by the agent in the environment.
+                </p>
+            </div>
+        </div>
+
+        <div class="rl-section text-center">
+            <div class="card rl-card p-4">
+                <h2 class="section-title" th:text="#{dashboard.training.evolution.title}">📈 Training Evolution</h2>
+                <img src="/images/output.png" alt="Model training graph" class="rl-img mt-3">
+                <p class="mt-3 text-muted" th:text="#{dashboard.training.evolution.description}">
+                    Performance of the agent over the episodes.
+                </p>
+            </div>
+        </div>
+
+        <!-- Rewards per Action -->
+        <div class="rl-section text-center">
+            <div class="card rl-card p-4">
+                <h2 class="section-title" th:text="#{dashboard.rewards.actions.title}">🎯 Rewards Based on Actions</h2>
+                <img src="/images/RewardsActions.png" alt="Rewards by action/state" class="rl-img mt-3">
+                <p class="mt-3 text-muted" th:text="#{dashboard.rewards.actions.description}">
+                    How the reward changes depending on the environment characteristics.
+                </p>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
