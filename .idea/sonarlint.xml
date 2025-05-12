@@ -3,6 +3,6 @@
   <component name="SonarLintProjectSettings">
     <option name="bindingEnabled" value="true" />
     <option name="projectKey" value="CesarRodrigu_GII-24.19-contramedidas-IoT-mediante-reinforcement-learning" />
-    <option name="serverId" value="cesarrodrigu" />
+    <option name="serverId" value="cloud" />
   </component>
 </project>

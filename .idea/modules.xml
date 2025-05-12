@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning.iml" filepath="$PROJECT_DIR$/.idea/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/backend.iml" filepath="$PROJECT_DIR$/app/backend.iml" />
     </modules>
   </component>
 </project>

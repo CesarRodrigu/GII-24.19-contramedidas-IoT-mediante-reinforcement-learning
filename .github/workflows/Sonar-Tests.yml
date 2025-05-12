@@ -36,7 +36,7 @@ jobs:
           cache: "maven"
 
       - name: Load .env variables
-        run: sed '/^#/d' .env >> $GITHUB_ENV
+        run: sed -e 's/\r$//' -e '/^#/d' -e '/^$/d' .env >> $GITHUB_ENV
 
       - name: Build and Test with Maven
         run: mvn clean verify -f ${{ env.MVN_P_DIR }}/pom.xml -Dspring.profiles.active=coverage -Pcoverage -T 4C
