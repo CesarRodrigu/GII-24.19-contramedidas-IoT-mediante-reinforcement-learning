@@ -2,12 +2,10 @@ package es.cesar.backend.dto;
 
 import es.cesar.backend.model.User;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
-@Setter
-@Getter
+@Data
 public class SignupForm {
 
     private static final String NOT_BLANK_MESSAGE = "{error.notBlank.message}";

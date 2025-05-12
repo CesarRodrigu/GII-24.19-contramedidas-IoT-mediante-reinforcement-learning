@@ -1,13 +1,10 @@
 package es.cesar.backend.dto.response;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Setter
-@Getter
+@Data
 public class ErrorResponse {
     private int code;
-    private String description;
     private String name;
-
+    private String description;
 }

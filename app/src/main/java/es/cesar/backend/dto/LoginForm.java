@@ -1,11 +1,9 @@
 package es.cesar.backend.dto;
 
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class LoginForm {
 
     @NotEmpty(message = "{username.required}")
