@@ -39,13 +39,24 @@ function updateHiddenInput() {
     document.getElementById('hiddenRoles').value = roles.join(',');
 }
 
-const buttons = document.querySelectorAll('.btn-close');
+function addHoverEffect() {
+    const buttons = document.querySelectorAll('.btn-close');
 
-buttons.forEach(btn => {
-    btn.addEventListener('mouseover', () => {
-        btn.querySelector('.hover-icon')?.classList.remove('d-none');
+    buttons.forEach(btn => {
+        btn.addEventListener('mouseover', () => {
+            btn.querySelector('.hover-icon')?.classList.remove('d-none');
+        });
+        btn.addEventListener('mouseout', () => {
+            btn.querySelector('.hover-icon')?.classList.add('d-none');
+        });
     });
-    btn.addEventListener('mouseout', () => {
-        btn.querySelector('.hover-icon')?.classList.add('d-none');
-    });
-});
+
+}
+
+addHoverEffect()
+
+if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
+    module.exports = {
+        addRole, removeRole, updateHiddenInput, addHoverEffect
+    };
+}
