@@ -6,7 +6,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.4.3</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>es.cesar</groupId>
     <artifactId>backend</artifactId>
@@ -104,7 +104,6 @@
             <artifactId>thymeleaf-extras-springsecurity6</artifactId>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>

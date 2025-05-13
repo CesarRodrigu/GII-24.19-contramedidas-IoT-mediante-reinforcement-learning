@@ -44,10 +44,13 @@ public class TrainedModel implements Serializable {
         this.name = removeExtension(fileName);
     }
 
-    private String removeExtension(String filename) {
+    String removeExtension(String filename) {
         int lastDot = filename.lastIndexOf('.');
+        if (lastDot == -1) {
+            return filename;
+        }
         this.extension = filename.substring(lastDot);
-        return (lastDot > 0) ? filename.substring(0, lastDot) : filename;
+        return lastDot > 0 ? filename.substring(0, lastDot) : filename;
     }
 
     public void initializeWithName(User user, String name) {

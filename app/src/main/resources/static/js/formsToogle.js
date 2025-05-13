@@ -4,9 +4,11 @@ function togglePasswordVisibility() {
     const active = 'bi-eye';
     const inactive = 'bi-eye-slash';
     const passType = 'password'
+    const textType = 'text'
+
 
     if (passwordInput.type === passType) {
-        passwordInput.type = 'text';
+        passwordInput.type = textType;
         toggleIcon.classList.remove(active);
         toggleIcon.classList.add(inactive);
     } else {

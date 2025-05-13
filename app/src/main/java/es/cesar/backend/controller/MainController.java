@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController extends BaseController {
     @GetMapping("/")
-    public String vistaHome(ModelMap interfazConPantalla) {
+    public String home(ModelMap interfazConPantalla) {
         setPage(interfazConPantalla);
         return "index";
     }

@@ -6,7 +6,6 @@ import es.cesar.backend.model.User;
 import es.cesar.backend.repository.RoleRepository;
 import es.cesar.backend.repository.TrainedModelRepository;
 import es.cesar.backend.repository.UserRepository;
-import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,17 +34,6 @@ public class UserService implements UserDetailsService {
         this.roleRepository = roleRepository;
         this.trainedModelRepository = trainedModelRepository;
         this.passwordEncoder = passwordEncoder;
-    }
-
-    @PostConstruct
-    @Transactional
-    protected void initialize() {
-        /*
-        Role adminRole = new Role("ROLE_ADMIN");
-        roleRepository.save(adminRole);
-        save(new User("admin", "admin", adminRole));
-        save(new User("user", "demo"));
-         */
     }
 
     @Transactional
@@ -87,21 +75,16 @@ public class UserService implements UserDetailsService {
         });
     }
 
-
     @Override
     public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            throw new UsernameNotFoundException("Usuario no encontrado");
+            throw new UsernameNotFoundException("User not found with username: " + username);
         }
-
-        CustomUserDetails customUserDetails;
-        customUserDetails = new CustomUserDetails(username, user.getPassword(), mapRolesToAuthorities(user.getRoles()));
-        return customUserDetails;
+        return new CustomUserDetails(username, user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Set<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getRoleName())).toList();
     }
-
 }
