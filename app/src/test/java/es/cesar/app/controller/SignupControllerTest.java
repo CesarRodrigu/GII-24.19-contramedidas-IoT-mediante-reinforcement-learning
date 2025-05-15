@@ -69,7 +69,7 @@ class SignupControllerTest {
                         .with(csrf())
                 )
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/signin"));
+                .andExpect(redirectedUrl("/login?redirected=true"));
 
         verify(userService, times(1)).save(any());
     }
