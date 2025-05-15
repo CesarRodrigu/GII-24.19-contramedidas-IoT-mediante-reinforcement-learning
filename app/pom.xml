@@ -9,9 +9,9 @@
         <relativePath/>
     </parent>
     <groupId>es.cesar</groupId>
-    <artifactId>backend</artifactId>
+    <artifactId>app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>backend</name>
+    <name>app</name>
     <description>Backend en Spring Boot para el TFG.</description>
     <url/>
     <licenses>
