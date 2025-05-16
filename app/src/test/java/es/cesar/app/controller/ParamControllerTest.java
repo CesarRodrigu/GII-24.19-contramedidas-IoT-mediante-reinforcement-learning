@@ -6,17 +6,17 @@ import org.springframework.ui.ModelMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class MainControllerTest {
+class ParamControllerTest {
 
     @Test
-    void testHome() {
-        MainController controller = new MainController();
+    void testParams() {
+        ParamController controller = new ParamController();
 
         ModelMap model = Mockito.mock(ModelMap.class);
 
-        String viewName = controller.home(model);
+        String viewName = controller.params(model);
 
-        assertEquals("index", viewName, "The returned view mismatch");
+        assertEquals("params/Params", viewName, "The returned view mismatch");
 
         Mockito.verify(model, Mockito.times(1)).addAttribute(Mockito.anyString(), Mockito.any());
     }

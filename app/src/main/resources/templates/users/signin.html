@@ -11,6 +11,11 @@
 <body>
 <main class="form-sign w-100 m-auto" layout:fragment="contenido">
     <div class="container py-5">
+        <th:block th:if="${error}">
+            <div th:replace="~{fragments/alert :: alert(${type}, ${error})}">
+                Alert fallback
+            </div>
+        </th:block>
         <th:block th:if="${param.error != null}">
             <div th:replace="~{fragments/alert :: alert(danger, #{auth.error})}">
                 Alert fallback

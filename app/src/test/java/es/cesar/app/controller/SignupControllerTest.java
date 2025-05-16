@@ -25,10 +25,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class SignupControllerTest {
     final String signupViewName = "users/signup";
     final String signupUrl = "/signup";
+
     @Autowired
     private MockMvc mockMvc;
+
     @MockitoBean
     private UserService userService;
+
     @MockitoBean
     private LocaleFormattingService formattingService;
 

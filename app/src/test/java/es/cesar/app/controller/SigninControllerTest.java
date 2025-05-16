@@ -25,4 +25,12 @@ class SigninControllerTest {
                 .andExpect(view().name("users/signin"))
                 .andExpect(model().attributeExists("loginForm"));
     }
+
+    @Test
+    void testSigninWithRedirect() throws Exception {
+        mockMvc.perform(get("/login?redirected=true"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("users/signin"))
+                .andExpect(model().attributeExists("loginForm"));
+    }
 }

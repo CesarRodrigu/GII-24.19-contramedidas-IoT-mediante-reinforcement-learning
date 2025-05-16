@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en-US" layout:decorate="~{fragments/layout}"
+      th:lang="${#locale}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{trainedmodel.edit}">Edit Trained Model</title>
+    <link href="/css/sign-form.css" rel="stylesheet">
+</head>
+<body>
+<main class="form-sign container py-5" layout:fragment="contenido">
+    <div class="container py-5">
+        <th:block th:if="${error}">
+            <div th:replace="~{fragments/alert :: alert(${type}, ${error})}">
+                Alert fallback
+            </div>
+        </th:block>
+    </div>
+    <h2 th:text="#{model.edit}">Edit Trained Model</h2>
+
+    <form class="row g-3" method="post" th:action="@{/updateModel}" th:object="${trainedModelDto}">
+        <input th:field="*{modelId}" type="hidden" />
+        <div class="form-floating mb-3"
+             th:classappend="${#fields.hasErrors('name')} ? ' is-invalid'">
+            <input class="form-control" id="inputName" required
+                   th:field="*{name}" th:placeholder="#{model.name}" type="text" />
+            <label for="inputName" th:text="#{model.name}">Name</label>
+            <div class="invalid-feedback d-block"
+                 th:errors="*{name}" th:if="${#fields.hasErrors('name')}">
+                <span th:text="#{model.name.invalid}">Invalid name</span>
+            </div>
+        </div>
+
+        <div class="form-floating mb-3"
+             th:classappend="${#fields.hasErrors('description')} ? ' is-invalid'">
+            <textarea class="form-control" id="inputDescription" th:field="*{description}"
+                      th:placeholder="#{model.description}"></textarea>
+            <label for="inputDescription" th:text="#{model.description}">Description</label>
+            <div class="invalid-feedback d-block"
+                 th:errors="*{description}" th:if="${#fields.hasErrors('description')}">
+                <span th:text="#{model.description.invalid}">Invalid description</span>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <a class="btn btn-secondary" th:href="@{/manageTrainedModels}">
+                <i class="bi bi-arrow-left"></i> <span th:text="#{button.back}">Back</span>
+            </a>
+            <button class="btn btn-success" type="submit">
+                <i class="bi bi-save"></i> <span th:text="#{button.save}">Save</span>
+            </button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

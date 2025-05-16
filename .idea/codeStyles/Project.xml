@@ -11,6 +11,35 @@
     <codeStyleSettings language="JAVA">
       <option name="WRAP_COMMENTS" value="true" />
       <arrangement>
+        <tokens>
+          <token id="visibility" name="visibility">
+            <rules>
+              <rule>
+                <match>
+                  <PUBLIC>true</PUBLIC>
+                </match>
+              </rule>
+              <rule>
+                <match>
+                  <PACKAGE_PRIVATE>true</PACKAGE_PRIVATE>
+                </match>
+              </rule>
+              <rule>
+                <match>
+                  <PROTECTED>true</PROTECTED>
+                </match>
+              </rule>
+              <rule>
+                <match>
+                  <PRIVATE>true</PRIVATE>
+                </match>
+              </rule>
+            </rules>
+          </token>
+          <token id="name" name="name">
+            <rules />
+          </token>
+        </tokens>
         <groups>
           <group>
             <type>GETTERS_AND_SETTERS</type>
@@ -18,7 +47,7 @@
           </group>
           <group>
             <type>OVERRIDDEN_METHODS</type>
-            <order>KEEP</order>
+            <order>BY_NAME</order>
           </group>
           <group>
             <type>DEPENDENT_METHODS</type>
