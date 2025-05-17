@@ -3,7 +3,7 @@ from flask import Flask
 from werkzeug.exceptions import NotFound
 from src.handlers.error_handlers import (generate_error_response,
                                          handle_generic_exception, handle_http_exception)
-from tests.conf import client, app
+from api.tests.conf import client, app
 
 
 

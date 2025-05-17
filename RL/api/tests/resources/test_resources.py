@@ -1,6 +1,6 @@
 import pytest
 from flask.testing import FlaskClient
-from tests.conf import app, client
+from api.tests.conf import app, client
 from werkzeug.test import TestResponse
 from werkzeug.exceptions import NotFound, MethodNotAllowed
 
@@ -72,14 +72,23 @@ class TestEndpoints:
         assert response.get_json(
         )["error"]["description"] == MethodNotAllowed.description
     
-    def test_get_file_stats(self, client: FlaskClient) -> TestResponse:
+    def test_get_monitor(self, client: FlaskClient) -> TestResponse:
         response: TestResponse = client.get("/getMonitor/1")
         assert response.status_code == 200
         validate_response(response)
         assert response.get_json(
-        )["data"]["type"] == "stats"
+        )["data"]["type"] == "modelStats"
         assert response.get_json(
         )["data"]["name"] == "monitor.csv"
+
+    def test_get_progress(self, client: FlaskClient) -> TestResponse:
+        response: TestResponse = client.get("/getProgress/1")
+        assert response.status_code == 200
+        validate_response(response)
+        assert response.get_json(
+        )["data"]["type"] == "trainingStats"
+        assert response.get_json(
+        )["data"]["name"] == "progress.csv"
 
     def test_get_TrainedModel(self, client: FlaskClient) -> TestResponse:
         response: TestResponse = client.get("/getTrainedModel/1")
