@@ -10,6 +10,7 @@ import es.cesar.app.service.TrainedModelService;
 import es.cesar.app.service.UserService;
 import es.cesar.app.util.MessageHelper;
 import es.cesar.app.util.SecurityUtils;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Collection;
 
 import static es.cesar.app.util.AlertType.*;
@@ -53,6 +55,7 @@ public class TrainedModelController extends BaseController {
         setPage(interfazConPantalla);
         return MANAGE_MODELS_VIEW_NAME;
     }
+
 
 
     @PostMapping("/requestModel")
@@ -112,5 +115,25 @@ public class TrainedModelController extends BaseController {
         trainedModelService.updateTrainedModel(trainedModel);
         MessageHelper.addFlashMessage(redirectAttributes, SUCCESS, formattingService.getMessage("model.update.success"));
         return REDIRECT + MANAGE_MODELS_VIEW_URL;
+    }
+
+    @GetMapping("/models/{id}/download")
+    public void downloadZipFile(@PathVariable Long id, HttpServletResponse response) throws IOException {
+        TrainedModel trainedModel = trainedModelService.getTrainedModelById(id);
+        if (trainedModel == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        byte[] zipBytes = trainedModel.getFile();
+        String fileName = trainedModel.getFileName() != null ? trainedModel.getFileName() : "model.zip";
+
+        response.setContentType("application/zip");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+        response.setContentLength(zipBytes.length);
+
+        try (OutputStream out = response.getOutputStream()) {
+            out.write(zipBytes);
+            out.flush();
+        }
     }
 }

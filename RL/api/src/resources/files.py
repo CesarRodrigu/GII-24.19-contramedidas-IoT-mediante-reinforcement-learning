@@ -29,18 +29,21 @@ class TrainedModel(Resource):
 
 class File_Stats(Resource):
     NAME: str = 'file.csv'
+    TYPE: str = "stats"
 
     def get(self, modelid: int) -> Response:
         print("Model ID:", modelid)
         namefile: str = os.path.join(data_directory, self.NAME)
         with open(namefile, "rb") as f:
             encoded: str = base64.b64encode(f.read()).decode('utf-8')
-        return send_data("stats", self.NAME, encoded)
+        return send_data(self.TYPE, self.NAME, encoded)
 
 
 class Monitor(File_Stats):
     NAME: str = 'monitor.csv'
+    TYPE: str = "modelStats"
 
 
 class Progress(File_Stats):
     NAME: str = 'progress.csv'
+    TYPE: str = "trainingStats"

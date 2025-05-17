@@ -73,6 +73,12 @@
                                 <i class="bi bi-pencil"></i> <span th:text="#{model.edit}">Edit</span>
                             </button>
                         </form>
+                        <form class="d-flex flex-grow-1" method="get"
+                              th:action="@{'/models/' + ${model.modelId} + '/download'}">
+                            <button class="btn btn-secondary btn-sm w-100 h-100 border-0 rounded-0" type="submit">
+                                <i class="bi bi-download"></i> <span th:text="#{model.download}">Download</span>
+                            </button>
+                        </form>
                         <form class="d-flex flex-grow-1" method="post" th:action="@{/deleteTrainedModel}"
                               th:object="${model}">
                             <input name="modelId" th:value="${model.modelId}" type="hidden" />

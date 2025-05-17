@@ -29,12 +29,10 @@ public class AboutController extends BaseController {
             for (int i = 0; i < pdfFiles.length; i++) {
                 String filePath = folderPath + pdfFiles[i] + ".pdf";
                 ClassPathResource resource = new ClassPathResource(filePath);
-
                 if (!resource.exists()) {
-                    throw new Exception("El archivo " + pdfFiles[i] + " no existe.");
+                    continue;
                 }
-
-                String base64 = encodePdfToBase64(filePath); // aquí usamos el path, como espera el método
+                String base64 = encodePdfToBase64(filePath);
                 interfazConPantalla.addAttribute("pdf" + (i + 1), base64);
             }
         } catch (Exception e) {

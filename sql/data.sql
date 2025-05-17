@@ -22,12 +22,16 @@ create table if not exists users
 
 create table if not exists trained_model
 (
-    name        varchar(255) not null,
-    description varchar(255) null,
+    model_id    bigint auto_increment
+        primary key,
+    description longtext     null,
+    extension   varchar(255) null,
     file        longblob     null,
     file_name   varchar(255) not null,
+    name        varchar(255) not null,
     user_id     bigint       not null,
-    primary key (name, user_id),
+    constraint UK1xyh39dk4u1fosh6x27i0g4sm
+        unique (name),
     constraint FK4y3qrqb1w7isopna954ah3p56
         foreign key (user_id) references users (id)
 );

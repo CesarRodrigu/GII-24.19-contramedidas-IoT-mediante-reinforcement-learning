@@ -10,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Objects;
@@ -21,22 +19,22 @@ public class TrainedModelService {
     private final TrainedModelRepository trainedModelRepository;
     private final RestTemplate restTemplate;
 
-
     @Autowired
     public TrainedModelService(TrainedModelRepository trainedModelRepository) {
         this.trainedModelRepository = trainedModelRepository;
         this.restTemplate = new RestTemplate();
     }
 
-    public TrainedModel getTrainedModelById() {
-        return trainedModelRepository.findAll().get(0);
-    }
-
     @Transactional
-    public void requestTrainedModelToFlask(User user, String modelName) throws IOException {
+    public void requestTrainedModelToFlask(User user, String modelName) {
+        String host = System.getenv("API_HOST");
+        String port = System.getenv("API_LOCAL_PORT");
 
-        String url = "http://localhost:5001/getTrainedModel/" + user.getId();
-
+        if (host == null || port == null) {
+            host = "localhost";
+            port = "5000";
+        }
+        String url = "http://" + host + ":" + port + "/getTrainedModel/" + user.getId();
         ResponseEntity<Response> response = restTemplate.getForEntity(url, Response.class);
         Response responseData = response.getBody();
         if (!Objects.requireNonNull(responseData).isSuccess()) {
@@ -50,30 +48,17 @@ public class TrainedModelService {
         }
         String content = responseData.getContent();
 
-
         byte[] fileBytes = Base64.getDecoder().decode(content);
-
 
         createModel(user, modelName, fileBytes);
     }
 
     @Transactional
-    public void createModel(User user, String name, byte[] file) throws IOException {
+    public void createModel(User user, String name, byte[] file) {
         TrainedModel model = new TrainedModel();
         model.initializeWithName(user, name);
         model.setFile(file);
         trainedModelRepository.save(model);
-        saveFile(name, file);
-    }
-
-    public void saveFile(String fileName, byte[] fileBytes) throws IOException {
-        if (fileName.contains("..") || fileName.contains("/") || fileName.contains("\\")) {
-            return;
-        }
-        String filePath = "./temp/" + fileName;
-        try (FileOutputStream fos = new FileOutputStream(filePath)) {
-            fos.write(fileBytes);
-        }
     }
 
     public Collection<TrainedModel> getTrainedModelsByUser(User user) {
