@@ -13,6 +13,7 @@ services:
   app:
     depends_on:
       - mysqldb
+      - api
     build: ./app
     restart: on-failure
     env_file: .env
@@ -27,9 +28,21 @@ services:
     tty: true
     networks:
       - app-net
+      - api-app-net
 
+  api:
+    build: ./RL/api
+    restart: on-failure
+    env_file: .env
+    ports:
+      - $API_LOCAL_PORT:$API_DOCKER_PORT
+    stdin_open: true
+    tty: true
+    networks:
+      - api-app-net
 networks:
   app-net:
+  api-app-net:
 
 volumes:
   db:
