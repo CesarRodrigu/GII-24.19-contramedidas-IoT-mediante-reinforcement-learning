@@ -25,6 +25,10 @@ public class TrainedModelService {
         this.restTemplate = new RestTemplate();
     }
 
+    public TrainedModel getTrainedModelById() {
+        return trainedModelRepository.findAll().get(0);
+    }
+
     @Transactional
     public void requestTrainedModelToFlask(User user, String modelName) {
         String host = System.getenv("API_HOST");

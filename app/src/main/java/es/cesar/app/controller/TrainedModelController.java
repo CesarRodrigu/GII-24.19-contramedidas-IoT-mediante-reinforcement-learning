@@ -75,7 +75,7 @@ public class TrainedModelController extends BaseController {
                 MessageHelper.addFlashMessage(redirectAttributes, INFO, formattingService.getMessage("manageusers.request.success"));
                 return REDIRECT + MANAGE_MODELS_VIEW_URL;
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             MessageHelper.addFlashMessage(redirectAttributes, DANGER, formattingService.getMessage("model.request.error"));
         }
         return REDIRECT + MANAGE_MODELS_VIEW_URL;
