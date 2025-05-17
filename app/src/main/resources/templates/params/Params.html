@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es" layout:decorate="~{fragments/layout}"
+      th:lang="${#locale}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{title.dashboard}">Gráfico 3D</title>
+    <script
+            crossorigin="anonymous"
+            integrity="sha384-qcVfVtDbahsTA12rb+xVuEb4SAhl+sntgOF5VsY1R6syntGeYYbTEOMs6HZQGG9N"
+            src="https://cdn.plot.ly/plotly-3.0.1.js">
+    </script>
+    <script defer th:src="@{/js/grafico3d.js}" type="text/javascript"></script>
+
+</head>
+<body>
+<main layout:fragment="contenido">
+    <div class="container py-5">
+        <h1 class="text-center mb-5" th:text="#{home.surface.plot.title}">🌐 Gráfico 3D de la Función Reward</h1>
+        <!--		#TODO añadir los textos-->
+        <div class="rl-section text-center">
+            <div class="card rl-card p-4">
+                <h2 class="section-title">🧮 Parámetros y Visualización</h2>
+                <div class="parent">
+                    <div class="mb-4 text-start" id="slider-container">
+                        <div class="mb-3">
+                            <label class="form-label" for="precision">Precision: <span
+                                    id="val-precision">10</span></label>
+                            <input class="form-range" id="precision" max="100.0" min="2.0" step="1.0" type="range"
+                                   value="10.0">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="tol">Tolerancia: <span id="val-tol">100</span></label>
+                            <input class="form-range" id="tol" max="500" min="0.0" step="1" type="range" value="100">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="c">c: <span id="val-c">0.0</span></label>
+                            <input class="form-range" id="c" max="1.0" min="0.1" step="0.1" type="range" value="0.4">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="c2">c2: <span id="val-c2">0.0</span></label>
+                            <input class="form-range" id="c2" max="1.0" min="0.1" step="0.1" type="range" value="0.25">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="c3">c3: <span id="val-c3">0.0</span></label>
+                            <input class="form-range" id="c3" max="2.0" min="0.1" step="0.1" type="range" value="1.0">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="c4">c4: <span id="val-c4">0.0</span></label>
+                            <input class="form-range" id="c4" max="2.0" min="0.1" step="0.1" type="range" value="1.0">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="c5">c5: <span id="val-c5">0.0</span></label>
+                            <input class="form-range" id="c5" max="1000.0" min="-1000.0" step="10.0" type="range"
+                                   value="0.0">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="lim">Límite: <span id="val-lim">0.1</span></label>
+                            <input class="form-range" id="lim" max="5.0" min="0.1" step="0.1" type="range" value="1.0">
+                        </div>
+
+                        <div class="mt-4" id="checkboxes-container">
+                            <div class="form-check">
+                                <input checked class="form-check-input" id="checkboxPermitir" type="checkbox">
+                                <label class="form-check-label" for="checkboxPermitir">Mostrar Permitir</label>
+                            </div>
+                            <div class="form-check">
+                                <input checked class="form-check-input" id="checkboxDenegar" type="checkbox">
+                                <label class="form-check-label" for="checkboxDenegar">Mostrar Denegar</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="grafico3d" style="height: 600px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

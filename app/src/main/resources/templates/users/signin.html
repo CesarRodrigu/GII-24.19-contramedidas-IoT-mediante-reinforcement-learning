@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en-US" layout:decorate="~{fragments/layout}"
+      th:lang="${#locale}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{signin.title}">Sign In</title>
+    <link href="/css/sign-form.css" media="screen" rel="stylesheet" th:href="@{/css/sign-form.css}">
+    <script th:src="@{/js/formsToggle.js}" type="text/javascript"></script>
+
+</head>
+<body>
+<main class="form-sign w-100 m-auto" layout:fragment="contenido">
+    <div class="container py-5">
+        <th:block th:if="${error}">
+            <div th:replace="~{fragments/alert :: alert(${type}, ${error})}">
+                Alert fallback
+            </div>
+        </th:block>
+        <th:block th:if="${param.error != null}">
+            <div th:replace="~{fragments/alert :: alert(danger, #{auth.error})}">
+                Alert fallback
+            </div>
+        </th:block>
+    </div>
+    <form class="needs-validation" method="post" novalidate
+          th:action="@{/login}" th:object="${loginForm}">
+        <fieldset>
+            <legend class="mb-4 text-center" th:text="#{signin.legend}">Please Sign In</legend>
+
+            <div class="form-floating mb-3"
+                 th:classappend="${#fields.hasErrors('username')} ? ' is-invalid'">
+                <input class="form-control" id="inputUsername" th:field="*{username}"
+                       th:placeholder="#{signin.username}" type="text" />
+                <label for="inputUsername" th:text="#{signin.username}">Username</label>
+                <div class="invalid-feedback d-block"
+                     th:errors="*{username}" th:if="${#fields.hasErrors('username')}">
+                    <span th:text="#{signin.username.invalid}">Invalid username</span>
+                </div>
+            </div>
+
+            <div class="form-floating mb-3"
+                 th:classappend="${#fields.hasErrors('password')} ? ' is-invalid'">
+                <input class="form-control" id="inputPassword" th:field="*{password}"
+                       th:placeholder="#{signin.password}" type="password" />
+                <label for="inputPassword" th:text="#{signin.password}">Password</label>
+                <button class="btn btn-outline-secondary btn-sm position-absolute top-50 end-0 translate-middle-y me-2"
+                        onclick="togglePasswordVisibility()"
+                        tabindex="-1"
+                        type="button">
+                    <i class="bi bi-eye" id="toggleIcon"></i>
+                </button>
+                <div class="invalid-feedback d-block"
+                     th:errors="*{password}" th:if="${#fields.hasErrors('password')}">
+                    <span th:text="#{signin.password.invalid}">Invalid password</span>
+                </div>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input class="form-check-input" id="rememberMe" name="remember-me"
+                       type="checkbox" />
+                <label class="form-check-label" for="rememberMe" th:text="#{signin.remember_me}">
+                    Remember me
+                </label>
+            </div>
+
+            <div class="mb-3 text-center">
+                <button class="btn btn-primary" th:text="#{signin.button}" type="submit">
+                    Sign In
+                </button>
+            </div>
+
+            <div class="mb-3 text-center">
+                <p>
+                    <span th:text="#{signin.new_here}">New here?</span>
+                    <a href="/signup" th:href="@{/signup}" th:text="#{signin.signup}">Sign Up</a>
+                </p>
+            </div>
+        </fieldset>
+    </form>
+</main>
+</body>
+</html>

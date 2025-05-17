@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en-US" layout:decorate="~{fragments/layout}"
+      th:lang="${#locale}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{title.models}">Trained Models</title>
+</head>
+<body>
+<main class="container py-5" layout:fragment="contenido">
+
+    <div class="container py-5">
+        <th:block th:if="${error}">
+            <div th:replace="~{fragments/alert :: alert(${type}, ${error})}">
+                Alert fallback
+            </div>
+        </th:block>
+        <th:block th:if="${#fields.hasErrors('${nameDto.*}')}">
+            <div th:replace="~{fragments/alert :: alert('danger', ${#messages.msg('form.errors')})}"></div>
+        </th:block>
+    </div>
+
+    <div class="container mb-4">
+        <h5 class="mb-3 text-center" th:text="#{model.request}">Request model</h5>
+        <form class="row justify-content-center g-2" method="post" th:action="@{/requestModel}"
+              th:object="${nameDto}">
+            <div class="col-md-6 col-lg-6">
+                <label class="form-label" for="inputModelName" th:text="#{model.name}">Model Name</label>
+                <div class="d-flex">
+                    <input class="form-control form-control-sm me-2"
+                           id="inputModelName"
+                           th:field="*{name}"
+                           th:placeholder="#{model.name}"
+                           type="text" />
+                    <button class="btn btn-success btn-sm d-inline-flex align-items-center" type="submit">
+                        <i class="bi bi-plus-circle me-1"></i>
+                        <span th:text="#{model.add}">Add model</span>
+                    </button>
+                </div>
+                <div class="invalid-feedback d-block" th:errors="*{name}" th:if="${#fields.hasErrors('name')}">
+                    Invalid name
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-sm table-bordered table-striped table-hover bg-light text-bg-dark rounded-3"
+               id="tablemodel">
+            <thead class="table">
+            <tr>
+                <th th:text="#{columnHeader.number}">#</th>
+                <th th:text="#{columnHeader.name}">Model Name</th>
+                <th th:text="#{columnHeader.user}">User ID</th>
+                <th th:text="#{columnHeader.description}">Description</th>
+                <th th:text="#{columnHeader.actions}">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="model, position : ${trainedModelList}">
+                <td class="align-middle" th:text="${position.index + 1}">1</td>
+                <td class="align-middle" th:text="${model.name}">Model Name</td>
+                <td class="align-middle" th:text="${model.userId}">User ID</td>
+                <td class="align-middle text-wrap"
+                    style="white-space: pre-wrap; word-break: break-word;"
+                    th:text="${model.description}">Description
+                </td>
+                <td class="p-0 align-middle" style="vertical-align: middle; white-space: nowrap;">
+                    <div class="d-flex flex-column h-100 w-100">
+                        <form class="d-flex flex-grow-1" method="get" th:action="@{/editModel}">
+                            <input name="modelId" th:value="${model.modelId}" type="hidden" />
+                            <button class="btn btn-primary btn-sm w-100 h-100 border-0 rounded-0" type="submit">
+                                <i class="bi bi-pencil"></i> <span th:text="#{model.edit}">Edit</span>
+                            </button>
+                        </form>
+                        <form class="d-flex flex-grow-1" method="get"
+                              th:action="@{'/models/' + ${model.modelId} + '/download'}">
+                            <button class="btn btn-secondary btn-sm w-100 h-100 border-0 rounded-0" type="submit">
+                                <i class="bi bi-download"></i> <span th:text="#{model.download}">Download</span>
+                            </button>
+                        </form>
+                        <form class="d-flex flex-grow-1" method="post" th:action="@{/deleteTrainedModel}"
+                              th:object="${model}">
+                            <input name="modelId" th:value="${model.modelId}" type="hidden" />
+                            <button class="btn btn-danger btn-sm w-100 h-100 border-0 rounded-0" type="submit">
+                                <i class="bi bi-trash"></i> <span th:text="#{model.delete}">Delete</span>
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en-US" layout:decorate="~{fragments/layout}"
+      th:lang="${#locale}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{error.404title}">404 - Page Not Found</title>
+</head>
+<body>
+<main layout:fragment="contenido">
+    <div class="container py-5 text-center">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card border-warning shadow">
+                    <div class="card-header bg-warning text-dark">
+                        <h4 class="mb-0" th:text="#{error.404header}">Page Not Found</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="display-4 text-warning">404</h1>
+                        <p class="lead" th:text="#{error.404message}">
+                            Sorry, the page you are looking for does not exist or has been moved.
+                        </p>
+                        <a class="btn btn-primary mt-3" href="/" th:text="#{button.back_home}">Back to Home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

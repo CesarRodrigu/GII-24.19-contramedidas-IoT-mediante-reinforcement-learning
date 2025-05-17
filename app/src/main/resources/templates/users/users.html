@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en-US" layout:decorate="~{fragments/layout}"
+      th:lang="${#locale}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{manageusers.title}">Users</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<main class="container py-5" layout:fragment="contenido">
+
+    <div class="container py-5">
+        <th:block th:if="${error}">
+            <div th:replace="~{fragments/alert :: alert(${type}, ${error})}">
+                Alert fallback
+            </div>
+        </th:block>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-sm table-bordered table-striped table-hover bg-light text-bg-dark rounded-3"
+               id="tableuser">
+            <thead class="table">
+            <tr>
+                <th th:text="#{columnHeader.id}">id</th>
+                <th th:text="#{columnHeader.username}">username</th>
+                <th th:text="#{columnHeader.firstName}">firstName</th>
+                <th th:text="#{columnHeader.lastName}">lastName</th>
+                <th th:text="#{columnHeader.created}">created</th>
+                <th th:text="#{columnHeader.roles}">Roles</th>
+                <th th:text="#{columnHeader.actions}">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user, posicion : ${userDtoList}">
+                <td class="align-middle" th:text="${user.id}">1</td>
+                <td class="align-middle" th:text="${user.username}">usuario</td>
+                <td class="align-middle" th:text="${user.firstName}">Nombre</td>
+                <td class="align-middle" th:text="${user.lastName}">Apellido</td>
+                <td class="align-middle" th:text="${user.created}">15/04/2025</td>
+                <td class="align-middle">
+                    <div class="role-pill d-inline-flex align-items-center bg-primary text-white rounded-pill me-2 mb-2 px-3 py-1"
+                         th:each="role : ${user.roles}">
+                        <span th:text="${role}">Role</span>
+                    </div>
+                </td>
+                <td class="align-middle">
+                    <form method="get" th:action="@{/admin/editUser}">
+                        <input th:name="id" th:value="${user.id}" type="hidden" />
+                        <button class="btn btn-primary btn-sm w-100 mb-1" type="submit">
+                            <i class="bi bi-pencil"></i> <span th:text="#{manageusers.edit}">Edit</span>
+                        </button>
+                    </form>
+                    <form method="post" th:action="@{/admin/deleteUser}">
+                        <input th:name="id" th:value="${user.id}" type="hidden" />
+                        <button class="btn btn-danger btn-sm w-100" type="submit">
+                            <i class="bi bi-trash"></i> <span th:text="#{manageusers.delete}">Delete</span>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>
