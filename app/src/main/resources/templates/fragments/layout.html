@@ -299,17 +299,26 @@
     function addMessageToChat(sender, content) {
         const messageElement = document.createElement('div');
         const classMap = {
-            'User': 'user-message text-primary',
-            'Bot': 'bot-message text-success',
-            'System': 'system-message text-danger'
+            'User': 'primary',
+            'Bot': 'success',
+            'System': 'danger'
         };
-        messageElement.className = `p-2 rounded ${classMap[sender]} mb-2`;
-        messageElement.innerHTML = `
-            <div class="fw-bold">${sender}:</div>
-            <div class="message-content">${content}</div>
-        `;
+        messageElement.className = `p-2 rounded text bg-${classMap[sender]} form-control mb-2`;
+
+        const senderDiv = document.createElement('div');
+        senderDiv.className = 'fw-bold';
+        senderDiv.textContent = `${sender}:`;
+
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'message-content';
+        contentDiv.textContent = content;
+
+        messageElement.appendChild(senderDiv);
+        messageElement.appendChild(contentDiv);
+
         chatMessages.appendChild(messageElement);
         chatMessages.scrollTop = chatMessages.scrollHeight;
+
         return messageElement;
     }
 </script>

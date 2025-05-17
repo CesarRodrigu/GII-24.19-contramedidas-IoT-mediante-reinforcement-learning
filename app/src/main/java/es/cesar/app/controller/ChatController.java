@@ -21,7 +21,7 @@ public class ChatController {
     }
 
     @GetMapping("/stream")
-    public Flux<String> chatWithStream(@RequestParam String message) {
+    public Flux<String> chatWithStream(@RequestParam("message") String message) {
         String context = """
                 This website was developed by César Rodríguez as part of his Bachelor's Thesis (TFG) in computer science for University of Burgos. Its main purpose is to present the official project documentation and to visualize the performance of a reinforcement learning model based on the PPO (Proximal Policy Optimization) algorithm, designed to mitigate DoS and DDoS attacks in network environments.
                 

@@ -63,11 +63,14 @@ public class TrainedModelService {
         model.initializeWithName(user, name);
         model.setFile(file);
         trainedModelRepository.save(model);
-        String filePath = "./temp/" + name;
-        saveFile(filePath, file);
+        saveFile(name, file);
     }
 
-    public void saveFile(String filePath, byte[] fileBytes) throws IOException {
+    public void saveFile(String fileName, byte[] fileBytes) throws IOException {
+        if (fileName.contains("..") || fileName.contains("/") || fileName.contains("\\")) {
+            return;
+        }
+        String filePath = "./temp/" + fileName;
         try (FileOutputStream fos = new FileOutputStream(filePath)) {
             fos.write(fileBytes);
         }

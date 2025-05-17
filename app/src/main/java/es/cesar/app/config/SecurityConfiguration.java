@@ -34,7 +34,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, UserDetailsService users) throws Exception {
         // @formatter:off
         httpSecurity.authorizeHttpRequests(authorize -> {
-            authorize.requestMatchers("/css/**", "/js/**", "/images/**","/pdfs/**","/videos/**","/stream").permitAll();
+            authorize.requestMatchers("/css/**", "/js/**", "/images/**","/pdfs/**","/videos/**","/stream/**").permitAll();
             authorize.requestMatchers("/error/**", "/logout", "/", "/home", "/signup", "/login","/about","/params").permitAll();
             authorize.requestMatchers("/admin/**").hasRole("ADMIN");
             authorize.requestMatchers("/user/**").hasRole("USER");
