@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+**/static/pdfs/memoria.pdf
+**/static/pdfs/anexos.pdf

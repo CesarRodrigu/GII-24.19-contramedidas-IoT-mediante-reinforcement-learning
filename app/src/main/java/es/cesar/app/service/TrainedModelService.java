@@ -25,20 +25,14 @@ public class TrainedModelService {
         this.restTemplate = new RestTemplate();
     }
 
-    public TrainedModel getTrainedModelById() {
-        return trainedModelRepository.findAll().get(0);
-    }
-
     @Transactional
     public void requestTrainedModelToFlask(User user, String modelName) {
-        String host = System.getenv("API_HOST");
-        String port = System.getenv("API_LOCAL_PORT");
+        String url = System.getenv("API_URL");
 
-        if (host == null || port == null) {
-            host = "localhost";
-            port = "5000";
+        if (url == null) {
+            url = "http://localhost:5000/";
         }
-        String url = "http://" + host + ":" + port + "/getTrainedModel/" + user.getId();
+        url += "/getTrainedModel/" + user.getId();
         ResponseEntity<Response> response = restTemplate.getForEntity(url, Response.class);
         Response responseData = response.getBody();
         if (!Objects.requireNonNull(responseData).isSuccess()) {

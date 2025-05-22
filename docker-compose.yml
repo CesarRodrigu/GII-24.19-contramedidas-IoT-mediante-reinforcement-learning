@@ -22,10 +22,6 @@ services:
       API_URL: http://api:$API_DOCKER_PORT
     ports:
       - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
-    volumes:
-      - .m2:/root/.m2
-    stdin_open: true
-    tty: true
     networks:
       - app-net
       - api-app-net
@@ -36,8 +32,6 @@ services:
     env_file: .env
     ports:
       - $API_LOCAL_PORT:$API_DOCKER_PORT
-    stdin_open: true
-    tty: true
     networks:
       - api-app-net
 networks:

@@ -54,8 +54,9 @@ VALUES (1, 'ROLE_ADMIN');
 INSERT INTO WebDB.roles (id, role_name)
 VALUES (2, 'ROLE_USER');
 INSERT INTO WebDB.users (id, created, first_name, last_name, password, username)
+#admin-admin
 VALUES (1, '2025-05-08 10:17:01.452542', 'Nombre', 'apellido',
-        '$2a$10$FZ0jQQ8NGlibQfT0B5VKQele4C0P5epzrUM70Bycfx.JWFIWyI0lC', 'admin');
+        '$2a$10$QMAJrLsmAMxiVqTOyDkQo.p5vZrkAdO142SUqSl0ry3oYxiv59nWu', 'admin');
 
 INSERT INTO WebDB.users_roles (roles_id, users_id)
 VALUES (1, 1);

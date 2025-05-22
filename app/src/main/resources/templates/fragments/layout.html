@@ -252,7 +252,7 @@
         const message = messageInput.value;
         if (!message) return;
 
-        addMessageToChat('User', message);
+        addMessageToChat('User', message);// #TODO: añadir traducciones
         messageInput.value = '';
 
         try {
@@ -267,7 +267,7 @@
         }
     });
 
-    async function fetchStreamWithRetry(url, retries = 3) {
+    async function fetchStreamWithRetry(url, retries = 5) {
         for (let i = 0; i < retries; i++) {
             try {
                 const response = await fetch(url);
