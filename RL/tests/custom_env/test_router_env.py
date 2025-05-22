@@ -1,12 +1,12 @@
 from collections import deque
 from typing import Literal
+
 import pytest
+from custom_env.actions import Acciones
+from custom_env.router_env import RouterEnv, reward
+from custom_env.states import BaseState
 from gymnasium import make
 from gymnasium.utils.env_checker import check_env
-from custom_env.router_env import RouterEnv
-from custom_env.actions import Acciones
-from custom_env.states import BaseState
-from custom_env.router_env import reward
 
 
 class TestRouterEnv:
@@ -56,7 +56,7 @@ class TestRouterEnv:
         assert all(isinstance(estado, BaseState)
                    for estado in estados), "All items in the list should be instances of BaseState"
 
-    def test_procesar_por_tamaño(self):
+    def test_procesar_por_tamano(self):
         assert len(self.env.queue) == 0, "Initial queue should be empty"
         self.env.reset()
         assert len(self.env.queue) == 0, "Initial queue should be empty"

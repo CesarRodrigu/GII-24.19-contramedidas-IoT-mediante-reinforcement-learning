@@ -12,7 +12,7 @@ function reward(descartados, ocu_actual, action, ocu_ant, coeficientes) {
 	let reward = 0.0;
 	if (descartados > 0) {
 		if (action === Action.PERMITIR) {
-			reward -= descartados ** 2 * c + c5;
+			reward -= descartados ** 2 * c;
 		} else {
 			reward -= descartados * c2;
 		}
@@ -21,9 +21,9 @@ function reward(descartados, ocu_actual, action, ocu_ant, coeficientes) {
 		reward += mejora * ocu_actual * c3;
 	} else {
 		if (action === Action.PERMITIR) {
-			reward += (1.0 - ocu_actual) * c4;
+			reward += (1.0 - ocu_actual) * c4 + c5;
 		}else{
-			reward += (1.0 - ocu_actual) * c4 * 0.5;
+			reward += (1.0 - ocu_actual) * c4;
 		}
 	}
 

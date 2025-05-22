@@ -188,17 +188,17 @@ def reward(descartados: int,
            action: Acciones,
            ocu_actual: float = 0.0,
            ocu_ant: float = 0.0,
-           c: float = 0.2,
-           c2: float = 0.1,
+           c: float = 0.5,
+           c2: float = 0.2,
            c3: float = 0.01,
-           c4: float = 5.0,
-           c5: float = 0.0,
+           c4: float = 7.5,
+           c5: float = 1.0,
            ) -> float:
-
+    # TODO mirar donde se corta la recta de reward segun valores
     reward = 0.0
     if descartados > 0:
         if action == Acciones.PERMITIR:
-            reward -= (descartados**2) * c + c5
+            reward -= (descartados**2) * c
         else:
             reward -= (descartados) * c2
 
@@ -206,7 +206,7 @@ def reward(descartados: int,
         reward += mejora * ocu_actual * c3
     else:
         if action == Acciones.PERMITIR:
-            reward += (1.0 - ocu_actual) * c4 
+            reward += (1.0 - ocu_actual) * c4 + c5  # TODO MIRAAR C5
         else:
-            reward += (1.0 - ocu_actual) * c4 * 0.75
+            reward += (1.0 - ocu_actual) * c4
     return round(reward, 2)
