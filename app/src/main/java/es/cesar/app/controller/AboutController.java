@@ -36,7 +36,7 @@ public class AboutController extends BaseController {
                 interfazConPantalla.addAttribute("pdf" + (i + 1), base64);
             }
         } catch (Exception e) {
-            MessageHelper.addMessage(interfazConPantalla, DANGER, "Error al cargar los PDFs: " + e.getMessage());
+            MessageHelper.addMessage(interfazConPantalla, DANGER, "Error al cargar los PDFs: " + e.getMessage()); // #TODO localizar el mensaje
             return "about";
         }
         setPage(interfazConPantalla);
