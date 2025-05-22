@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html
         data-bs-theme="auto"
-        th:lang="${#locale}" lang="en-US"
+        lang="en-US" th:lang="${#locale}"
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         xmlns:th="http://www.thymeleaf.org"
 >
@@ -90,7 +90,7 @@
             display: block !important;
         }
     </style>
-    <title th:text="#{layout.prefix}" layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE" th:text="#{layout.prefix}">
 
     </title>
 
@@ -178,6 +178,150 @@
 </div>
 
 
+<div class="position-fixed bottom-0 start-0 mb-3 ms-3">
+    <button aria-controls="helpVideoCollapse"
+            aria-expanded="false"
+            class="btn btn-secondary rounded-circle d-flex align-items-center justify-content-center"
+            data-bs-target="#helpVideoCollapse"
+            data-bs-toggle="collapse"
+            style="width: 50px; height: 50px;"
+            type="button">
+        <i class="bi bi-question-circle fs-4"></i>
+    </button>
+</div>
+
+<div class="collapse position-fixed bottom-0 start-0 mb-5 ms-3" id="helpVideoCollapse"
+     style="z-index: 1050; max-width: 90vw; max-height: 90vh;">
+    <div class="card border-primary shadow h-100 d-flex flex-column" style="width: 30rem; height: 40rem;">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Video de Ayuda</span>
+            <button aria-label="Cerrar" class="btn-close" data-bs-target="#helpVideoCollapse"
+                    data-bs-toggle="collapse" type="button"></button>
+        </div>
+
+        <div class="card-body p-0 flex-grow-0">
+            <video class="w-100 h-auto" controls style="border-radius: 0 0 .25rem .25rem; max-height: 200px;">
+                <source src="/videos/prueba.mp4" type="video/mp4" />
+                Error.
+            </video>
+        </div>
+
+        <div class="p-3 bg-body border-top flex-grow-1 d-flex flex-column">
+            <h5 class="text-center mb-3 text-primary">Help Chatbot</h5>
+            <-- #TODO revisar los mensajes -->
+            <div class="overflow-auto mb-3 p-3 rounded border" id="chat-messages" style="height: 200px;"></div>
+
+            <form class="d-flex" id="chat-form">
+                <input
+                        class="form-control me-2"
+                        id="message-input"
+                        name="message"
+                        placeholder="Type your message..."
+                        required
+                        type="text"
+                />
+                <button class="btn btn-primary" type="submit">
+                    Send
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const chatForm = document.getElementById('chat-form');
+    const messageInput = document.getElementById('message-input');
+    const chatMessages = document.getElementById('chat-messages');
+
+    document.addEventListener('click', function (event) {
+        const collapseElement = document.getElementById('helpVideoCollapse');
+        const card = collapseElement.querySelector('.card');
+
+        const bsCollapse = bootstrap.Collapse.getInstance(collapseElement);
+
+        if (bsCollapse && collapseElement.classList.contains('show')) {
+            if (!card.contains(event.target)) {
+                bsCollapse.hide();
+            }
+        }
+    });
+
+    chatForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const message = messageInput.value;
+        if (!message) return;
+
+        addMessageToChat('User', message);// #TODO: añadir traducciones
+        messageInput.value = '';
+
+        try {
+            const response = await fetchStreamWithRetry('/stream?message=' + encodeURIComponent(message));
+            const reader = response.body.getReader();
+            let botMessageElement = addMessageToChat('Bot', '');
+            let contentElement = botMessageElement.querySelector('.message-content');
+            await processStream(reader, contentElement);
+        } catch (error) {
+            console.error('Error fetching chatbot response:', error);
+            addMessageToChat('System', 'An error occurred while fetching the response. Please try again.');
+        }
+    });
+
+    async function fetchStreamWithRetry(url, retries = 5) {
+        for (let i = 0; i < retries; i++) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                return response;
+            } catch (e) {
+                console.error(`Attempt ${i + 1} failed: ${e.message}`);
+                if (i === retries - 1) throw e;
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+        }
+    }
+
+    async function processStream(reader, contentElement) {
+        const decoder = new TextDecoder("utf-8");
+        try {
+            while (true) {
+                const {done, value} = await reader.read();
+                if (done) break;
+                contentElement.innerHTML += decoder.decode(value, {stream: true});
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        } catch (error) {
+            console.error('Error processing stream:', error);
+            contentElement.innerHTML += '<br>[Error: Stream interrupted. Please try again.]';
+        }
+    }
+
+    function addMessageToChat(sender, content) {
+        const messageElement = document.createElement('div');
+        const classMap = {
+            'User': 'primary',
+            'Bot': 'success',
+            'System': 'danger'
+        };
+        messageElement.className = `p-2 rounded text bg-${classMap[sender]} form-control mb-2`;
+
+        const senderDiv = document.createElement('div');
+        senderDiv.className = 'fw-bold';
+        senderDiv.textContent = `${sender}:`;
+
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'message-content';
+        contentDiv.textContent = content;
+
+        messageElement.appendChild(senderDiv);
+        messageElement.appendChild(contentDiv);
+
+        chatMessages.appendChild(messageElement);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        return messageElement;
+    }
+</script>
 <script defer src="/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"></script>
 <script defer src="/js/color-modes.js" th:src="@{/js/color-modes.js}"></script>
 

@@ -36,7 +36,7 @@ jobs:
           cache: "maven"
 
       - name: Load .env variables
-        run: sed '/^#/d' .env >> $GITHUB_ENV
+        run: sed -e 's/\r$//' -e '/^#/d' -e '/^$/d' .env >> $GITHUB_ENV
 
       - name: Build and Test with Maven
         run: mvn clean verify -f ${{ env.MVN_P_DIR }}/pom.xml -Dspring.profiles.active=coverage -Pcoverage -T 4C
@@ -83,17 +83,15 @@ jobs:
           fetch-depth: 1
       - name: Run yarn and install
         run: yarn
-        working-directory: ./${{ env.PY_P_DIR }}
       - name: Test and coverage
         run: yarn jest --coverage
-        working-directory: ./${{ env.PY_P_DIR }}
 
       - name: Save JavaScript Build Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: javascript-coverage
           path: |
-            ./${{ env.PY_P_DIR }}/coverage/lcov.info
+            ./coverage/lcov.info
           retention-days: 3
 
   sonar:

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en-US" layout:decorate="~{fragments/layout}"
+      th:lang="${#locale}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{signup.title}">Signup</title>
+    <link href="/css/sign-form.css" media="screen" rel="stylesheet" th:href="@{/css/sign-form.css}">
+    <script th:src="@{/js/formsToggle.js}" type="text/javascript"></script>
+</head>
+<body>
+<main class="form-sign w-100 m-auto" layout:fragment="contenido">
+    <div class="container py-5">
+        <th:block th:if="${#fields.hasErrors('${signupForm.*}')}">
+            <div th:replace="~{fragments/alert :: alert('danger', ${#messages.msg('form.errors')})}"></div>
+        </th:block>
+    </div>
+    <form class="needs-validation" method="post" novalidate
+          th:action="@{/signup}" th:fragment="signupForm"
+          th:object="${signupForm}">
+
+        <fieldset>
+            <legend class="mb-4 text-center" th:text="#{signup.legend}">Please Sign Up</legend>
+
+            <div class="form-floating mb-3"
+                 th:classappend="${#fields.hasErrors('username')} ? ' is-invalid'">
+                <input class="form-control" id="inputUsername" th:field="*{username}"
+                       th:placeholder="#{signup.username}" type="text" />
+                <label for="inputUsername" th:text="#{signup.username}">Username</label>
+                <div class="invalid-feedback d-block"
+                     th:errors="*{username}" th:if="${#fields.hasErrors('username')}">
+                    <span th:text="#{signup.username.invalid}">Incorrect username</span>
+                </div>
+            </div>
+
+            <div class="form-floating mb-3"
+                 th:classappend="${#fields.hasErrors('password')} ? ' is-invalid'">
+                <input class="form-control" id="inputPassword" th:field="*{password}"
+                       th:placeholder="#{signup.password}" type="password" />
+                <label for="inputPassword" th:text="#{signup.password}">Password</label>
+                <button class="btn btn-outline-secondary btn-sm position-absolute top-50 end-0 translate-middle-y me-2"
+                        onclick="togglePasswordVisibility()"
+                        tabindex="-1"
+                        type="button">
+                    <i class="bi bi-eye" id="toggleIcon"></i>
+                </button>
+                <div class="invalid-feedback d-block"
+                     th:errors="*{password}" th:if="${#fields.hasErrors('password')}">
+                    <span th:text="#{signup.password.invalid}">Incorrect password</span>
+                </div>
+            </div>
+
+            <div class="mb-3 text-center">
+                <button class="btn btn-primary" th:text="#{signup.button}" type="submit">Sign up</button>
+            </div>
+
+            <div class="mb-3 text-center">
+                <p>
+                    <span th:text="#{signup.already_account}">Already have an account?</span>
+                    <a href="/signin" th:href="@{/signin}" th:text="#{signup.signin_link}">Sign In</a>
+                </p>
+            </div>
+        </fieldset>
+    </form>
+</main>
+</body>
+</html>
