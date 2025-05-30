@@ -18,14 +18,49 @@ El proyecto se ha dividido en tres partes, cada una de las cuales tiene un objet
 \section{Desarrollo de la aplicación web}
 
 
+\subsection{Despliegue de la aplicación web}
+Para el despliegue de la aplicación web se ha usado un servidor virtual en Amazon Web Services (AWS) EC2, con una imagen de AMI de Amazon Linux 2023, y con un tamaño de instancia t3.medium, que dispone de los recursos necesarios para el despliegue y la ejecución de la aplicación.
+Para facilitar el despliegue y la gestión de la aplicación, se ha usado Docker y Docker Compose, que permiten crear contenedores separados para cada parte de la aplicación, con cada uno sus dependencias, facilitando así su despliegue y gestión.
+La arquitectura de la aplicación web se ha diseñado para que sea escalable y modular, permitiendo añadir nuevas funcionalidades en el futuro sin afectar al resto de la aplicación.
+\imagen{architecture}{Arquitectura de la aplicación web}{1.0}
+
+Los contenedores que se han creado son:
+\begin{itemize}
+    \item \textbf{Web:} Contiene la aplicación web desarrollada en Java con Spring Boot 3, que se encarga de servir las páginas web al usuario, y realizar toda la gestión de los modelos, junto con la visualización de información sobre el proyecto. El contenedor final generado utiliza una contrucción en multi-etapas, que en la primera etapa compila el proyecto en un archivo JAR, y en la segunda etapa se ejecuta el archivo JAR generado, permitiendo así reducir el tamaño del contenedor final, pudiendose ahorrar dependencias solo necesarias para la etapa de compilación.
+    \item \textbf{API:} Contiene la API REST desarrollada en Python con Flask, que se encarga de servir los datos necesarios desde Python para la aplicación web.
+    \item \textbf{Base de datos:} Contiene la base de datos MySQL, que almacena los datos necesarios para la aplicación web y la API REST. Que usa un volumen de Docker para persistir los datos, de manera que si el contenedor se elimina, los datos no se pierden.
+\end{itemize}
+Para la comunicación entre los contenedores se han usado dos redes de Docker, una para la comunicación entre la aplicación web y la API REST, y otra para la comunicación entre la aplicación web y la base de datos. Esto permite que cada contenedor se pueda comunicar solo y exclusivamente con los contenedores que necesita, mejorando la seguridad y el rendimiento de la aplicación.
+
+Para el despliegue de los contenedores de Docker, se ha usado Docker Compose, que permite definir y ejecutar aplicaciones multi-contenedor a partir de la configuración de un archivo \texttt{docker-compose.yml}. Este archivo define los servicios, redes y volúmenes necesarios para la aplicación, facilitando así su despliegue y gestión.
+En la configuración de Docker Compose se necesita definir las variables de entorno en el archivo \texttt{.env}.
 
 
+\subsection{Seguridad de la aplicación web}
 
 
+\imagen{secrets}{Secretos usados en las acciones de GitHub}{1.0}
 
+\subsubsection{Uso de Cloudflare}
+En la aplicación web se ha usado Cloudflare como servicio de protección, estadísticas, rendimiento y personalización de reglas, con el objetivo de mitigar ataques, mejorar el rendimiento, mejorar la seguridad general de la aplicación y optimización de costes.
+También se ha aprovechado para comprar el dominio de \url{www.cesarrv.com} a través de Cloudflare, pudiendo así gestionar el dominio y los DNS desde la misma plataforma, facilitando la configuración de estos.
+En cuanto a las solicitudes que recibe el dominio, aún redirigiendo al servidor apagado, recibe alrededor de 1000 solicitudes al día, de las cuales ninguna es legítima, ya que el dominio no está activo y el servidor donde se aloja la web no está activo. Esto indica que el dominio ha sido indexado por los motores de búsqueda y está siendo escaneado por bots maliciosos.
+\imagen{cloudflare_stats}{Estadísticas de Cloudflare del dominio cesarrv.com}{1.0}
+Como se puede observar en la imagen anterior, el dominio ha recibido un gran número de solicitudes. Otros datos a reseñar es que la mayoría de las solicitudes entragadas han estado guardadas en caché, lo que indica que Cloudflare ha podido servir las solicitudes sin necesidad de enviar la petición al servidor, mejorando así el rendimiento y reduciendo la carga y costos asociados del servidor.
 
-Este apartado pretende recoger los aspectos más interesantes del desarrollo del proyecto, comentados por los autores del mismo.
-Debe incluir desde la exposición del ciclo de vida utilizado, hasta los detalles de mayor relevancia de las fases de análisis, diseño e implementación.
-Se busca que no sea una mera operación de copiar y pegar diagramas y extractos del código fuente, sino que realmente se justifiquen los caminos de solución que se han tomado, especialmente aquellos que no sean triviales.
-Puede ser el lugar más adecuado para documentar los aspectos más interesantes del diseño y de la implementación, con un mayor hincapié en aspectos tales como el tipo de arquitectura elegido, los índices de las tablas de la base de datos, normalización y desnormalización, distribución en ficheros3, reglas de negocio dentro de las bases de datos (EDVHV GH GDWRV DFWLYDV), aspectos de desarrollo relacionados con el WWW...
-Este apartado, debe convertirse en el resumen de la experiencia práctica del proyecto, y por sí mismo justifica que la memoria se convierta en un documento útil, fuente de referencia para los autores, los tutores y futuros alumnos.
+Los principales escaneos que se han detectado son:
+\begin{itemize}
+    \item \textbf{Escaneos de git:} De las peticiones recibidas uno de los patrones más comunes es el de escanear el repositorio de git, buscando archivos sensibles como \texttt{.git/config}, \texttt{.git/HEAD}, \texttt{.git/index}, etc. Estos archivos pueden contener información sensible sobre la configuración del repositorio, como las ramas, los usuarios, las contraseñas, etc.
+    \item \textbf{Escaneos de WordPress:} Otro patrón común detectado es el de escanear la web en busca de vulnerabilidades relacionadas con WordPress, como la búsqueda de archivos como \texttt{wp-config.php}, \texttt{wp-login.php}, \texttt{/wp-includes/}, etc. Estos archivos y directorios pueden contener información sensible sobre la configuración de WordPress, como las contraseñas, los usuarios, etc.
+\end{itemize}
+
+\subsubsection{Configuración y reglas aplicadas en Cloudflare}
+Para la mitigación de los ataques descritos anteriormente, se han aplicado las siguientes reglas en Cloudflare:
+\imagen{rules}{Reglas de seguridad aplicadas en Cloudflare}{1.0}
+En el que la función principal de cada una es:
+\begin{itemize}
+    \item \textbf{Block by region:} Bloquea las solcicitudes que provienen de regiones geográficas específicas, en este caso, se han bloqueado las solicitudes que provienen de fuera de Europa, y países espacíficos dentro de Europa que se han detectado que son origen de ataques, como Rusia, Ucrania, Irlanda, etc.
+    \item \textbf{Block bots:} Bloquea las solicitudes que siguen patrones comunes por bots maliciosos, centrándose en los encabezados de las peticiones y el tipo de petición que hacen.
+    \item \textbf{All except Spain:} De todas las solicitudes que han pasado las anteriores reglas, si el país de la solicitud no es España, administra un desafío gestionado por Cloudflare, que requiere que el usuario resuelva un CAPTCHA para poder acceder al sitio web. Esto ayuda a filtrar las solicitudes legítimas de las maliciosas.
+    \item \textbf{Too Much Requests:} Limita las solicitudes que puede hacer un mismo usuario en un periodo de tiempo determinado, en este caso, se ha configurado para que un usuario no pueda hacer más de 40 solicitudes cada 10 segundos, lo que ayuda a prevenir ataques de denegación de servicio (DoS) y ataques de escaneo por fuerza bruta.
+\end{itemize}
