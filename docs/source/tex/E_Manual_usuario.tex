@@ -3,9 +3,24 @@
 \section{Introducción}
 
 \section{Requisitos de usuarios}
+\label{sec:requisitos-usuarios}
+
+Para la ejecución del proyecto sólo es necesario tener instalado Docker y Docker Compose, ya que el proyecto se ejecuta en contenedores de Docker. Para la instalación de Docker y Docker Compose se puede consultar la \hyperref[sec:instalacion]{sección de Instalación}.
+Para facilitar la descarga de los archivos fuente necesarios del proyecto, se recomienda instalar Git para poder clonar el repositorio de GitHub automáticamente. Simplemente se debe de abrir una terminal en la carpeta donde se quiere descargar el proyecto y ejecutar git clone y la URL del repositorio. En este caso sería:
+\begin{verbatim}
+git clone https://github.com/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning.git
+\end{verbatim}
+% #TODO revisar tamaño link
+En cualquier caso, si no se quiere instalar Git, se puede descomprimir la carpeta comprimida proporcionada al tribunal.
 
 \section{Instalación}
-
+\label{sec:instalacion}
+Para la instalación del proyecto, se debe de tener instalado Docker y Docker Compose. Para la instalación de Docker y Docker Compose, se recomienda la instalación de Docker Desktop, que para ello se puede consultar la \href{https://docs.docker.com/get-docker/}{documentación oficial de Docker}. Una vez instalado, se debe de abrir una terminal en la carpeta donde se ha descargado el proyecto y ejecutar el siguiente comando:
+\begin{verbatim}
+docker compose up -d
+\end{verbatim}
+Con este simple comando se descarga, instala, compila y ejecuta todo el proyecto sin necesidad de realizar ninguna otra acción.
+Una vez ejecutado el comando y pasados todas las tareas de Docker, se puede acceder a la aplicación web desde el navegador en la dirección \textbf{http://localhost:8081}. Cabe destacar que en la primera ejecución Docker necesitará mucho tiempo para descargar e intalar todos los recursos necesarios, pero en las siguientes ejecuciones será mucho más rápido.
 \section{Manual del usuario}
 
 

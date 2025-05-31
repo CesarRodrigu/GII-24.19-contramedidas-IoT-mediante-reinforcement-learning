@@ -1,83 +1,74 @@
 \capitulo{3}{Conceptos teóricos}
+En esta capítulo se van explicar los conceptos teóricos relacionados con el proyecto, que son necesarios para la comprensión del mismo.
 
-En aquellos proyectos que necesiten para su comprensión y desarrollo de unos conceptos teóricos de una determinada materia o de un determinado dominio de conocimiento, debe existir un apartado que sintetice dichos conceptos.
-
-Algunos conceptos teóricos de \LaTeX{} \footnote{Créditos a los proyectos de Álvaro López Cantero: Configurador de Presupuestos y Roberto Izquierdo Amo: PLQuiz}.
-
-\section{Secciones}
-
-Las secciones se incluyen con el comando section.
-
-\subsection{Subsecciones}
-
-Además de secciones tenemos subsecciones.
-
-\subsubsection{Subsubsecciones}
-
-Y subsecciones. 
-
-
-\section{Referencias}
-
-Las referencias se incluyen en el texto usando cite~\cite{wiki:latex}. Para citar webs, artículos o libros~\cite{koza92}, si se desean citar más de uno en el mismo lugar~\cite{bortolot2005, koza92}.
-
-
-\section{Imágenes}
-
-Se pueden incluir imágenes con los comandos standard de \LaTeX, pero esta plantilla dispone de comandos propios como por ejemplo el siguiente:
-
-\imagen{escudoInfor}{Autómata para una expresión vacía}{.5}
-
-
-
-\section{Listas de items}
-
-Existen tres posibilidades:
-
+\section{Aprendizaje por refuerzo}
+El aprendizaje por refuerzo o \textit{Reinforcement Learning} (RL) es una rama del aprendizaje automático que se centra en cómo los agentes deben de tomar decisiones en un entorno, para maximizar la recompensa asociada a sus acciones y estado del entorno. A diferencia del aprendizaje supervisado, donde se dispone de un conjunto de datos etiquetados, en el aprendizaje por refuerzo el agente aprende a través de la interacción con el entorno, recibiendo recompensas o penalizaciones en función de las acciones que realiza. Su aprendizaje se basa en la prueba y error, donde el agente aprende a través de la experiencia acumulada en el entorno. 
+Los principales elementos del aprendizaje por refuerzo son:
 \begin{itemize}
-	\item primer item.
-	\item segundo item.
+	\item \textbf{Agente:} Es el ente que se encarga de la toma de decisiones y aprende a través de la interacción con el entorno a lo largo del tiempo.
+	\item \textbf{Entorno:} Es el contexto en el que el agente se encuentra, incluyendo todos los elementos con los que se relaciona.
+	\item \textbf{Estado:} Es una instantánea en un momento dado, que puede incluir información sobre el estado actual del agente y del entorno.
+	\item \textbf{Acción:} Es una decisión tomada por el agente que afecta al estado del entorno.
+	\item \textbf{Política:} Es una estrategia que define cómo el agente selecciona acciones en función del estado actual del entorno.
+	\item \textbf{Recompensa:} Es una señal que indica al agente la calidad de la acción tomada en un estado determinado. El objetivo del agente es maximizar la recompensa acumulada a lo largo del tiempo.
 \end{itemize}
 
-\begin{enumerate}
-	\item primer item.
-	\item segundo item.
-\end{enumerate}
+El aprendizaje por refuerzo se utiliza en una amplia variedad de aplicaciones, como juegos, robótica, optimización de procesos, entre otros.
 
-\begin{description}
-	\item[Primer item] más información sobre el primer item.
-	\item[Segundo item] más información sobre el segundo item.
-\end{description}
-	
+Se usa en situaciones donde:
 \begin{itemize}
-\item 
+	\item Las acciones afectan el estado futuro del entorno
+	\item No se dispone de un conjunto de datos etiquetados
+	\item Se tiene retroalimentación escasa o tardía de la acción que se ha tomado
+	\item El agente debe aprender a través de la experiencia acumulada.
+\end{itemize}
+Es especialmente útil en entornos muy variables o dinámicos, donde se tienen que tomar acciones secuencialmente y se necesita una adaptación a los cambios en el entorno.
+
+
+\section{Redes de computadoras}
+Una red de computadoras es un conjunto de dispositivos interconectados que pueden comunicarse entre sí. Permiten el intercambio de mensajes y recursos entre los elementos de la red. Actualmente las redes de computadoras están muy extendidas y son fundamentales para el funcionamiento de Internet y de muchas aplicaciones y servicios en línea.
+Las redes se pueden clasificar en diferentes tipos según su alcance, los más comunes son:
+\begin{itemize}
+	\item \textbf{Redes de área local (LAN):} Conectan dispositivos en un área geográfica limitada, como una oficina o un edificio.
+	\item \textbf{Redes de área amplia (WAN):} Conectan dispositivos en áreas geográficas más amplias, como ciudades o países.
 \end{itemize}
 
-\section{Tablas}
+Los elementos principales de una red de computadoras son:
+\begin{itemize}
+	\item \textbf{Dispositivos finales:} Son los dispositivos que se conectan a la red, los cuales se quieren comunicar con otros dispositivos finales. Los dispositivos finales pueden ser computadoras, teléfonos móviles, impresoras, cámaras, sensores, etc.
+	\item \textbf{Dispositivos de red:} Son los dispositivos que permiten la comunicación entre los dispositivos finales, como routers, switches, etc.
+	\item \textbf{Medios de transmisión:} Son los canales a través de los cuales se transmiten la información entre dispositivos, como cables Ethernet, fibra óptica, Wi-Fi, etc.
+\end{itemize}
 
-Igualmente se pueden usar los comandos específicos de \LaTeX o bien usar alguno de los comandos de la plantilla.
+La comunicación entre dispositivos se realiza a través de paquetes de datos que viajan por los medios de transmisión. Los paquetes incluyen información sobre el origen, destino, protocolo, y contenido del mensaje entre otros. Es importante tener en cuenta el tamaño de los paquetes, siendo necesario en algunas ocasiones dividir los mensajes en varios paquetes para su transmisión.
 
-\tablaSmall{Herramientas y tecnologías utilizadas en cada parte del proyecto}{l c c c c}{herramientasportipodeuso}
-{ \multicolumn{1}{l}{Herramientas} & App AngularJS & API REST & BD & Memoria \\}{ 
-HTML5 & X & & &\\
-CSS3 & X & & &\\
-BOOTSTRAP & X & & &\\
-JavaScript & X & & &\\
-AngularJS & X & & &\\
-Bower & X & & &\\
-PHP & & X & &\\
-Karma + Jasmine & X & & &\\
-Slim framework & & X & &\\
-Idiorm & & X & &\\
-Composer & & X & &\\
-JSON & X & X & &\\
-PhpStorm & X & X & &\\
-MySQL & & & X &\\
-PhpMyAdmin & & & X &\\
-Git + BitBucket & X & X & X & X\\
-Mik\TeX{} & & & & X\\
-\TeX{}Maker & & & & X\\
-Astah & & & & X\\
-Balsamiq Mockups & X & & &\\
-VersionOne & X & X & X & X\\
-} 
+
+\section{Internet de las cosas}
+Los dispositivos de Internet de las cosas, o por sus siglas en inglés \textit{Internet of Things} (IoT), son dispositivos físicos que están conectados a una red y se encargan de enviar, recibir y procesar datos del mundo real. ~\cite{AzizAlKabir2023} 
+
+Actualmente estos dispositivos están muy extendidos y son fundamentales para el funcionamiento de muchas aplicaciones y servicios en línea, como la domótica, la monitorización de la salud, la gestión de la energía, cámaras de seguridad, etc. Estos dispositivos se caracterizan por la escasa capacidad de procesamiento y almacenamiento, siendo también muy susceptibles a ataques informáticos debido a su baja seguridad. Un ataque muy común en estos dispositivos es el ataque de denegación de servicio, que busca saturar los recursos del dispositivo o de la red a la que está conectado, impidiendo su correcto funcionamiento, o incluso utilizar estos dispositivos para formar botnets. ~\cite{kolias2017}
+
+
+\section{Ataques informáticos}
+Los ataques informáticos son acciones que tienen como objetivo comprometer la seguridad de los sistemas, redes o datos.
+Estas acciones, su objetivo es afectar a uno o varios de los tres pilares fundamentales de la ciberseguridad: la confidencialidad, integridad y disponibilidad (conocidos como el triángulo CIA).~\cite{NicholasEdwards2020, Chaeikar2012} 
+
+Actualmente los ataques informáticos son una amenaza constante para la seguridad de las redes y sistemas. Estos ataques pueden tener diferentes objetivos, como robar información, interrumpir servicios, entre otros.
+
+\begin{itemize}
+    \item \textbf{Ataques de denegación de servicio (DoS y DDoS):} Buscan saturar los recursos de un sistema o red, impidiendo el acceso de los usuarios legítimos a los servicios. Denied of Service (DoS) se refiere a un ataque desde una sola fuente, mientras que Distributed Denied of Service (DDoS) implica la versión distribuida, atacando desde múltiples fuentes. Para ataques DDoS se suelen usar redes de bots o \textit{botnets}, que son redes de dispositivos comprometidos que se controlan de forma remota para llevar a cabo el ataque. Debido a la gran cantidad de dispositivos de internet de las cosas que se usan actualmente, y su baja seguridad, son un objetivo común para los atacantes que buscan crear redes de bots. ~\cite{kolias2017}
+
+    \item \textbf{Malware:} Es un programa informático malicioso diseñado para dañar, robar o modificar la información o sistemas informáticos. Incluye virus, gusanos, troyanos, ransomware, entre otros. ~\cite{SushilJajodia2025}
+
+    \item \textbf{Exploits de vulnerabilidades:} Son técnicas o herramientas que aprovechan de fallos de seguridad en el software o hardware para comprometer el sistema. ~\cite{SushilJajodia2025}
+\end{itemize}
+
+Para que los ataques informáticos no tengan éxito, es importante implementar medidas de seguridad adecuadas y mitigar los ataques que se detecten en la medida de lo posible. 
+Algunas de las mitigaciones más comunes son:
+\begin{itemize}
+	\item \textbf{Descartar paquetes:} Se descartan los paquetes que se consideran basados en reglas establecidas, por ejemplo, paquetes que no cumplen con el formato esperado, que provienen de ciertas direcciones IP, ubicaciones geográficas, protocolos etc. ~\cite{Yungaicela-Naula2022, Liu2018} 
+
+    \item \textbf{Rate limiting:} Consiste en limitar la cantidad de peticiones que puede realizar un cliente en un intervalo de tiempo determinado. Esto permite evitar que el servidor se pueda saturar por un gran número de peticiones desde un mismo cliente, ya sea un cliente legítimo o un bot malicioso que realice escaneos masivos, ataques de denegación de servicio o ataques de fuerza bruta.
+
+    \item \textbf{Desafíos interactivos (tipo CAPTCHA):} Es común encontrar en aplicaciones web desafíos para verificar si el usuario que intenta acceder al recurso es humano o no. Estos desafíos suelen ser imágenes, preguntas o tareas que requieren la intervención del usuario para conseguir pasarlos.
+\end{itemize}
