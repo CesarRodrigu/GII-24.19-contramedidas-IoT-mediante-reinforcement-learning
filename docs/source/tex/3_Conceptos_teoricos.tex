@@ -1,7 +1,7 @@
 \capitulo{3}{Conceptos teóricos}
 En esta capítulo se van explicar los conceptos teóricos relacionados con el proyecto, que son necesarios para la comprensión del mismo.
 
-\subsection{Aprendizaje por refuerzo}
+\section{Aprendizaje por refuerzo}
 El aprendizaje por refuerzo o \textit{Reinforcement Learning} (RL) es una rama del aprendizaje automático que se centra en cómo los agentes deben de tomar decisiones en un entorno, para maximizar la recompensa asociada a sus acciones y estado del entorno. A diferencia del aprendizaje supervisado, donde se dispone de un conjunto de datos etiquetados, en el aprendizaje por refuerzo el agente aprende a través de la interacción con el entorno, recibiendo recompensas o penalizaciones en función de las acciones que realiza. Su aprendizaje se basa en la prueba y error, donde el agente aprende a través de la experiencia acumulada en el entorno. 
 Los principales elementos del aprendizaje por refuerzo son:
 \begin{itemize}
@@ -25,7 +25,7 @@ Se usa en situaciones donde:
 Es especialmente útil en entornos muy variables o dinámicos, donde se tienen que tomar acciones secuencialmente y se necesita una adaptación a los cambios en el entorno.
 
 
-\subsection{Redes de computadoras}
+\section{Redes de computadoras}
 Una red de computadoras es un conjunto de dispositivos interconectados que pueden comunicarse entre sí. Permiten el intercambio de mensajes y recursos entre los elementos de la red. Actualmente las redes de computadoras están muy extendidas y son fundamentales para el funcionamiento de Internet y de muchas aplicaciones y servicios en línea.
 Las redes se pueden clasificar en diferentes tipos según su alcance, los más comunes son:
 \begin{itemize}
@@ -43,17 +43,32 @@ Los elementos principales de una red de computadoras son:
 La comunicación entre dispositivos se realiza a través de paquetes de datos que viajan por los medios de transmisión. Los paquetes incluyen información sobre el origen, destino, protocolo, y contenido del mensaje entre otros. Es importante tener en cuenta el tamaño de los paquetes, siendo necesario en algunas ocasiones dividir los mensajes en varios paquetes para su transmisión.
 
 
-\subsection{Internet de las cosas}
+\section{Internet de las cosas}
+Los dispositivos de Internet de las cosas, o por sus siglas en inglés \textit{Internet of Things} (IoT), son dispositivos físicos que están conectados a una red y se encargan de enviar, recibir y procesar datos del mundo real. ~\cite{AzizAlKabir2023} 
 
-\subsection{Ataques informáticos}
-
-\subsubsection{Tipos de ataques}
-
-\subsubsection{Contramedidas}
-
-\subsection{Ciberseguridad}
+Actualmente estos dispositivos están muy extendidos y son fundamentales para el funcionamiento de muchas aplicaciones y servicios en línea, como la domótica, la monitorización de la salud, la gestión de la energía, cámaras de seguridad, etc. Estos dispositivos se caracterizan por la escasa capacidad de procesamiento y almacenamiento, siendo también muy susceptibles a ataques informáticos debido a su baja seguridad. Un ataque muy común en estos dispositivos es el ataque de denegación de servicio, que busca saturar los recursos del dispositivo o de la red a la que está conectado, impidiendo su correcto funcionamiento, o incluso utilizar estos dispositivos para formar botnets. ~\cite{kolias2017}
 
 
+\section{Ataques informáticos}
+Los ataques informáticos son acciones que tienen como objetivo comprometer la seguridad de los sistemas, redes o datos.
+Estas acciones, su objetivo es afectar a uno o varios de los tres pilares fundamentales de la ciberseguridad: la confidencialidad, integridad y disponibilidad (conocidos como el triángulo CIA).~\cite{NicholasEdwards2020, Chaeikar2012} 
 
+Actualmente los ataques informáticos son una amenaza constante para la seguridad de las redes y sistemas. Estos ataques pueden tener diferentes objetivos, como robar información, interrumpir servicios, entre otros.
 
+\begin{itemize}
+    \item \textbf{Ataques de denegación de servicio (DoS y DDoS):} Buscan saturar los recursos de un sistema o red, impidiendo el acceso de los usuarios legítimos a los servicios. Denied of Service (DoS) se refiere a un ataque desde una sola fuente, mientras que Distributed Denied of Service (DDoS) implica la versión distribuida, atacando desde múltiples fuentes. Para ataques DDoS se suelen usar redes de bots o \textit{botnets}, que son redes de dispositivos comprometidos que se controlan de forma remota para llevar a cabo el ataque. Debido a la gran cantidad de dispositivos de internet de las cosas que se usan actualmente, y su baja seguridad, son un objetivo común para los atacantes que buscan crear redes de bots. ~\cite{kolias2017}
 
+    \item \textbf{Malware:} Es un programa informático malicioso diseñado para dañar, robar o modificar la información o sistemas informáticos. Incluye virus, gusanos, troyanos, ransomware, entre otros. ~\cite{SushilJajodia2025}
+
+    \item \textbf{Exploits de vulnerabilidades:} Son técnicas o herramientas que aprovechan de fallos de seguridad en el software o hardware para comprometer el sistema. ~\cite{SushilJajodia2025}
+\end{itemize}
+
+Para que los ataques informáticos no tengan éxito, es importante implementar medidas de seguridad adecuadas y mitigar los ataques que se detecten en la medida de lo posible. 
+Algunas de las mitigaciones más comunes son:
+\begin{itemize}
+	\item \textbf{Descartar paquetes:} Se descartan los paquetes que se consideran basados en reglas establecidas, por ejemplo, paquetes que no cumplen con el formato esperado, que provienen de ciertas direcciones IP, ubicaciones geográficas, protocolos etc. ~\cite{Yungaicela-Naula2022, Liu2018} 
+
+    \item \textbf{Rate limiting:} Consiste en limitar la cantidad de peticiones que puede realizar un cliente en un intervalo de tiempo determinado. Esto permite evitar que el servidor se pueda saturar por un gran número de peticiones desde un mismo cliente, ya sea un cliente legítimo o un bot malicioso que realice escaneos masivos, ataques de denegación de servicio o ataques de fuerza bruta.
+
+    \item \textbf{Desafíos interactivos (tipo CAPTCHA):} Es común encontrar en aplicaciones web desafíos para verificar si el usuario que intenta acceder al recurso es humano o no. Estos desafíos suelen ser imágenes, preguntas o tareas que requieren la intervención del usuario para conseguir pasarlos.
+\end{itemize}
