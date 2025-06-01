@@ -1,8 +1,8 @@
 \capitulo{3}{Conceptos teóricos}
-En esta capítulo se van explicar los conceptos teóricos relacionados con el proyecto, que son necesarios para la comprensión del mismo.
+En este capítulo se explican los conceptos teóricos relacionados con el proyecto, que son necesarios para la comprensión del mismo.
 
 \section{Aprendizaje por refuerzo}
-El aprendizaje por refuerzo o \textit{Reinforcement Learning} (RL) es una rama del aprendizaje automático que se centra en cómo los agentes deben de tomar decisiones en un entorno, para maximizar la recompensa asociada a sus acciones y estado del entorno. A diferencia del aprendizaje supervisado, donde se dispone de un conjunto de datos etiquetados, en el aprendizaje por refuerzo el agente aprende a través de la interacción con el entorno, recibiendo recompensas o penalizaciones en función de las acciones que realiza. Su aprendizaje se basa en la prueba y error, donde el agente aprende a través de la experiencia acumulada en el entorno. 
+El aprendizaje por refuerzo o \textit{Reinforcement Learning} (RL) es una rama del aprendizaje automático que su objetivo es aprender cómo los agentes deben tomar decisiones en un entorno, para maximizar la recompensa asociada a sus acciones y estado del entorno. A diferencia del aprendizaje supervisado, donde se dispone de un conjunto de datos etiquetados, en el aprendizaje por refuerzo el agente aprende a través de la interacción con el entorno, recibiendo recompensas o penalizaciones en función de las acciones que realiza. Su aprendizaje se basa en la prueba y error, donde el agente aprende a través de la experiencia acumulada en el entorno.
 Los principales elementos del aprendizaje por refuerzo son:
 \begin{itemize}
 	\item \textbf{Agente:} Es el ente que se encarga de la toma de decisiones y aprende a través de la interacción con el entorno a lo largo del tiempo.
@@ -29,8 +29,8 @@ Es especialmente útil en entornos muy variables o dinámicos, donde se tienen q
 Una red de computadoras es un conjunto de dispositivos interconectados que pueden comunicarse entre sí. Permiten el intercambio de mensajes y recursos entre los elementos de la red. Actualmente las redes de computadoras están muy extendidas y son fundamentales para el funcionamiento de Internet y de muchas aplicaciones y servicios en línea.
 Las redes se pueden clasificar en diferentes tipos según su alcance, los más comunes son:
 \begin{itemize}
-	\item \textbf{Redes de área local (LAN):} Conectan dispositivos en un área geográfica limitada, como una oficina o un edificio.
-	\item \textbf{Redes de área amplia (WAN):} Conectan dispositivos en áreas geográficas más amplias, como ciudades o países.
+	\item \textbf{Redes de área local (LAN):} Conectan computadoras en un área geográfica limitada, como una oficina o un edificio.
+	\item \textbf{Redes de área amplia (WAN):} Conectan computadoras en áreas geográficas más amplias, como ciudades o países.
 \end{itemize}
 
 Los elementos principales de una red de computadoras son:
@@ -41,6 +41,32 @@ Los elementos principales de una red de computadoras son:
 \end{itemize}
 
 La comunicación entre dispositivos se realiza a través de paquetes de datos que viajan por los medios de transmisión. Los paquetes incluyen información sobre el origen, destino, protocolo, y contenido del mensaje entre otros. Es importante tener en cuenta el tamaño de los paquetes, siendo necesario en algunas ocasiones dividir los mensajes en varios paquetes para su transmisión.
+Los protocoles de red son un pilar fundamental en la comunicación de computadoras en redes, ya que son un conjunto de reglas y convenciones que definen cómo se transmiten los datos este estos.
+Algunos de protocolos más comunes son:
+\begin{itemize}
+	\item \textbf{HTTP (HyperText Transfer Protocol):} Es el protocolo que se usa par la transferencia de datos en internet. Permite la comunicación entre navegadores web y servidores. Sin embargo, HTTP tiene problemas de seguridad, ya que los datos no se transmiten cifrados.
+	\item \textbf{TLS (Transport Layer Security):} Es un protocolo criptográfico que proporciona comunicaciones seguras sobre una red, su predecesesor es la capa de puertos seguros o SSL. TLS cifra los datos antes de enviarlos y verifica que no hayan sido alterados durante la transmisión. Es ampliamente utilizado en protocolos como HTTPS, correo electrónico, y otros servicios en línea. ~\cite{SushilJajodia2025}
+
+	\item \textbf{HTTPS (HTTP Secure):} Es la versión de tranmisión de datos segura de HTTP. Utiliza una capa adicional de seguridad llamada TLS (Transport Layer Security) para cifrar la información durante la transmisión. Esto garantiza la seguridad de los datos, protegiendo contra ataques como la interceptación o modificación de mensajes. ~\cite{SushilJajodia2025}
+
+	\item \textbf{TCP/IP (Transmission Control Protocol / Internet Protocol):} Es el conjunto de protocolos más utilizado en Internet. TCP se encarga de dividir los mensajes en paquetes, enviarlos y asegurarse de que lleguen completos y en orden. El protocolo TCP está hecho para ser utilizado con el IP, que se encarga de direccionar y enrutar los paquetes hacia su destino a través de la red.~\cite{Protocolo}
+
+	\item \textbf{IPv4 (Internet Protocol version 4) y IPv6 (Internet Protocol version 6):} Es la cuarta versión del protocolo Internet Protocol(IP) y la más utilizada. Utiliza direcciones de 32 bits. Debido al crecimiento de dispositivos conectados, se ha ido agotando el espacio de direcciones IPv4.
+	IPv6 Es la versión más reciente del protocolo IP. Utiliza direcciones de 128 bits, lo que soluciona el problema de las direcciones limitadas IPv4. IPv6 también mejora aspectos como la eficiencia y configuración entre otros.
+
+	\item \textbf{DNS (Domain Name System):} Es el sistema que traduce los nombres de dominio en direcciones IP, facilitando al usuario el acceso a los servidores que proporcionan la información solicitada. Principalmente permite que los usuarios accedan a sitios web usando nombres fáciles de recordar(dominios) en lugar de números IP difíciles de manejar.
+
+\end{itemize}
+
+
+En cuanto a los dispositivos con funciones de seguridad de red, los principales son:
+\begin{itemize}
+	\item \textbf{Firewalls:} Son dispositivos hardware o software que controlan el tráfico de red, permitiendo o bloqueando el paso de paquetes según reglas predefinidas. Se utilizan para proteger la red de accesos no autorizados y ataques informáticos. ~\cite{SushilJajodia2025}
+
+	\item \textbf{Proxies:} Como Cloudflare, son servidores que actúan como intermediarios entre los dispositivos finales y los servidores de destino. Se utilizan para mejorar el rendimiento, la seguridad y la privacidad de la red. ~\cite{SushilJajodia2025}
+
+	\item \textbf{CDN (Content Delivery Network):} Son redes de servidores distribuidos en distintas ubicaciones que almacenan copias del contenido estático (como imágenes, scripts etc) para entregarlo de forma más rápida y eficiente al usuario. Además de mejorar el rendimiento, muchas CDN también contribuyen a la seguridad al absorber tráfico malicioso. Cloudflare es un ejemplo de CDN que ofrece servicios de seguridad y rendimiento para aplicaciones web.
+\end{itemize}
 
 
 \section{Internet de las cosas}
@@ -61,6 +87,10 @@ Actualmente los ataques informáticos son una amenaza constante para la segurida
     \item \textbf{Malware:} Es un programa informático malicioso diseñado para dañar, robar o modificar la información o sistemas informáticos. Incluye virus, gusanos, troyanos, ransomware, entre otros. ~\cite{SushilJajodia2025}
 
     \item \textbf{Exploits de vulnerabilidades:} Son técnicas o herramientas que aprovechan de fallos de seguridad en el software o hardware para comprometer el sistema. ~\cite{SushilJajodia2025}
+
+	\item \textbf{Ataques CSRF(Cross-Site Request Forgery):} CSRF es un tipo de ataque que fuerza a un usuario autenticado en el sistema para que realice acciones no deseadas. El atacante envía una solicitud al navegador del usuario, que se ejecuta sin su conocimiento, aprovechando la sesión activa del usuario.
+
+	\item \textbf{Ataques XSS(Cross-Site Scripting):} XSS es un tipo de ataque que permite a un atacante incluir scripts maliciosos en una página web, que se ejecutan en el navegador de los usuarios que visitan esa página. Estos scripts pueden robar información del usuario, o realizar acciones no autorizadas en nombre del usuario.
 \end{itemize}
 
 Para que los ataques informáticos no tengan éxito, es importante implementar medidas de seguridad adecuadas y mitigar los ataques que se detecten en la medida de lo posible. 
@@ -70,5 +100,5 @@ Algunas de las mitigaciones más comunes son:
 
     \item \textbf{Rate limiting:} Consiste en limitar la cantidad de peticiones que puede realizar un cliente en un intervalo de tiempo determinado. Esto permite evitar que el servidor se pueda saturar por un gran número de peticiones desde un mismo cliente, ya sea un cliente legítimo o un bot malicioso que realice escaneos masivos, ataques de denegación de servicio o ataques de fuerza bruta.
 
-    \item \textbf{Desafíos interactivos (tipo CAPTCHA):} Es común encontrar en aplicaciones web desafíos para verificar si el usuario que intenta acceder al recurso es humano o no. Estos desafíos suelen ser imágenes, preguntas o tareas que requieren la intervención del usuario para conseguir pasarlos.
+    \item \textbf{Desafíos interactivos (tipo CAPTCHA):} Es común encontrar en aplicaciones web desafíos para verificar si el usuario que intenta acceder al recurso es humano o no. Estos desafíos suelen ser imágenes, preguntas o tareas que requieren la intervención del usuario para conseguir pasarlos.~\cite{CloudflareDocsTeam2025}
 \end{itemize}
