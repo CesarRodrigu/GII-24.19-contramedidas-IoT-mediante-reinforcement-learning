@@ -68,6 +68,16 @@ En cuanto a los dispositivos con funciones de seguridad de red, los principales 
 	\item \textbf{CDN (Content Delivery Network):} Son redes de servidores distribuidos en distintas ubicaciones que almacenan copias del contenido estático (como imágenes, scripts etc) para entregarlo de forma más rápida y eficiente al usuario. Además de mejorar el rendimiento, muchas CDN también contribuyen a la seguridad al absorber tráfico malicioso. Cloudflare es un ejemplo de CDN que ofrece servicios de seguridad y rendimiento para aplicaciones web.
 \end{itemize}
 
+\section{Interfaces de Programación de Aplicaciones}
+Una API (\textit{Application Programming Interface}) es un conjunto de definiciones y protocolos que permiten que dos aplicaciones se comuniquen entre sí. Las APIs actúan como una interfaz que facilita el acceso a funcionalidades o datos de un sistema sin necesidad de conocer su implementación interna.~\cite{Api}
+Una API REST (\textit{Representational State Transfer}) es un tipo de API que sigue los principios de la arquitectura REST, siguiendo estos principios:
+\begin{itemize}
+	\item \textbf{Cliente-servidor:} La API REST separa el cliente del servidor, permitiendo que ambos se desarrollen de forma independiente, pero manteniendo la comunicación entre ellos.
+	\item \textbf{Sin estado:} Donde en el servidor no se almacenen datos del cliente entre solicitudes.
+	\item \textbf{Cacheable:} Las respuestas de la API REST deben poderse guardar en caché, para mejorar el rendimiento y reducir la carga en el servidor.
+	\item \textbf{Interfaz uniforme:} La API REST debe tener una interfaz consistente y fácil de entender, para facilitar su uso y mantenimiento.
+\end{itemize}
+Estas llamadas a la API REST se realizan a través de peticiones HTTP, utilizando los métodos más comunes del protocolo, como GET para obtener datos del servidor, POST para enviar o crear datos, PUT para actualizar recursos existentes, y DELETE para eliminar recursos. Existen otros métodos menos utilizados, pero estos son los más frecuentes.
 
 \section{Internet de las cosas}
 Los dispositivos de Internet de las cosas, o por sus siglas en inglés \textit{Internet of Things} (IoT), son dispositivos físicos que están conectados a una red y se encargan de enviar, recibir y procesar datos del mundo real. ~\cite{AzizAlKabir2023} 
