@@ -13,15 +13,19 @@ import es.cesar.app.util.SecurityUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
+import java.util.Objects;
 
 import static es.cesar.app.util.AlertType.*;
 
@@ -55,7 +59,6 @@ public class TrainedModelController extends BaseController {
         setPage(interfazConPantalla);
         return MANAGE_MODELS_VIEW_NAME;
     }
-
 
 
     @PostMapping("/requestModel")
@@ -136,4 +139,30 @@ public class TrainedModelController extends BaseController {
             out.flush();
         }
     }
+
+    @PostMapping("/uploadZipModel")
+    public String handleZipUpload(@RequestParam("file") MultipartFile file,
+                                  @AuthenticationPrincipal UserDetails user,
+                                  RedirectAttributes redirectAttributes) {
+        if (file.isEmpty() || !Objects.requireNonNull(file.getOriginalFilename()).endsWith(".zip")) {
+            MessageHelper.addFlashMessage(redirectAttributes, DANGER, formattingService.getMessage("model.upload.invalid"));
+            return REDIRECT + MANAGE_MODELS_VIEW_URL;
+        }
+        try {
+            byte[] fileBytes = file.getBytes();
+
+            String originalFilename = file.getOriginalFilename();
+            String modelName = originalFilename != null && originalFilename.endsWith(".zip")
+                    ? originalFilename.substring(0, originalFilename.length() - 4)
+                    : "unnamed-model";
+            User user2 = userService.getUserByUsername(user.getUsername());
+            trainedModelService.createModel(user2, modelName, fileBytes);
+            MessageHelper.addFlashMessage(redirectAttributes, SUCCESS, formattingService.getMessage("model.upload.success"));
+        } catch (IOException e) {
+            MessageHelper.addFlashMessage(redirectAttributes, DANGER, formattingService.getMessage("model.upload.invalid"));
+        }
+
+        return REDIRECT + MANAGE_MODELS_VIEW_URL;
+    }
+
 }
