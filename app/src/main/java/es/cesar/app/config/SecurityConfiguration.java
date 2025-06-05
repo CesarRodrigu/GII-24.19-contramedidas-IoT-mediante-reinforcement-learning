@@ -14,22 +14,45 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * The Security configuration class for Spring Security.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 
     private final UserService userService;
 
+    /**
+     * Instantiates a new Security configuration.
+     *
+     * @param userService the user service
+     */
     @Autowired
     public SecurityConfiguration(@Lazy UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * Granted authority defaults granted authority defaults.
+     *
+     * @return the granted authority defaults
+     */
     @Bean
-    static GrantedAuthorityDefaults grantedAuthorityDefaults() {
+    public static GrantedAuthorityDefaults grantedAuthorityDefaults() {
         return new GrantedAuthorityDefaults("ROLE_");
     }
 
+    /**
+     * Security filter chain for Spring Security.
+     *
+     * @param httpSecurity the http security
+     * @param users        the users DetailsService
+     *
+     * @return the security filter chain
+     *
+     * @throws Exception the exception that is thrown if an error occurred when building the Object
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, UserDetailsService users) throws Exception {
         // @formatter:off
@@ -50,6 +73,11 @@ public class SecurityConfiguration {
         return httpSecurity.build();
     }
 
+    /**
+     * The Authentication provider for Spring Security.
+     *
+     * @return the authentication provider
+     */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
@@ -58,6 +86,11 @@ public class SecurityConfiguration {
         return daoAuthenticationProvider;
     }
 
+    /**
+     * BCrypt password encoder.
+     *
+     * @return the BCrypt password encoder
+     */
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();

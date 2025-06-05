@@ -10,6 +10,9 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * The entity class that represents a Role.
+ */
 @Entity
 @Getter
 @Setter
@@ -26,6 +29,11 @@ public class Role implements Serializable {
     @ManyToMany(mappedBy = "roles")
     private Set<User> users = new HashSet<>();
 
+    /**
+     * Instantiates a new Role.
+     *
+     * @param roleName the role name
+     */
     public Role(String roleName) {
         this.roleName = roleName;
     }

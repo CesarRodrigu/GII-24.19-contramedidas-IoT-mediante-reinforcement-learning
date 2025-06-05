@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 import java.text.DateFormat;
 import java.util.*;
 
+/**
+ * The class UserMapper, that maps between User and UserDto.
+ */
 @Component
 public class UserMapper {
 
@@ -18,12 +21,24 @@ public class UserMapper {
     private final RoleRepository roleRepository;
 
 
+    /**
+     * Instantiates a new User mapper.
+     *
+     * @param formattingService the formatting service
+     * @param roleRepository    the role repository
+     */
     @Autowired
     public UserMapper(LocaleFormattingService formattingService, RoleRepository roleRepository) {
         this.formattingService = formattingService;
         this.roleRepository = roleRepository;
     }
 
+    /**
+     * Update the user entity.
+     *
+     * @param dto  the dto
+     * @param user the user
+     */
     public void updateEntity(UserDto dto, User user) {
         if (dto == null || user == null) return;
 
@@ -43,12 +58,26 @@ public class UserMapper {
         }
     }
 
+    /**
+     * Transform the users to dtos collection.
+     *
+     * @param users the users
+     *
+     * @return the collection
+     */
     public Collection<UserDto> toDtos(Collection<User> users) {
         return users.stream()
                 .map(this::toDto)
                 .toList();
     }
 
+    /**
+     * Transform the user to dto.
+     *
+     * @param user the user
+     *
+     * @return the user dto
+     */
     public UserDto toDto(User user) {
         if (user == null) return null;
 
@@ -69,6 +98,14 @@ public class UserMapper {
         return dto;
     }
 
+    /**
+     * Compare if the dto and the user are different.
+     *
+     * @param dto  the dto
+     * @param user the user
+     *
+     * @return the boolean
+     */
     public boolean isDifferent(UserDto dto, User user) {
         if (dto == null || user == null) return false;
 

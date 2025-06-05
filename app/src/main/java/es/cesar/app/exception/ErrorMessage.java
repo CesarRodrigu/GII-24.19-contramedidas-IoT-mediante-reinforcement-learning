@@ -5,6 +5,9 @@ import lombok.Getter;
 
 import java.util.Date;
 
+/**
+ * The DataClass that represents an ErrorMessage.
+ */
 @Getter
 @AllArgsConstructor
 public class ErrorMessage {

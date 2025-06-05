@@ -9,17 +9,32 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
 
+/**
+ * The class ChatController, that provides chatbot functionality.
+ */
 @RestController
 @CrossOrigin
 public class ChatController {
 
     private final ChatClient chatClient;
 
+    /**
+     * Instantiates a new Chat controller.
+     *
+     * @param builder the builder
+     */
     @Autowired
     public ChatController(ChatClient.Builder builder) {
         this.chatClient = builder.build();
     }
 
+    /**
+     * Provides the Chat with stream flux.
+     *
+     * @param message the message provided by the user
+     *
+     * @return the flux of chat responses
+     */
     @GetMapping("/stream")
     public Flux<String> chatWithStream(@RequestParam("message") String message) {
         String context = """
