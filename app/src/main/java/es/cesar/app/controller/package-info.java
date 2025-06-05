@@ -1,5 +1,5 @@
 /**
- * This package contains the all the controllers for the application.
+ * This package contains all the controllers for the application.
  *
  * @author César Rodríguez Villagrá
  */
