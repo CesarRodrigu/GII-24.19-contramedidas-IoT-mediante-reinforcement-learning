@@ -6,8 +6,8 @@ const tamCola = 250;
 const vProcesamiento = 5e6 / 8;
 const duration_step = 1e-3;
 const tamPaquete = 200;
-//TODO poner igual que el de la carpeta params
-// Función de reward (recompensa)
+
+
 function reward(descartados, ocu_actual, action, ocu_ant, coeficientes) {
     let {c, c2, c3, c4, c5} = coeficientes; // Define c5 with a default value
     //console.log("coeficientes", c, c2, c3, c4, c5);
@@ -62,8 +62,6 @@ function reward_function(
 }
 
 function calcular_ocu_actual(ocu_ant, paquetes_entrantes, action) {
-    //console.log("Dentro", ocu_ant, paquetes_entrantes, action);
-    //TODO mirar representar la anterior
     let ocu = ocu_ant;
     if (action == Action.PERMITIR) {
         ocu = Math.min(1.0, ocu_ant + paquetes_entrantes);

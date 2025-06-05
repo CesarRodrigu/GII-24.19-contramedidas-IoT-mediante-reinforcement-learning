@@ -42,6 +42,34 @@
                 </div>
             </div>
         </form>
+        <div class="row justify-content-center my-4">
+            <div class="col-md-6 col-lg-6 d-flex align-items-center">
+                <hr class="flex-grow-1 me-2" />
+                <span class="text-muted fw-bold" th:text="#{model.or}">OR</span>
+                <hr class="flex-grow-1 ms-2" />
+            </div>
+        </div>
+        <h5 class="mb-3 text-center" th:text="#{model.uploadZip}">Upload ZIP Model</h5>
+        <form class="row justify-content-center g-2"
+              enctype="multipart/form-data"
+              method="post"
+              th:action="@{/uploadZipModel}">
+            <div class="col-md-6 col-lg-6">
+                <label class="form-label" for="zipFile" th:text="#{model.uploadZipName}">Upload ZIP Model</label>
+                <div class="d-flex">
+                    <input accept=".zip"
+                           class="form-control form-control-sm me-2"
+                           id="zipFile"
+                           name="file"
+                           required
+                           type="file" />
+                    <button class="btn btn-primary btn-sm d-inline-flex align-items-center" type="submit">
+                        <i class="bi bi-upload me-1"></i>
+                        <span th:text="#{model.upload}">Upload</span>
+                    </button>
+                </div>
+            </div>
+        </form>
     </div>
 
     <div class="table-responsive">

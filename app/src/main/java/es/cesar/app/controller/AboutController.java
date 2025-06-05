@@ -1,5 +1,6 @@
 package es.cesar.app.controller;
 
+import es.cesar.app.service.LocaleFormattingService;
 import es.cesar.app.util.MessageHelper;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,10 @@ import static es.cesar.app.util.AlertType.DANGER;
 
 @Controller
 public class AboutController extends BaseController {
-    public AboutController() {
+    private final LocaleFormattingService formattingService;
+
+    public AboutController(LocaleFormattingService formattingService) {
+        this.formattingService = formattingService;
         super.module = "nav_about";
     }
 
@@ -36,7 +40,7 @@ public class AboutController extends BaseController {
                 interfazConPantalla.addAttribute("pdf" + (i + 1), base64);
             }
         } catch (Exception e) {
-            MessageHelper.addMessage(interfazConPantalla, DANGER, "Error al cargar los PDFs: " + e.getMessage()); // #TODO localizar el mensaje
+            MessageHelper.addMessage(interfazConPantalla, DANGER, formattingService.getMessage("error.pdf"));
             return "about";
         }
         setPage(interfazConPantalla);

@@ -44,21 +44,21 @@
                     <button aria-expanded="false" class="btn dropdown-toggle d-flex align-items-center"
                             data-bs-toggle="dropdown" id="selectedLang">
                         <img alt="icon" class="me-2" height="32"
-                             th:src="@{'/images/flags/' + ${#locale.language} + '.svg'}" width="32"/>
+                             th:src="@{'/images/flags/' + ${#locale.language} + '.svg'}" width="32" />
                         <span th:text="#{'language.'+${#locale.language}}">English</span>
                     </button>
                     <ul class="dropdown-menu">
                         <li>
                             <a class="dropdown-item" href="#" th:href="@{?lang=es}">
                                 <img alt="Español" class="me-2" height="32" th:src="@{/images/flags/es.svg}"
-                                     width="32"/>
+                                     width="32" />
                                 <span th:text="#{language.es}">Español</span>
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="#" th:href="@{?lang=en}">
                                 <img alt="English" class="me-2" height="32" th:src="@{/images/flags/en.svg}"
-                                     width="32"/>
+                                     width="32" />
                                 <span th:text="#{language.en}">English</span>
                             </a>
                         </li>
@@ -84,22 +84,13 @@
                        data-bs-toggle="dropdown" href="#">
                         <img alt="profile" class="rounded-circle me-2"
                              height="32" th:src="@{/favicon-32x32.png}" width="32">
-                        <span th:text="${#authentication.name}">Username</span>
+                        <span th:text="#{app.profile}">My Profile</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end text-small">
                         <li>
-                            <a class="dropdown-item" href="#">
-                                <i class="bi bi-folder-plus me-2"></i>New project...
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">
-                                <i class="bi bi-gear me-2"></i>Settings
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">
-                                <i class="bi bi-person-circle me-2"></i>Profile
+                            <a class="dropdown-item disabled">
+                                <i class="bi bi-person-circle me-2"></i>
+                                <span th:text="#{app.hello(${#authentication.name})}">Username</span>
                             </a>
                         </li>
                         <li>
