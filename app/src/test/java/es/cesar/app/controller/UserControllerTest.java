@@ -1,12 +1,19 @@
 package es.cesar.app.controller;
 
+import es.cesar.app.dto.UserDto;
+import es.cesar.app.model.User;
+import es.cesar.app.service.UserService;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -20,6 +27,9 @@ class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockitoBean
+    private UserService userService;
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
@@ -36,6 +46,22 @@ class UserControllerTest {
         mockMvc.perform(get("/admin/editUser").param("id", "999"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/manageUsers"));
+    }
+
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
+    void testEditUser() throws Exception {
+        final long id = 1;
+        Mockito.when(userService.getUserById(id)).thenReturn(new User());
+        UserDto userDto = new UserDto();
+        List<String> roles = List.of();
+        userDto.setRoles(roles);
+
+        mockMvc.perform(get("/admin/editUser").param("id", String.valueOf(id)))
+                .andExpect(status().isOk())
+                .andExpect(view().name("users/edit"))
+                .andExpect(model().attribute("availableRoles", roles))
+                .andExpect(model().attribute("userDto", userDto));
     }
 
     @Test
@@ -64,5 +90,4 @@ class UserControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login?logout"));
     }
-
 }

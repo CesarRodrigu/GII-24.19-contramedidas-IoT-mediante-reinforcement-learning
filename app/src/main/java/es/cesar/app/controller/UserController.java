@@ -18,6 +18,9 @@ import java.util.List;
 import static es.cesar.app.util.AlertType.*;
 
 
+/**
+ * The class UserController, that handles user-related requests.
+ */
 @Controller
 public class UserController extends BaseController {
     private static final String MANAGE_USERS_VIEW_NAME = "users/users";
@@ -30,6 +33,14 @@ public class UserController extends BaseController {
     private final LocaleFormattingService formattingService;
 
 
+    /**
+     * Instantiates a new User controller.
+     *
+     * @param userService       the user service
+     * @param roleService       the role service
+     * @param userMapper        the user mapper
+     * @param formattingService the formatting service
+     */
     @Autowired
     public UserController(UserService userService, RoleService roleService, UserMapper userMapper, LocaleFormattingService formattingService) {
         this.userService = userService;
@@ -39,14 +50,29 @@ public class UserController extends BaseController {
         super.module = "manage_users";
     }
 
+    /**
+     * Handle the request to manage users.
+     *
+     * @param modelMap the model map
+     *
+     * @return the path to the manage users view
+     */
     @GetMapping(MANAGE_USERS_VIEW_URL)
-    public String manageUsers(ModelMap interfazConPantalla) {
+    public String manageUsers(ModelMap modelMap) {
         List<User> userList = userService.getAllUsers();
-        interfazConPantalla.addAttribute("userDtoList", userMapper.toDtos(userList));
-        setPage(interfazConPantalla);
+        modelMap.addAttribute("userDtoList", userMapper.toDtos(userList));
+        setPage(modelMap);
         return MANAGE_USERS_VIEW_NAME;
     }
 
+    /**
+     * Handle the request to delete a user.
+     *
+     * @param id                 the id of the user
+     * @param redirectAttributes the redirect attributes
+     *
+     * @return the path to the manage users view or redirect URL
+     */
     @RequestMapping(value = "/admin/deleteUser", method = {RequestMethod.POST, RequestMethod.DELETE})
     public String deleteUser(@RequestParam Long id, RedirectAttributes redirectAttributes) {
         userService.deleteUserById(id);
@@ -55,19 +81,36 @@ public class UserController extends BaseController {
         return REDIRECT + MANAGE_USERS_VIEW_URL;
     }
 
+    /**
+     * Handle the request to edit a user.
+     *
+     * @param id                 the id of the user
+     * @param modelMap           the model map
+     * @param redirectAttributes the redirect attributes
+     *
+     * @return the path to the edit user view or redirect URL
+     */
     @GetMapping("/admin/editUser")
-    public String editUser(@RequestParam Long id, ModelMap interfazConPantalla, RedirectAttributes redirectAttributes) {
+    public String editUser(@RequestParam Long id, ModelMap modelMap, RedirectAttributes redirectAttributes) {
         User user = userService.getUserById(id);
         if (user == null) {
             MessageHelper.addFlashMessage(redirectAttributes, DANGER, formattingService.getMessage("manageusers.notfound"));
             return REDIRECT + MANAGE_USERS_VIEW_URL;
         }
-        interfazConPantalla.addAttribute("availableRoles", roleService.getAllStringRoles());
-        interfazConPantalla.addAttribute("userDto", userMapper.toDto(user));
-        setPage(interfazConPantalla);
+        modelMap.addAttribute("availableRoles", roleService.getAllStringRoles());
+        modelMap.addAttribute("userDto", userMapper.toDto(user));
+        setPage(modelMap);
         return EDIT_USERS_VIEW_NAME;
     }
 
+    /**
+     * Handle the request to update a user.
+     *
+     * @param userDto            the user dto
+     * @param redirectAttributes the redirect attributes
+     *
+     * @return the path to the manage users view or redirect URL
+     */
     @RequestMapping(value = "/admin/updateUser", method = {RequestMethod.POST, RequestMethod.PUT})
     public String updateUser(@ModelAttribute UserDto userDto, RedirectAttributes redirectAttributes) {
         User user = userService.getUserById(userDto.getId());
@@ -81,6 +124,13 @@ public class UserController extends BaseController {
         return REDIRECT + MANAGE_USERS_VIEW_URL;
     }
 
+    /**
+     * Handle the request to logout.
+     *
+     * @param id the id of the user
+     *
+     * @return the path to the redirect URL
+     */
     @PostMapping("/logout")
     public String logout(@RequestParam Long id) {
         return REDIRECT;

@@ -21,6 +21,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * The class UserService, that provides services related to users.
+ */
 @Service
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
@@ -28,6 +31,14 @@ public class UserService implements UserDetailsService {
     private final TrainedModelRepository trainedModelRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
+    /**
+     * Instantiates a new User service.
+     *
+     * @param userRepository         the user repository
+     * @param roleRepository         the role repository
+     * @param trainedModelRepository the trained model repository
+     * @param passwordEncoder        the password encoder
+     */
     @Autowired
     public UserService(UserRepository userRepository, RoleRepository roleRepository, TrainedModelRepository trainedModelRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -36,6 +47,13 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Save user.
+     *
+     * @param user the user
+     *
+     * @return the user
+     */
     @Transactional
     public User save(@NotNull User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -43,23 +61,54 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    /**
+     * Gets all users.
+     *
+     * @return the all users
+     */
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
+    /**
+     * Gets user by id.
+     *
+     * @param id the id
+     *
+     * @return the user by id
+     */
     public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
+    /**
+     * Gets user by username.
+     *
+     * @param username the username
+     *
+     * @return the user by username
+     */
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
 
+    /**
+     * Update user user.
+     *
+     * @param updatedUser the updated user
+     *
+     * @return the user
+     */
     public User updateUser(User updatedUser) {
         return userRepository.save(updatedUser);
     }
 
+    /**
+     * Delete user by id.
+     *
+     * @param id the id
+     */
     @Transactional
     public void deleteUserById(Long id) {
         userRepository.findById(id).ifPresent(user -> {

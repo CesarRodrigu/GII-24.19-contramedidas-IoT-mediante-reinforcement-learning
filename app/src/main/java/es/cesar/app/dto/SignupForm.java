@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
+/**
+ * The Data Class that represents a SignupForm.
+ */
 @Data
 public class SignupForm {
 
@@ -23,6 +26,11 @@ public class SignupForm {
     @Length(min = 5, max = 12, message = PASSWORD_PREFIX + LENGTH_MESSAGE)
     private String password;
 
+    /**
+     * Create user user.
+     *
+     * @return the new user
+     */
     public User createUser() {
         return new User(getUsername(), getPassword());
     }

@@ -3,6 +3,9 @@ package es.cesar.app.dto;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
+/**
+ * The Data Class that represents a LoginForm.
+ */
 @Data
 public class LoginForm {
 

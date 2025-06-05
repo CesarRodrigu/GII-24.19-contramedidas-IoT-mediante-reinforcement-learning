@@ -14,9 +14,21 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.Date;
 
+/**
+ * The ControllerExceptionHandler, that handles exceptions globally.
+ */
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
+    /**
+     * Handle no resource found object.
+     *
+     * @param ex          the exception
+     * @param request     the request
+     * @param httpRequest the http request
+     *
+     * @return the response entity
+     */
     @ExceptionHandler(NoResourceFoundException.class)
     public Object handleNoResourceFound(NoResourceFoundException ex, WebRequest request, HttpServletRequest httpRequest) {
         HttpStatus status = HttpStatus.NOT_FOUND;
@@ -50,12 +62,30 @@ public class ControllerExceptionHandler {
         };
     }
 
+    /**
+     * Handle no handler found object.
+     *
+     * @param ex          the exception
+     * @param request     the request
+     * @param httpRequest the http request
+     *
+     * @return the response entity
+     */
     @ExceptionHandler({NoHandlerFoundException.class, HttpRequestMethodNotSupportedException.class})
     public Object handleNoHandlerFound(NoHandlerFoundException ex, WebRequest request, HttpServletRequest httpRequest) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         return getResponse(ex, request, httpRequest, status);
     }
 
+    /**
+     * Handle global object exceptions.
+     *
+     * @param ex          the exception
+     * @param request     the request
+     * @param httpRequest the http request
+     *
+     * @return the response entity
+     */
     @ExceptionHandler(Exception.class)
     public Object handleGlobal(Exception ex, WebRequest request, HttpServletRequest httpRequest) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;

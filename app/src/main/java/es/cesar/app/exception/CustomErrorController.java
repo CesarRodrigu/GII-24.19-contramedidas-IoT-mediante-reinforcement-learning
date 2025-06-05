@@ -7,9 +7,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
+/**
+ * The class CustomErrorController that handles custom error pages.
+ */
 @Controller
 public class CustomErrorController implements ErrorController {
 
+    /**
+     * General error string.
+     *
+     * @param request the request
+     * @param model   the model
+     *
+     * @return the path to the general error view
+     */
     @GetMapping("/generalError")
     public String generalError(HttpServletRequest request, ModelMap model) {
         Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
