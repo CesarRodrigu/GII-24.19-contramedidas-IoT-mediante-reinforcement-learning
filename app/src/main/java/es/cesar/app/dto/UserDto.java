@@ -5,6 +5,9 @@ import lombok.Data;
 import java.time.Instant;
 import java.util.List;
 
+/**
+ * The Data Class that represents a UserDto.
+ */
 @Data
 public class UserDto {
     private Long id;

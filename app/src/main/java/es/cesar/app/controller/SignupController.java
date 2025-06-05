@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+/**
+ * The class SignupController, that handles the sign-up page requests.
+ */
 @Controller
 public class SignupController extends BaseController {
 
@@ -21,6 +24,12 @@ public class SignupController extends BaseController {
     private final LocaleFormattingService formattingService;
 
 
+    /**
+     * Instantiates a new Signup controller.
+     *
+     * @param userService       the user service
+     * @param formattingService the formatting service
+     */
     @Autowired
     public SignupController(UserService userService, LocaleFormattingService formattingService) {
         this.userService = userService;
@@ -28,13 +37,29 @@ public class SignupController extends BaseController {
         super.module = "signup";
     }
 
+    /**
+     * Show the sign-up page.
+     *
+     * @param modelMap the model map
+     *
+     * @return the path to the sign-up view
+     */
     @GetMapping("/signup")
-    public String signup(ModelMap interfazConPantalla) {
-        interfazConPantalla.addAttribute(new SignupForm());
-        setPage(interfazConPantalla);
+    public String signup(ModelMap modelMap) {
+        modelMap.addAttribute(new SignupForm());
+        setPage(modelMap);
         return SIGNUP_VIEW_NAME;
     }
 
+    /**
+     * Handles the sign-up form submission.
+     *
+     * @param signupForm the signup form
+     * @param errors     the errors
+     * @param ra         the redirect attributes
+     *
+     * @return the path to the sign-up view
+     */
     @PostMapping("/signup")
     public String signup(@Valid @ModelAttribute SignupForm signupForm, Errors errors, RedirectAttributes ra) {
         if (errors.hasErrors()) {

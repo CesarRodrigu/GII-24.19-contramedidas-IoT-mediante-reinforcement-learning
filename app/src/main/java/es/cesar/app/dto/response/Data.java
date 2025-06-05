@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * The Data class, that represents the response data.
+ */
 @Setter
 @Getter
 @NoArgsConstructor

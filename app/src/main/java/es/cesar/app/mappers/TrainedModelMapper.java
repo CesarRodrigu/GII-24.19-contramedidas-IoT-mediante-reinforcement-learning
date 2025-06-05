@@ -6,8 +6,17 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 
+/**
+ * The component class TrainedModelMapper, that maps between TrainedModel and TrainedModelDto.
+ */
 @Component
 public class TrainedModelMapper {
+    /**
+     * Update the entity.
+     *
+     * @param dto          the dto
+     * @param trainedModel the trained model
+     */
     public void updateEntity(TrainedModelDto dto, TrainedModel trainedModel) {
         if (dto == null || trainedModel == null) return;
 
@@ -16,12 +25,26 @@ public class TrainedModelMapper {
 
     }
 
-    public Collection<TrainedModelDto> toDtos(Collection<TrainedModel> users) {
-        return users.stream()
+    /**
+     * Transform the trained models to dtos collection.
+     *
+     * @param trainedModels the trainedModels
+     *
+     * @return the collection
+     */
+    public Collection<TrainedModelDto> toDtos(Collection<TrainedModel> trainedModels) {
+        return trainedModels.stream()
                 .map(this::toDto)
                 .toList();
     }
 
+    /**
+     * Transform the trained model to dto.
+     *
+     * @param trainedModel the trained model
+     *
+     * @return the trained model dto
+     */
     public TrainedModelDto toDto(TrainedModel trainedModel) {
         if (trainedModel == null) return null;
 
@@ -34,6 +57,14 @@ public class TrainedModelMapper {
         return dto;
     }
 
+    /**
+     * Compare if the dto and the trained model are different.
+     *
+     * @param dto          the dto
+     * @param trainedModel the trained model
+     *
+     * @return the boolean
+     */
     public boolean isDifferent(TrainedModelDto dto, TrainedModel trainedModel) {
         if (dto == null || trainedModel == null) return false;
 

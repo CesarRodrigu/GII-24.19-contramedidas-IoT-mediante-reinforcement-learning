@@ -15,17 +15,32 @@ import java.util.Base64;
 import static es.cesar.app.util.AlertType.DANGER;
 
 
+/**
+ * The controller for the About page. It handles the requests for the About page and encodes PDF files to Base64.
+ */
 @Controller
 public class AboutController extends BaseController {
     private final LocaleFormattingService formattingService;
 
+    /**
+     * Instantiates a new About controller.
+     *
+     * @param formattingService the formatting service
+     */
     public AboutController(LocaleFormattingService formattingService) {
         this.formattingService = formattingService;
         super.module = "nav_about";
     }
 
+    /**
+     * Show the about page.
+     *
+     * @param modelMap the model map to add attributes to the view
+     *
+     * @return the path to the about view
+     */
     @GetMapping("/about")
-    public String showViewerPage(ModelMap interfazConPantalla) {
+    public String showViewerPage(ModelMap modelMap) {
         final String folderPath = "static/pdfs/";
         final String[] pdfFiles = {"memoria", "anexos", "Workshop_César"};
 
@@ -37,13 +52,13 @@ public class AboutController extends BaseController {
                     continue;
                 }
                 String base64 = encodePdfToBase64(filePath);
-                interfazConPantalla.addAttribute("pdf" + (i + 1), base64);
+                modelMap.addAttribute("pdf" + (i + 1), base64);
             }
         } catch (Exception e) {
-            MessageHelper.addMessage(interfazConPantalla, DANGER, formattingService.getMessage("error.pdf"));
+            MessageHelper.addMessage(modelMap, DANGER, formattingService.getMessage("error.pdf"));
             return "about";
         }
-        setPage(interfazConPantalla);
+        setPage(modelMap);
         return "about";
     }
 

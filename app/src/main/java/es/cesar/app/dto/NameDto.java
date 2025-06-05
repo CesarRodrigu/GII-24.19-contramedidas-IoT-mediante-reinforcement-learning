@@ -4,6 +4,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+/**
+ * The Data Class that represents a NameDto.
+ */
 @Data
 public class NameDto {
     private static final String NAME_PREFIX = "{model.prefix} ";

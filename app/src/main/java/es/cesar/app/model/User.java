@@ -14,6 +14,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 
+/**
+ * The entity class that represents a User.
+ */
 @Data
 @Entity
 @AllArgsConstructor
@@ -41,12 +44,25 @@ public class User implements Serializable {
     private Set<Role> roles = new HashSet<>();
 
 
+    /**
+     * Instantiates a new User.
+     *
+     * @param username the username
+     * @param password the password
+     */
     public User(String username, String password) {
         this.username = username;
         this.password = password;
         this.created = Instant.now();
     }
 
+    /**
+     * Instantiates a new User.
+     *
+     * @param username the username
+     * @param password the password
+     * @param roles    the roles
+     */
     public User(String username, String password, Collection<Role> roles) {
         this.username = username;
         this.password = password;
@@ -54,6 +70,13 @@ public class User implements Serializable {
         this.roles.addAll(roles);
     }
 
+    /**
+     * Instantiates a new User.
+     *
+     * @param username the username
+     * @param password the password
+     * @param role     the role
+     */
     public User(String username, String password, Role role) {
         this.username = username;
         this.password = password;
