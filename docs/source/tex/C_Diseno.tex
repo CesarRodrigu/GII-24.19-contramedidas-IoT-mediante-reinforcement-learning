@@ -1,10 +1,46 @@
 \apendice{Especificación de diseño}
 
 \section{Introducción}
+La especificación de diseño es una parte fundamental del desarrollo de software, ya que permite definir de forma detallada el comportamiento y la estructura del sistema a desarrollar. En este apéndice se presenta la especificación de diseño del proyecto, que incluye el diseño de datos, el diseño arquitectónico y el diseño procedimental.
+
+Para la transferencia de datos entre el frontend y el backend se ha utilizado las clases de transferencia de datos (DTOs) con ayuda de Thymeleaf. En cambio, para la transferencia de datos entre el backend y la API se ha utilizado JSON, ya que es un formato ligero y sencillo para la comunicación entre sistemas.
+
+La motivación de usar DTOs es:
+\begin{itemize}
+    \item \textbf{Reducción del acoplamiento:} Los DTOs permiten reducir el acoplamiento entre el frontend y el backend, lo que facilita la evolución y mantenimiento de la aplicación.
+    \item \textbf{Seguridad y optimización de la transferencia de datos:} Los DTOs permiten transferir solo los datos necesarios entre el frontend y el backend, lo que reduce el tamaño de las peticiones y respuestas, además de proporcionar una capa adicional de seguridad, ya que por ejemplo en el DTO de los usuarios no incluirá la contraseña de los mismos.
+    \item \textbf{Uso como formularios:} Los DTOs permiten definir de forma más clara los distintos tipos de validaciones de datos, por ejemplo, en el caso de los formularios, se pueden definir las validaciones necesarias para cada campo del formulario, útil por ejemplo para los formularios de registro.
+\end{itemize}
+
+
 
 \section{Diseño de datos}
 
+Para la gestión de los datos de la base de datos se ha utilizado una base de datos relacional, en este caso MySQL. Se ha diseñado un esquema de base de datos que incluye las siguientes tablas:
+
+\begin{itemize}
+    \item \textbf{User}: Almacena información sobre los usuarios del sistema.
+    \item \textbf{Role}: Define los roles de los usuarios.
+    \item \textbf{TrainedModel}: Almacena los modelos de IA entrenados y datos relacionados.
+\end{itemize}
+Que se relacionan entre sí de la siguiente manera: \textbf{Figura~\ref{fig:dbrelaciones}}
+\imagen{dbrelaciones}{Esquema de la base de datos del proyecto}
+
+Para el intercambio de datos se han definido las siguientes clases de datos:
+\imagen{dtos}{Clases de datos del proyecto}
+
+En el que se muestran las clases, con sus contructores, atributos, métodos y propiedades, junto con su visibilidad y tipos.
+
 \section{Diseño arquitectónico}
+
+El diagrama de clases de alto nivel del proyecto muestra la estructura general del sistema, incluyendo las principales clases y sus relaciones. Este diagrama es una representación visual de cómo se organizan las clases en el sistema y cómo interactúan entre sí.
+\imagen{relacionesClases}{Diagrama de clases del proyecto}
+
+Para facilitar la visualización de las dependencias, se ha utilizado una matriz de dependencias agrupadas por paquetes. En el que los paquetes que se muestran en las primera columna, 
+En cada columna, los paquetes siguen el mismo orden que en la primera columna, y se marcan en cada celda cúantas dependencias tiene un paquete con otro.
+
+\imagen{matrizDep}{Matriz de dependencias del proyecto}
+Como se puede observar en la matriz de la \textbf{Figura~\ref{fig:matrizDep}}, el paquete es.cesar.app.service tiene muchas dependencias, por lo que solo en este paquetes se han incluido las depencias de las clases individuales. En este caso la mayor cantidad de dependencias corresponden con la columna del paquete de los controladores(tercera columna). Por ejemplo, la clase UserService tiene dependencias con los paquetes de los controladores (es.cesar.app.controller) y configuración (es.cesar.app.config), es decir el paquetes de configuración(4 referencias) y controladores(29 referencias) dependen de la clase UserService, pero no al revés.
 
 \section{Diseño procedimental}
 
