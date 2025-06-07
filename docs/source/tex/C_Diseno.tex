@@ -42,7 +42,12 @@ En cada columna, los paquetes siguen el mismo orden que en la primera columna, y
 \imagen{matrizDep}{Matriz de dependencias del proyecto}
 Como se puede observar en la matriz de la \textbf{Figura~\ref{fig:matrizDep}}, el paquete es.cesar.app.service tiene muchas dependencias, por lo que solo en este paquetes se han incluido las depencias de las clases individuales. En este caso la mayor cantidad de dependencias corresponden con la columna del paquete de los controladores(tercera columna). Por ejemplo, la clase UserService tiene dependencias con los paquetes de los controladores (es.cesar.app.controller) y configuración (es.cesar.app.config), es decir el paquetes de configuración(4 referencias) y controladores(29 referencias) dependen de la clase UserService, pero no al revés.
 
+En la parte de la aplicación web, se ha utilizado el patrón de diseño Modelo-Vista-Controlador (MVC) para separar la lógica de negocio, la presentación y el control de flujo de la aplicación. Este patrón permite una mayor modularidad, facilita el mantenimiento y mejora la evolución del sistema. 
+El mapa de navegación es una representación visual de las diferentes vistas de la aplicación y cómo se relacionan entre sí. En este caso, el mapa de navegación muestra las diferentes páginas de la aplicación web y cómo se accede a ellas desde otras páginas.
+
+\imagen{mapanavegacion}{Mapa de navegación de la aplicación web}
+La \textbf{Figura~\ref{fig:mapanavegacion}} muestra la estructura de navegación de la aplicación web, incluyendo las diferentes vistas y cómo se conectan entre sí.
+
 \section{Diseño procedimental}
 
-
-
+Diagramas de secuencia. Diagramas de flujo?

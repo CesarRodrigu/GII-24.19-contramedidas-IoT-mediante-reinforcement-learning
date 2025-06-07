@@ -5,49 +5,224 @@
 En este apéndice se presenta la especificación de requisitos del proyecto, que incluyen los objetivos generales, el catálogo de requisitos y la especificación de requisitos. La especificación de requisitos es una parte fundamental del desarrollo de software, ya que permite definir de forma clara y precisa las necesidades y expectativas del cliente.
 
 
-
-
 \section{Objetivos generales}
+La realización de este proyecto tiene como objetivo principal el desarrollo de un agente inteligente capaz de mitigar ataques de denegación de servicio en redes de computadoras, especialmente en redes de internet de las cosas (IoT). 
+Para lograr este objetivo, se han establecido los siguientes objetivos:
+\begin{itemize}
+	\item Desarrollar un agente inteligente, y su entorno mediante aprendizaje por refuerzo que pueda mitigar ataques de denegación de servicio en redes.
+	\item Hacer un estudio de los parámetros de la función de recompensa para optimizar el rendimiento del agente.
+	\item Proporcionar una interfaz de usuario intuitiva para el usuario, que permita la visualización de estadísticas y gráficas relacionadas con el agente.
+	\item Implementar un sistema que permita almacenar, consultar y eliminar modelos del agente.
+\end{itemize}
 
 \section{Catálogo de requisitos}
-Requisitos funcionales y no funcionales del proyecto, que se han clasificado en los siguientes grupos:
+En el proyecto se han identificado los requisitos funcionales y no funcionales, desarrollados en la \textbf{Tabla~\ref{tabla:requisitosfuncionales}} y la \textbf{Tabla~\ref{tabla:requisitosnofuncionales}} respectivamente. Estos requisitos son esenciales para el correcto funcionamiento del sistema y deben ser cumplidos para garantizar los objetivos propuestos.
 
 \tablaSmall{Tabla de requisitos funcionales}{l p{6em} p{15em} c}{requisitosfuncionales}{Número & Requerimiento & Descripción & Prioridad \\}{ 
-RF1 & Facilidad de uso & Las interfaces de usuario deben de ser simples y adecuadas para todo tipo de usuarios. & Alta \\
+RF1 & Registro de usuarios                  & Se permitirá registrarse nuevos usuarios al sistema.                                                                                                           & Alta  \\
+RF2 & Inicio de sesión                      & Los usuarios registrados en el sistema podrán acceder con las credenciales que introdujo en el registro, pudiendo acceder a los modelos guardados previamente. & Alta  \\
+RF3 & Panel de administración de usuarios   & Solo los usuarios con permisos de administrador podrán acceder a la gestión de usuarios, pudiendo borrar, y editar los usuarios registrados en el sistema.     & Media \\
+RF4 & Importación y exportación de datos      & Se podrá importar y exportar los datos disponibles en la web.                                                                                                  & Baja  \\
+RF5 & Documentación del sistema             & La web incluirá toda la información relacionada sobre el proyecto.                                                                                             & Media \\
+RF6 & Visualización de los datos del agente & Se podrán visualizar datos relacionados con el agente, incluyendo datos de entrenamiento como del agente actuando.                                             & Alta  \\
 } 
 
 \tablaSmall{Tabla de requisitos no funcionales}{l p{6em} p{15em} c}{requisitosnofuncionales}{Número & Requerimiento & Descripción & Prioridad \\}{ 
-RNF1 & Facilidad de uso & Las interfaces de usuario deben de ser simples y adecuadas para todo tipo de usuarios. & Alta \\
+RNF1 & Facilidad de uso                                      & Las interfaces de usuario deben de ser simples y adecuadas para todo tipo de usuarios.                                                          & Alta  \\
+RNF2 & Rendimiento de la web                                 & El tiempo de carga de la web no debe de ser superior a 1 segundo para las operaciones más comunes.                                              & Media \\
+RNF3 & Respuesta ante fallos                                 & Si ocurre un fallo, debe de tener el menor impacto posible en la web, mostrando un mensaje de error al usuario con el motivo del error.         & Alta  \\
+RNF4 & Seguridad                                             & Un usuario solo debe de poder acceder solo a sus modelos y solo los usuarios con permisos de administrador podrán hacer la gestión de usuarios. & Alta  \\
+RNF5 & Minimizar los paquetes que se descartan por el agente & El agente deberá de priorizar permitir el tráfico antes que denegarlo, intentando que los paquetes que se descartan sean los mínimos posibles.  & Alta  \\
 } 
 
 \section{Especificación de requisitos}
+En esta sección se detallan los casos de uso del sistema, que describen las principales interacciones entre los usuarios y el sistema para cumplir con los requisitos funcionales identificados. Cada caso de uso incluye una descripción, precondiciones, acciones, postcondiciones, excepciones e importancia.
 
-Casos de uso
-Hacer 5?
-
-% Caso de Uso 1 -> Consultar Experimentos.
 \begin{table}[p]
 	\centering
 	\begin{tabularx}{\linewidth}{ p{0.21\columnwidth} p{0.71\columnwidth} }
 		\toprule
-		\textbf{CU-1}    & \textbf{Ejemplo de caso de uso}\\
+		\textbf{CU-1}    & \textbf{Registro de usuarios} \\
 		\toprule
 		\textbf{Versión}              & 1.0    \\
 		\textbf{Autor}                & César Rodríguez Villagrá \\
-		\textbf{Requisitos asociados} & RF-xx, RF-xx \\
-		\textbf{Descripción}          & La descripción del CU \\
-		\textbf{Precondición}         & Precondiciones (podría haber más de una) \\
-		\textbf{Acciones}             &
+		\textbf{Requisitos asociados} & RF1 \\
+		\textbf{Descripción}          & Permite a un nuevo usuario crear una cuenta en el sistema proporcionando sus credenciales. \\
+		\textbf{Precondición}         & 
+		\begin{itemize}
+			\item El usuario no debe estar registrado previamente.
+			\item Disponibilidad del formulario de registro.
+		\end{itemize} \\
+		\textbf{Acciones}             & 
 		\begin{enumerate}
-			\def\labelenumi{\arabic{enumi}.}
-			\tightlist
-			\item Pasos del CU
-			\item Pasos del CU (añadir tantos como sean necesarios)
-		\end{enumerate}\\
-		\textbf{Postcondición}        & Postcondiciones (podría haber más de una) \\
-		\textbf{Excepciones}          & Excepciones \\
-		\textbf{Importancia}          & Alta o Media o Baja... \\
+			\item El usuario accede al formulario de registro.
+			\item Introduce los datos requeridos.
+			\item El sistema valida los datos.
+			\item Si la validación es correcta, crea la cuenta y confirma el registro.
+		\end{enumerate} \\
+		\textbf{Postcondición}        & 
+		\begin{itemize}
+			\item El usuario queda registrado en el sistema.
+			\item Puede iniciar sesión con sus credenciales.
+		\end{itemize} \\
+		\textbf{Excepciones}          & 
+		\begin{itemize}
+			\item Datos inválidos o incompletos: muestra mensaje de error.
+			\item Nombre de usuario ya registrado: notificación para usar otro nombre.
+		\end{itemize} \\
+		\textbf{Importancia}          & Alta \\
 		\bottomrule
 	\end{tabularx}
-	\caption{CU-1 Nombre del caso de uso.}
+	\caption{CU-1 Registro de usuarios.}
+\end{table}
+
+
+\begin{table}[p]
+	\centering
+	\begin{tabularx}{\linewidth}{ p{0.21\columnwidth} p{0.71\columnwidth} }
+		\toprule
+		\textbf{CU-2}    & \textbf{Inicio de sesión} \\
+		\toprule
+		\textbf{Versión}              & 1.0    \\
+		\textbf{Autor}                & César Rodríguez Villagrá \\
+		\textbf{Requisitos asociados} & RF2, RF1 \\
+		\textbf{Descripción}          & Permite a usuarios registrados acceder al sistema introduciendo sus credenciales. \\
+		\textbf{Precondición}         & 
+		\begin{itemize}
+			\item El usuario debe estar registrado.
+			\item Disponibilidad del sistema.
+		\end{itemize} \\
+		\textbf{Acciones}             & 
+		\begin{enumerate}
+			\item El usuario abre el formulario de inicio de sesión.
+			\item Introduce usuario y contraseña.
+			\item El sistema valida las credenciales.
+			\item Si son correctas, el usuario accede al sistema.
+		\end{enumerate} \\
+		\textbf{Postcondición}        & 
+		\begin{itemize}
+			\item El usuario está autenticado.
+			\item Puede acceder a sus modelos.
+		\end{itemize} \\
+		\textbf{Excepciones}          & 
+		\begin{itemize}
+			\item Credenciales incorrectas: muestra mensaje de error.
+		\end{itemize} \\
+		\textbf{Importancia}          & Alta \\
+		\bottomrule
+	\end{tabularx}
+	\caption{CU-2 Inicio de sesión.}
+\end{table}
+
+
+\begin{table}[p]
+	\centering
+	\begin{tabularx}{\linewidth}{ p{0.21\columnwidth} p{0.71\columnwidth} }
+		\toprule
+		\textbf{CU-3}    & \textbf{Gestión de usuarios} \\
+		\toprule
+		\textbf{Versión}              & 1.0    \\
+		\textbf{Autor}                & César Rodríguez Villagrá \\
+		\textbf{Requisitos asociados} & RF3 \\
+		\textbf{Descripción}          & Los administradores pueden añadir, modificar o eliminar usuarios registrados en el sistema. \\
+		\textbf{Precondición}         & 
+		\begin{itemize}
+			\item El usuario debe tener permisos de administrador.
+			\item El sistema debe estar operativo.
+		\end{itemize} \\
+		\textbf{Acciones}             & 
+		\begin{enumerate}
+			\item El administrador accede al panel de gestión de usuarios.
+			\item Puede consultar la lista de usuarios.
+			\item Selecciona acciones como crear, editar o eliminar usuarios.
+			\item El sistema aplica los cambios solicitados.
+		\end{enumerate} \\
+		\textbf{Postcondición}        & 
+		\begin{itemize}
+			\item La base de datos de usuarios queda actualizada.
+			\item Cambios reflejados en futuras sesiones.
+		\end{itemize} \\
+		\textbf{Excepciones}          & 
+		\begin{itemize}
+			\item Intento de acción sin permisos: no permite el acceso.
+			\item Error en la base de datos: muestra una notificación de fallo.
+		\end{itemize} \\
+		\textbf{Importancia}          & Media \\
+		\bottomrule
+	\end{tabularx}
+	\caption{CU-3 Gestión de usuarios.}
+\end{table}
+
+
+\begin{table}[p]
+	\centering
+	\begin{tabularx}{\linewidth}{ p{0.21\columnwidth} p{0.71\columnwidth} }
+		\toprule
+		\textbf{CU-4}    & \textbf{Importación/Exportación de datos} \\
+		\toprule
+		\textbf{Versión}              & 1.0    \\
+		\textbf{Autor}                & César Rodríguez Villagrá \\
+		\textbf{Requisitos asociados} & RF4 \\
+		\textbf{Descripción}          & Permite a los usuarios importar y exportar datos relacionados con los modelos y configuraciones. \\
+		\textbf{Precondición}         & 
+		\begin{itemize}
+			\item Usuario autenticado.
+			\item Formatos compatibles disponibles.
+		\end{itemize} \\
+		\textbf{Acciones}             & 
+		\begin{enumerate}
+			\item Si el usuario quiere descargar el modelo, selecciona el modelo deseado.
+			\item El sistema procesa la operación. Utilizando el nombre adecuado.
+			\item Muestra resultado y confirma la acción.
+		\end{enumerate} \\
+		\textbf{Postcondición}        & 
+		\begin{itemize}
+			\item Datos importados o exportados correctamente.
+		\end{itemize} \\
+		\textbf{Excepciones}          & 
+		\begin{itemize}
+			\item Archivo incompatible.
+			\item Error durante la operación.
+		\end{itemize} \\
+		\textbf{Importancia}          & Baja \\
+		\bottomrule
+	\end{tabularx}
+	\caption{CU-4 Importación/Exportación de datos.}
+\end{table}
+
+
+\begin{table}[p]
+	\centering
+	\begin{tabularx}{\linewidth}{ p{0.21\columnwidth} p{0.71\columnwidth} }
+		\toprule
+		\textbf{CU-5}    & \textbf{Visualización de datos y documentación} \\
+		\toprule
+		\textbf{Versión}              & 1.0    \\
+		\textbf{Autor}                & César Rodríguez Villagrá \\
+		\textbf{Requisitos asociados} & RNF1, RNF3 \\
+		\textbf{Descripción}          & Permite a los usuarios consultar la documentación y datos relacionados con el agente RL a través de la web. \\
+		\textbf{Precondición}         & 
+		\begin{itemize}
+			\item Usuario autenticado.
+			\item Disponibilidad de la web.
+		\end{itemize} \\
+		\textbf{Acciones}             & 
+		\begin{enumerate}
+			\item El usuario accede al panel de visualización.
+			\item Consulta documentación y estadísticas disponibles.
+			\item Puede filtrar y buscar información relevante.
+		\end{enumerate} \\
+		\textbf{Postcondición}        & 
+		\begin{itemize}
+			\item Usuario obtiene la información solicitada.
+		\end{itemize} \\
+		\textbf{Excepciones}          & 
+		\begin{itemize}
+			\item Fallo en la carga de datos.
+			\item Error de conexión.
+		\end{itemize} \\
+		\textbf{Importancia}          & Alta \\
+		\bottomrule
+	\end{tabularx}
+	\caption{CU-5 Visualización de datos y documentación.}
 \end{table}

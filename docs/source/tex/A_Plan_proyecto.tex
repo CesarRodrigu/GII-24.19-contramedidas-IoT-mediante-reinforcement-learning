@@ -60,8 +60,29 @@ Los costes se dividen principalmente en dos categorías: costes de personal y co
 
 Los costes de personal incluyen los salarios de los integrantes del proyecto. En este caso, se ha considerado ún unico empleado, en el cual ha trabajado en el proyecto de forma activa durante más de 5 menes, con una dedicación aproximada de 17 horas semanales, en el que dan unas horas totales de aproxiamdamente 380 horas de trabajo totales.
 
-
+En resumen, la viabilidad económica del proyecto se ha evaluado teniendo en cuenta los costes de personal y de infraestructura, determinando que el proyecto es viable económicamente, ya que los costes totales son asumibles por la empresa o entidad que lo financie.
 
 \subsection{Viabilidad legal}
+Para la viabilidad legal del proyecto, se ha tenido en cuenta la normativa vigente en materia de protección de datos y propiedad intelectual. 
+Las normativas aplicables más relevantes son:
+\begin{itemize}
+    \item \textbf{Reglamento General de Protección de Datos (RGPD):} Este reglamento establece las normas para la protección de datos personales en la Unión Europea.~\cite{RGPD}
+    \item \textbf{Ley Orgánica de Protección de Datos y Garantía de los Derechos Digitales (LOPDGDD):} Esta ley complementa el RGPD en España y establece normas adicionales para la protección de datos personales.~\cite{LOPDGDD}	
+\end{itemize}
+
+Para analizar la viabilidad legal del proyecto, se debe tener en cuenta que el desarrollo y la implementación de un agente de aprendizaje por refuerzo encargado de la mitigación de ataques permitiendo o denegando el tráfico de red, debe garantizar que se cumplen las normativas vigentes.
+
+En relación con la protección de datos personales del agente, cumple la normativa vigente, ya que no se recopilan ni procesan datos personales de los usuarios, ya que no obtiene información personal, ya que solo lee la capacidad de la cola, no accede a los datos de los paquetes. En la parte de la web, debido a que tampoco se recopilan datos personales de los usuarios, ya que en el registro de usuarios no se solicita información personal, y la única información que se almacena es el nombre de usuario y la contraseña, que se almacenan de forma segura en la base de datos, cumpliendo las mejores prácticas de seguridad, principalmente la autentificación y autorización de los usuarios, ya que utiliza Spring Security ~\cite{SpringSecurity}.
+También usa servicios en la nube de terceros, como AWS~\cite{PPAWS}, Cloudflare~\cite{PPClouflare} y GitHub~\cite{PPGithub}, que cumplen con las normativas de protección de datos y seguridad, ya que se utilizan para el despliegue de la aplicación web, la gestión de dominios y seguridad del tráfico de la web y el control de versiones del código fuente, respectivamente.
+
+En cuanto a las licencias de los paquetes y liberías usadas, se han utilizado principalmente:
+\begin{itemize}
+    \item \textbf{BSD-3-Clause:} Usada por más de 15 dependencias del proyecto.
+    \item \textbf{BSD-2-Clause:} Usada por más de 13 dependencias del proyecto.
+    \item \textbf{MIT:} Usada por 6 dependencias del proyecto.
+    \item \textbf{Apache-2.0:} Usada por 5 dependencias del proyecto.
+\end{itemize}
+Todas estas licencias son compatibles con el proyecto, ya que permiten su uso y compercialización de la aplicación, siempre y cuando se cumplan las condiciones establecidas en cada licencia. En este caso, se ha cumplido con las condiciones de las licencias, ya que se ha incluido la información de las licencias en el proyecto, y no se ha modificado el código de las dependencias, ya que se han utilizado tal cual están en sus repositorios oficiales.
 
 
+En resumen el proyecto cumple con la normativa vigente en materia de protección de datos y propiedad intelectual, permitiendo su desarrollo y despliegue sin problemas legales.

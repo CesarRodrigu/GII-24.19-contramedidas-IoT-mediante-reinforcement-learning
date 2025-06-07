@@ -146,6 +146,17 @@ Los principales escaneos que se han detectado son:
     \item \textbf{Escaneos de WordPress:} Otro patrón común detectado es el de escanear la web en busca de vulnerabilidades relacionadas con WordPress, como la búsqueda de archivos como \texttt{wp-config.php}, \texttt{wp-login.php}, \texttt{/wp-includes/}, etc. Estos archivos y directorios pueden contener información sensible sobre la configuración de WordPress, como las contraseñas, los usuarios, etc.
 \end{itemize}
 
+\subsubsection{Analíticas de tráfico web con Cloudflare}
+
+Cloudflare no solo proporciona funcionalidades de seguridad y rendimiento, sino que también permite obtener estadísticas detalladas sobre el tráfico web recibido en el dominio registrado. Estas estadísticas son muy útiles para entender el tráfico que recibe el dominio, identificar patrones de tráfico y detectar posibles ataques.
+Cloudflare proporciona estadíticas detalladas como, el número de solicitudes recibidas, el número de solicitudes bloqueadas, el número de solicitudes que han pasado las reglas de seguridad, etc. También proporciona estadísticas sobre el tráfico por país, por tipo de navegador, por tipo de dispositivo, etc.
+
+
+\imagen{webAnalytics}{Estadísticas web de carga de Cloudflare del dominio cesarrv.com}{1.0}
+
+La \textbf{Figura~\ref{fig:webAnalytics}} muestra la mediana de los tiempos entre que un usuario hace una solicitud y el servidor responde.
+Como se puede observar, cuenta con tiempos reducidos en el que el mayor tiempo es la carga de la página, normal ya que tiene que cargar todo el contenido. Un aspecto relevante de la imagen es el apartado de \textit{Core Web Vitals}, que son métricas de rendimiento web que miden la experiencia del usuario al interactuar con una página web y en este caso la mayor parte de las métricas están en verde, lo que indica que la página web cumple con los estándares de rendimiento recomendados.
+
 \subsubsection{Configuración y reglas aplicadas en Cloudflare}
 Para la mitigación de los ataques descritos anteriormente, se han aplicado las siguientes reglas en Cloudflare:
 \imagen{rules}{Reglas de seguridad aplicadas en Cloudflare}{1.0}
