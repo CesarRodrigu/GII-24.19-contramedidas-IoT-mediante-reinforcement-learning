@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en-US" th:lang="${#locale}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+</head>
+<body>
+<div class="alert alert-dismissible"
+     role="alert"
+     th:assert="${!#strings.isEmpty(type) and !#strings.isEmpty(message)}"
+     th:classappend="' alert-' + ${type}"
+     th:fragment="alert (type, message)">
+
+    <span th:text="${message}">Error</span>
+    <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+</div>
+</body>
+</html>

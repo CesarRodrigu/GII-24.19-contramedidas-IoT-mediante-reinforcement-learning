@@ -1,0 +1,42 @@
+services:
+  mysqldb:
+    image: mysql:9.3
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
+    volumes:
+      - db:/var/lib/mysql
+      - ./sql/data.sql:/docker-entrypoint-initdb.d/data.sql
+    networks:
+      - app-net
+  app:
+    depends_on:
+      - mysqldb
+      - api
+    build: ./app
+    restart: on-failure
+    env_file: .env
+    environment:
+      MYSQL_URL: jdbc:mysql://mysqldb:$MYSQLDB_DOCKER_PORT/$MYSQL_DATABASE
+      API_URL: http://api:$API_DOCKER_PORT
+    ports:
+      - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
+    networks:
+      - app-net
+      - api-app-net
+
+  api:
+    build: ./RL/api
+    restart: on-failure
+    env_file: .env
+    ports:
+      - $API_LOCAL_PORT:$API_DOCKER_PORT
+    networks:
+      - api-app-net
+networks:
+  app-net:
+  api-app-net:
+
+volumes:
+  db:

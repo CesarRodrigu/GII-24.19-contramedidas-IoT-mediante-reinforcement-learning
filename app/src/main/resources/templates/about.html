@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en-US" layout:decorate="~{fragments/layout}"
+      th:lang="${#locale}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{about.page.title}">Main</title>
+</head>
+<body>
+<main layout:fragment="contenido">
+    <div class="container py-5">
+        <th:block th:if="${error}">
+            <div class="container py-5">
+                <div th:replace="~{fragments/alert :: alert(${type}, ${error})}">
+                    Alert fallback
+                </div>
+            </div>
+        </th:block>
+
+        <h1 class="text-center mb-5" th:utext="#{about.page.title}">📊 Modelo de Aprendizaje Reforzado</h1>
+        <p class="text-center" th:utext="#{about.page.description}">Aquí podrás visualizar los detalles y estadísticas
+                                                                    de los PDFs generados durante el entrenamiento del
+                                                                    agente.</p>
+
+        <div class="rl-section text-center">
+            <div class="card rl-card p-4">
+                <h2 class="section-title" th:text="#{about.pdf1.title}">📄 PDF 1: Arquitectura del agente</h2>
+                <object height="600px"
+                        th:data="'data:application/pdf;base64,' + ${pdf1}"
+                        th:if="${pdf1 != null}"
+                        type="application/pdf" width="100%">
+                    <p th:text="#{about.pdf.fallback}">Tu navegador no soporta la vista previa.
+                        <a th:href="'data:application/pdf;base64,' + ${pdf1}" th:text="#{about.download}">Descargar
+                                                                                                          PDF</a>
+                    </p>
+                </object>
+                <p class="mt-3 text-muted" th:text="#{about.pdf1.description}">Estructura de red usada por el agente en
+                                                                               el entorno.</p>
+            </div>
+        </div>
+
+        <!-- PDF 2 -->
+        <div class="rl-section text-center">
+            <div class="card rl-card p-4">
+                <h2 class="section-title" th:text="#{about.pdf2.title}">📄 PDF 2: Evolución del entrenamiento</h2>
+                <object height="600px"
+                        th:data="'data:application/pdf;base64,' + ${pdf2}"
+                        th:if="${pdf2 != null}"
+                        type="application/pdf" width="100%">
+                    <p th:text="#{about.pdf.fallback}">Tu navegador no soporta la vista previa.
+                        <a th:href="'data:application/pdf;base64,' + ${pdf2}" th:text="#{about.download}">Descargar
+                                                                                                          PDF</a>
+                    </p>
+                </object>
+                <p class="mt-3 text-muted" th:text="#{about.pdf2.description}">Rendimiento del agente a lo largo de los
+                                                                               episodios.</p>
+            </div>
+        </div>
+
+        <!-- PDF 3 -->
+        <div class="rl-section text-center">
+            <div class="card rl-card p-4">
+                <h2 class="section-title" th:text="#{about.pdf3.title}">📄 PDF 3: Recompensas según acciones</h2>
+                <object height="600px"
+                        th:data="'data:application/pdf;base64,' + ${pdf3}"
+                        th:if="${pdf3 != null}"
+                        type="application/pdf" width="100%">
+                    <p th:text="#{about.pdf.fallback}">Tu navegador no soporta la vista previa.
+                        <a th:href="'data:application/pdf;base64,' + ${pdf3}" th:text="#{about.download}">Descargar
+                                                                                                          PDF</a>
+                    </p>
+                </object>
+                <p class="mt-3 text-muted" th:text="#{about.pdf3.description}">Cómo varían las recompensas en función
+                                                                               del entorno y decisiones del agente.</p>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

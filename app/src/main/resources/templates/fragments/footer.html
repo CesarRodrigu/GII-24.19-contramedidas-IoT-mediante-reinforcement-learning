@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en-US" th:lang="${#locale}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+</head>
+<body>
+<div class="footer text-center py-3 mt-auto bg-body-tertiary text-body-secondary" th:fragment="footer">
+    &copy; <span th:text="${#temporals.format(#temporals.createNow(), 'yyyy')}">2025</span>
+    <span th:text="#{app.title}">My RL web</span>
+    <p class="mb-0">
+        <span th:text="#{contact.label}">Contact:</span>
+        <a href="mailto:support@cesarrv.com">support@cesarrv.com</a>
+    </p>
+</div>
+</body>
+</html>
