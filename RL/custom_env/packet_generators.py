@@ -4,7 +4,7 @@ from gymnasium.utils import seeding
 from numpy.random import Generator
 
 
-class Packet_Generator():
+class PacketGenerator():
     sizes: list[tuple[int, int]] = [
         (64, 128),
         (128, 256),
@@ -27,7 +27,7 @@ class Packet_Generator():
         assert len(self.sizes) == len(self.probs)
         assert min_rate <= max_rate
         if generator is not None:
-            self._np_random = generator
+            self._np_random: Generator = generator
         else:
             self._np_random, _ = seeding.np_random()
         indice: int = self._np_random.choice(len(self.sizes), p=self.probs)
@@ -48,7 +48,9 @@ class Packet_Generator():
 
         self.min_rate: float = min_rate*step_dur
         self.max_rate: float = max_rate*step_dur
-        # print(min_rate,max_rate,self.min_rate,self.max_rate)
+
+        self.rate: float = self._np_random.uniform(
+            self.min_rate, self.max_rate)
 
     def generate_packet(self) -> dict[str, int]:
         return self.packet.sample()
@@ -56,23 +58,17 @@ class Packet_Generator():
     def generate_packets(self) -> list[dict[str, int]]:
         # Como el rate sería por segundo habría que transformarlo a la unidad deseada
         if self.min_rate < 1:
-            al: float = self._np_random.random()
-            rate_al: float = self._np_random.uniform(
-                self.min_rate, self.max_rate)
-            if al <= rate_al:
+            if self._np_random.random() <= self.rate:
                 num_packets: int = 1
             else:
                 return []
         else:
-            min_rate = np.floor(self.min_rate)
-            max_rate = np.ceil(self.max_rate)
-            num_packets: int = self._np_random.integers(
-                min_rate, max_rate, endpoint=True)  # Incluye tanto el limite minimo y maximo
+            num_packets: int = int(np.round(self.rate))
 
         return [self.generate_packet() for _ in range(num_packets)]
 
 
-class DOS_Packet_Generator(Packet_Generator):
+class DoSPacketGenerator(PacketGenerator):
     sizes: list[tuple[int, int]] = [(64, 128),
                                     (128, 256),
                                     (256, 1024),
@@ -90,7 +86,6 @@ class DOS_Packet_Generator(Packet_Generator):
                  step_dur=1e-3,  # En segundos,
                  generator: np.random.Generator = None
                  ):
-        
         if generator is not None:
             self._np_random: Generator = generator
         else:
