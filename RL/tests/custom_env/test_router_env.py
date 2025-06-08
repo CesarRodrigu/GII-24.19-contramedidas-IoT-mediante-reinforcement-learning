@@ -2,7 +2,7 @@ from collections import deque
 from typing import Literal
 
 import pytest
-from custom_env.actions import Acciones
+from custom_env.actions import Action
 from custom_env.router_env import RouterEnv, reward
 from custom_env.states import BaseState
 from gymnasium import make
@@ -26,14 +26,14 @@ class TestRouterEnv:
             RouterEnv(max_len=0-1)
 
     def test_get_reward(self):
-        allow_0: float = reward(0, Acciones.PERMITIR)
-        deny_0: float = reward(0, Acciones.DENEGAR)
+        allow_0: float = reward(0, Action.ALLOW)
+        deny_0: float = reward(0, Action.DENY)
 
-        allow_1: float = reward(1, Acciones.PERMITIR)
-        deny_1: float = reward(1, Acciones.DENEGAR)
+        allow_1: float = reward(1, Action.ALLOW)
+        deny_1: float = reward(1, Action.DENY)
 
-        allow_100: float = reward(100, Acciones.PERMITIR)
-        deny_100: float = reward(100, Acciones.DENEGAR)
+        allow_100: float = reward(100, Action.ALLOW)
+        deny_100: float = reward(100, Action.DENY)
 
         rewards: list[float] = [allow_0, deny_0,
                                 allow_1, deny_1,
@@ -93,3 +93,15 @@ class TestRouterEnv:
 
         assert self.env.get_tam_ocu(
         ) < expected_size, "Total size should lower than before after processing"
+
+    def test_get_seed(self):
+
+        env_with_seed = RouterEnv(seed=123)
+        seed_value = env_with_seed.get_seed()
+        assert isinstance(seed_value, int), "Seed should be an integer when set"
+        assert seed_value == 123, f"Seed should be 123, got {seed_value}"
+
+        env_with_seed.reset(seed=456)
+        new_seed_value = env_with_seed.get_seed()
+        assert isinstance(new_seed_value, int), "Seed should be an integer after reset"
+        assert new_seed_value == 456, f"Seed should be 456 after reset, got {new_seed_value}"
