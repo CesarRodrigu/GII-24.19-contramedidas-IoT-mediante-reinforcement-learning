@@ -18,7 +18,7 @@ et_xmlfile==2.0.0
 executing==2.1.0
 Farama-Notifications==0.0.4
 filelock==3.16.1
-Flask==3.1.0
+Flask==3.1.1
 fonttools==4.55.3
 fsspec==2024.12.0
 gymnasium==1.0.0
@@ -61,13 +61,13 @@ python-dotenv==1.0.1
 pytz==2024.2
 pyzmq==26.2.0
 rich==13.9.4
-setuptools==75.8.0
+setuptools==78.1.1
 six==1.17.0
 stable_baselines3==2.4.1
 stack-data==0.6.3
 sympy==1.13.1
-torch==2.5.1
-tornado==6.4.2
+torch==2.7.1
+tornado==6.5.1
 tox==4.24.2
 tqdm==4.67.1
 traitlets==5.14.3
