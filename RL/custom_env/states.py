@@ -1,13 +1,12 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from collections.abc import Generator
 from functools import cache
 from typing import override
 
 import numpy as np
 from gymnasium.utils import seeding
-from matplotlib.pylab import Generator
-
 from .packet_generators import DoSPacketGenerator, PacketGenerator
 
 
