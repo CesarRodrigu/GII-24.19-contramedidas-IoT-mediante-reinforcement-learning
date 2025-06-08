@@ -54,7 +54,7 @@ class RouterEnv(gym.Env):
         self.maquina = MaquinaDeEstados(self._np_random)
 
     def reset(self, seed: Optional[int] = None, options: Optional[dict] = None):
-        if seed is not None:
+        if seed is not None and seed != self._np_random_seed:
             self._np_random, self._np_random_seed = seeding.np_random(seed)
         self._set_initial_values()
 

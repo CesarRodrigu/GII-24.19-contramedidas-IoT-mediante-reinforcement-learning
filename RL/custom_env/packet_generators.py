@@ -86,7 +86,6 @@ class DoSPacketGenerator(PacketGenerator):
                  step_dur=1e-3,  # En segundos,
                  generator: np.random.Generator = None
                  ):
-        # TODO Hacer que un ataque tenga la misma pendiente, pero distinta que la de otro ataque
         if generator is not None:
             self._np_random: Generator = generator
         else:

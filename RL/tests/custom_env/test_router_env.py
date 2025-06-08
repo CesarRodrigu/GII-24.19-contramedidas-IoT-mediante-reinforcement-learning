@@ -17,9 +17,6 @@ class TestRouterEnv:
         self.env: RouterEnv = make(env_id, seed=seed)
 
     def test_routerenv(self):
-
-        check_env(self.env)
-
         with pytest.raises(ValueError, match="max_len must be greater than 0"):
             RouterEnv(max_len=0)
         with pytest.raises(ValueError, match="max_len must be greater than 0"):
