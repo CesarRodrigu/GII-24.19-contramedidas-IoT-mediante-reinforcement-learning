@@ -21,8 +21,8 @@ En el entorno de entrenamiento, los estados de ataque y benigno cambian siguiend
 \subsection{Algoritmo de entrenamiento del agente}
 En el entrenamiento del agente se ha usado el algoritmo de aprendizaje por refuerzo Proximal Policy Optimization (PPO), que es un algoritmo de optimización de políticas que se basa en la idea de maximizar la función de recompensa esperada, y que ha demostrado ser efectivo en una amplia variedad de entornos y tareas.~\cite{Siboo2023, Yu2022}
 El algoritmo PPO se encuentra implementado en la librería de Python \texttt{Stable Baselines3}, que es una librería de aprendizaje por refuerzo que proporciona implementaciones de algoritmos de aprendizaje por refuerzo basados en PyTorch, y que es ampliamente utilizada en la comunidad de aprendizaje por refuerzo.~\cite{Raffin2021}
-Este tiene una compatibilidad total con la librería \texttt{Gymnasium}, que es la librería que se ha usado para crear el entorno de simulación, y con distintos tipos de espacios, que son cómo se han definido los estados, las acciones y las recompensas del entorno de simulación. En el caso de PPO tiene compatibilidad con todos los espacios de \texttt{Gymnasium}, incluyendo espacios Box, Discrete, MultiDiscrete y MultiBinary, junto con la capacidad de multiprocesamiento, lo que permite entrenar el agente en múltiples entornos de simulación al mismo tiempo, mejorando así la eficiencia del entrenamiento y reduciendo el tiempo necesario para entrenar el agente.
-Busca un equilibrio entre la simplicidad y el rendimiento del mismo, proporcionando una implementación más sencilla que otros algoritmos de optimización de políticas, como el algoritmo Trust Region Policy Optimization (TRPO), también permite una gran flexibilidad en la configuración del entorno y durante el entrenamiento del agente suele mantener una gran estabilidad, lo que lo hace adecuado para este tipo de entornos y tareas.
+Este tiene una compatibilidad total con la librería \texttt{Gymnasium}, que es la librería que se ha usado para crear el entorno de simulación, y con distintos tipos de espacios, que son cómo se han definido los estados, las acciones y las recompensas del entorno de simulación. En el caso de PPO, tiene compatibilidad con todos los espacios de \texttt{Gymnasium}, incluyendo espacios Box, Discrete, MultiDiscrete y MultiBinary, junto con la capacidad de multiprocesamiento, lo que permite entrenar el agente en múltiples entornos de simulación al mismo tiempo, mejorando así la eficiencia del entrenamiento y reduciendo el tiempo necesario para entrenar el agente.
+Busca un equilibrio entre la simplicidad y el rendimiento del mismo, proporcionando una implementación más sencilla que otros algoritmos de optimización de políticas, como el algoritmo Trust Region Policy Optimization (TRPO), también permite una gran flexibilidad en la configuración del entorno, y durante el entrenamiento del agente suele mantener una gran estabilidad, lo que lo hace adecuado para este tipo de entornos y tareas.
 
 Las políticas disponibles del algoritmo PPO son:
 \begin{itemize}
@@ -64,14 +64,14 @@ Donde los parámetros a configurar son:
     \item \textbf{c5:} Parámetro de recompensa que se suma a la recompensa cuando no hay paquetes descartados y se permite el tráfico.
 \end{itemize}
 
-Para la optimización de la función de recompensa se ha visualizado la función de recompensa como dos hiper planos, uno con la acción permitir y otro con la acción denegar. 
+Para la optimización de la función de recompensa se ha visualizado la función de recompensa como dos hiperplanos, uno con la acción permitir y otro con la acción denegar. 
 \imagen{reward_funct}{Función de recompensa del agente}{1.0}
 
-Donde el plano amarillo representa la acción de denegar, en el que tiene una pendiente poco pronuniciada en comparación con el plano de permitir el tráfico.
-Los puntos rojos indican las regiones del plano donde la recompensa es muy parecida entre los dos plano.
+Donde el plano amarillo representa la acción de denegar, en el que tiene una pendiente poco pronunciada en comparación con el plano de permitir el tráfico.
+Los puntos rojos indican las regiones del plano donde la recompensa es muy parecida entre los dos planos.
 
 \subsubsection{Entrenamiento del agente}
-Para la evaluación del entrenamiento del agente se han usado las métricas de recompensa media, que indica cómo ha ido evolucionando la recompensa media a lo largo del tiempo, y \textit{explained variance}, una métrica importante para comprobar si el agente está aprendiendo o no, que indica la calidad de las predicciones, en las que valores negativos indican que el agente obtendría mejores resultados si tomara siempre la misma acción, el mejor resultado es 1, indicando que las predicciones del agente son perfectas. ~\cite{JonathanHui2023}
+Para la evaluación del entrenamiento del agente se han usado las métricas de recompensa media, que indica cómo ha ido evolucionando la recompensa media a lo largo del tiempo, y \textit{explained variance}, una métrica importante para comprobar si el agente está aprendiendo o no, que indica la calidad de las predicciones, en las que valores negativos indican que el agente obtendría mejores resultados si tomara siempre la misma acción, en el que el mejor resultado posible es 1, indicando que las predicciones del agente son perfectas. ~\cite{JonathanHui2023}
 En este caso estas son las estadísticas obtenidas durante el entrenamiento del agente:
 
 \imagen{training}{Estadísticas del entrenamiento del agente}{1.0}
@@ -121,6 +121,9 @@ Para garantizar la seguridad del código, se han seguido las siguientes práctic
 
     \item \textbf{Gestión de Secretos:} Para la gestión de secretos se ha utilizado un archivo \texttt{.env} que contiene las variables de entorno necesarias para la aplicación, como las credenciales de la base de datos, las claves API, etc. Este archivo no se deberís de incluir en el repositorio de Git, para evitar que los secretos queden expuestos, debiendo ser añadido al archivo \texttt{.gitignore} para evitar que se suba al repositorio. Sin embargo, para que se pueda utilizar y probar el proyecto por parte del tribunal se ha incluido el archivo \texttt{.env}, que contienen las variables de entorno mínimas para el funcionamiento del proyecto, pero no contiene los secretos reales, como credenciales SSH para subir contenido al servidor y a GitHub y claves API de Cloudflare y de Groq. Para poder usar la funcionalidad total de la parte web se debe de acceder a la url de la aplicación web, que es \url{https://www.cesarrv.com}.
 \end{itemize}
+\imagen{secrets}{Secretos usados en las acciones de GitHub}{1.0}
+
+Los secretos usados en las acciones de GitHub son los mostrados en la \textbf{Figura~\ref{fig:secrets}}, que son los necesarios para el funcionamiento del proyecto, como las credenciales de AWS, la clave API de Groq, y el token de Sonar y las claves SSH para poder subir contenido al servidor y a GitHub.
 
 \subsubsection{Seguridad en la infraestructura}
 
@@ -131,7 +134,6 @@ En cuanto a la seguridad de la aplicación web, se han implementado las siguient
     \item \textbf{Cifrado de datos:} Se ha guardado el hash de las contraseñas de los usuarios en la base de datos, utilizando el algoritmo BCrypt, que es un algoritmo de cifrado de contraseñas seguro y ampliamente utilizado. Esto permite proteger las contraseñas de los usuarios en caso de que la base de datos sea comprometida.
 \end{itemize}
 
-\imagen{secrets}{Secretos usados en las acciones de GitHub}{1.0}
 
 \subsubsection{Uso de Cloudflare}
 En la aplicación web se ha usado Cloudflare como servicio de protección, estadísticas, rendimiento y personalización de reglas, con el objetivo de mitigar ataques, mejorar el rendimiento, mejorar la seguridad general de la aplicación y optimización de costes.
@@ -175,6 +177,6 @@ Para la parte de seguridad frente a ataques, Cloudflare se ha configurado para e
     \item \textbf{Ataques XSS:} Cloudflare agrega ciertos encabezados de seguridad a las respuestas HTTP que proporcionan protección contra este tipo de ataques.
 
     \item \textbf{Ataques por URL:} Cloudflare hace un normalizado de las URL entrantes para que transforme los caracteres \\ en \/, juntar varias barras en una sola y aplicar la normalización de URL de la RFC 3986~\cite{CloudflareTeam2024}.    
-    Todos estos pasos ayudan a prevenir ataques basados en la manipulación de URL, como los ataques de inyección de código o los ataques de redirección.
+    Todos estos pasos ayudan a prevenir ataques basados en la manipulación de URL, como los ataques de inyección de código o los ataques de re-dirección.
 \end{itemize}
 

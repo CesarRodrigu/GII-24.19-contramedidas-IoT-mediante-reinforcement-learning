@@ -101,7 +101,7 @@ Las principales tecnologías y lenguajes utilizados en este proyecto son:
 ## Reinforcement Learning
 
 Para ejecutar los experimentos de Reinforcement Learning, asegúrate de tener instalado Jupyter Notebook y las
-dependencias necesarias, indicadas en el archivo `requirements.txt`. Luego, abre el Jupyter Notebook y ejecuta las
+dependencias necesarias, indicadas en el archivo `requirements.txt` de la carpeta `RL`. Luego, abre el Jupyter Notebook y ejecuta las
 celdas de código.
 
 ## Contribuciones
