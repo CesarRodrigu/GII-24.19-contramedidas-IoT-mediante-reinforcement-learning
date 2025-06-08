@@ -50,4 +50,12 @@ La \textbf{Figura~\ref{fig:mapanavegacion}} muestra la estructura de navegación
 
 \section{Diseño procedimental}
 
-Diagramas de secuencia. Diagramas de flujo?
+\subsection{Patrones de diseño aplicados}
+Para el diseño procedimental es importante el uso de patrones de diseño que faciliten la reutilización del código y la separación de responsabilidades. En este proyecto se han utilizado los siguientes patrones de diseño:
+\begin{itemize}
+    \item \textbf{Método plantilla(template method): } Este patrón se ha utilizado para definir los generadores de paquetes de datos para el entrenamiento de los modelos de IA. Definiendo una vez la estructura del generador de paquetes, y sobreescribiendo en las subclases los pesos de los tamaños de los paquetes de datos.
+    \item \textbf{Estrategia(strategy): } En los generadores de tráfico, este patrón permite que se puedan definir diferentes estrategias de generación de paquetes de datos, en este caso de tráfico benignos y DoS, que se pueden intercambiar fácilmente sin afectar al resto del sistema.
+    \item \textbf{Máquina de estados(state machine): } Este patrón se ha utilizado para gestionar los diferentes estados del tráfico, en el que hay estado de ataque y normal, intercambiando en cada estado el generador de paquetes de datos correspondiente. Permitiendo que se puedan definir diferentes estados y modificar las transiciones entre ellos, facilitando la gestión del flujo de la aplicación.
+    \item \textbf{Singleton: } Este patrón se ha utilizado para la clase de instanciación de la API, que asegura que solo haya una instancia de la clase en toda la aplicación.
+\end{itemize}
+El uso de estos patrones permite una mayor modularidad, reutilización del código y facilita el mantenimiento y evolución del sistema, asegurando una mayor calidad de código.

@@ -27,7 +27,7 @@ Las reuniones semanales empezaron el día 6 de febrero de 2025 hasta el día 5 d
 
 \subsection{Burn up}
 El gráfico de Burn up muestra el progreso del proyecto a lo largo del tiempo, en el que se puede ver la cantidad de trabajo completado y el trabajo restante. En el eje horizontal se muestra el tiempo, y en el eje vertical se muestra la cantidad de trabajo completado. La línea morada representa el trabajo completado, y la línea verde representa el trabajo restante. El área entre las dos líneas representa el trabajo pendiente.
-% #TODO Actualizar imágenes
+
 \imagen{burn_up}{Gráfico de Burn up del proyecto}
 
 \subsection{Diagrama de estado}
@@ -37,8 +37,6 @@ El diagrama de estado del proyecto muestra los diferentes estados en los que se 
 \subsection{Diagrama de trabajo por tema}
 El diagrama de trabajo por tema muestra los diferentes temas en los que se ha trabajado a lo largo del proyecto, y la cantidad de trabajo realizado en cada uno de ellos. En el eje horizontal se muestran los diferentes temas, y en el eje vertical se muestra la cantidad de trabajo realizado.
 Donde de izquierda a derecha se pueden ver: Lecturas de artículos,  Procesos de CI, Desarrollo de la web, con la api y el frontend, Documentación, Desarrollo y entrenamiento del agente.
-
-
 
 \imagen{project_stimated}{Diagrama de trabajo por tema del proyecto}
 
@@ -58,12 +56,33 @@ Realizar un estudio de viabilidad es una parte importante del futuro de un proye
 
 Los costes se dividen principalmente en dos categorías: costes de personal y costes de infraestructura.
 
-Los costes de personal incluyen los salarios de los integrantes del proyecto. En este caso, se ha considerado ún unico empleado, en el cual ha trabajado en el proyecto de forma activa durante más de 5 menes, con una dedicación aproximada de 17 horas semanales, en el que dan unas horas totales de aproxiamdamente 380 horas de trabajo totales.
+Los costes de personal incluyen los salarios de los integrantes del proyecto. En este caso, se ha considerado ún unico empleado, en el cual ha trabajado en el proyecto de forma activa durante más de 5 meses, con una dedicación aproximada de 17 horas semanales, en el que dan unas horas totales de aproximadamente 380 horas de trabajo totales. El salario estimado para el empleado con cargo de desarrollador junior es de 11,02 euros por hora~\cite{salario}, lo que da un coste total de personal de aproximadamente 4187 euros en el tiempo en el que se ha trabajado. En el que para un salario a tiempo completo serían aproximadamente 1790 euros al mes~\cite{salario}.
+
+
+Los costes de infraestructura incluyen los gastos relacionados con la infraestructura necesaria para el desarrollo y despliegue del proyecto, como servidores, servicios en la nube y licencias de software. En este caso, debido a que ha utilizado en su mayoría servicios gratuitos, los costes de infraestructura son bajos.
+Los únicos servicios de pago que se han utilizado es el dominio de la web, comprado en Cloudflare, y el servicio de hosting de la web, que se ha realizado en AWS.
+
+El dominio de la web, al ser \textit{.com} tiene un coste de 10,44 dólares al año, lo que equivale a aproximadamente 9,49 euros al año.
+
+Para calcular el precio estimado del hosting de la web, se ha utilizado la calculadora de precios de AWS~\cite{awsCalculator}, en el que se ha estimado un coste mensual de aproximadamente 1,39 dólares al mes, con un coste anual de 16,68 dólares , lo que equivale a aproximadamente 14,64 euros al año, mostrado en la \textbf{Figura~\ref{fig:precio}}. Para la estimación del coste se ha tenido en cuenta el uso de una instancia t3.medium, que es de las más económicas, y el uso de 1 GB de almacenamiento en Amazon S3, que es el servicio de almacenamiento de AWS, que en este caso entra en la capa gratuita. Además, se ha tenido en cuenta el uso de 1 GB de transferencia de datos al mes, que es el límite gratuito de AWS. Es importante remarcar que se ha simulado con un uso de 1 hora al día, ya que la web no requiere un uso mayor.
+
+\imagen{precio}{Precio estimado de AWS}
+
+Como se muestra en la \textbf{Figura~\ref{fig:costes_mayo}}, el coste usado en mayo de 2025 ha sido de aproximadamente 0,60 dólares, lo que equivale a aproximadamente 0,53 euros, ya que el proyecto se ha desplegado a finales en mayo de 2025. Como se puede obvservar, el mayor coste ha sido el de VPC, que corresponde al uso de una IP fija, facilitando la dirección desde los DNS de Cloudflare, en el que en el plan gratuito incluye la IP fija mientras se use una instancia t3.medium, que es la más económica, que cumpla con los requisitos de la aplicación. Debido a que el proyecto ha estado con el servidor apagado para reducir costes derivó en coste por uso de la VPC. Para optimizar este costo se realizó un script en el servidor en el que cuando se enciende, hace una petición a la API de Cloudflare para actualizar los DNS, así eliminado la necesitadad de VPS, manteniendo los cambios de ip transparentes para el usuario.
+
+\imagen{costes_mayo}{Costes de AWS en mayo}
+
+Los costes totales del proyecto, sumando los costes de personal y de infraestructura, son aproximadamente 1792,02 euros, que se desglosan de la siguiente manera:
+\begin{itemize}
+    \item \textbf{Costes de personal:} 1790 euros.
+    \item \textbf{Costes de infraestructura:} 2,02 euros (9,49/12 euros del dominio + 1,23 euros de AWS).
+\end{itemize}
+
 
 En resumen, la viabilidad económica del proyecto se ha evaluado teniendo en cuenta los costes de personal y de infraestructura, determinando que el proyecto es viable económicamente, ya que los costes totales son asumibles por la empresa o entidad que lo financie.
 
 \subsection{Viabilidad legal}
-Para la viabilidad legal del proyecto, se ha tenido en cuenta la normativa vigente en materia de protección de datos y propiedad intelectual. 
+Para la viabilidad legal del proyecto, se ha tenido en cuenta la normativa vigente en materia de protección de datos y propiedad intelectual.
 Las normativas aplicables más relevantes son:
 \begin{itemize}
     \item \textbf{Reglamento General de Protección de Datos (RGPD):} Este reglamento establece las normas para la protección de datos personales en la Unión Europea.~\cite{RGPD}
