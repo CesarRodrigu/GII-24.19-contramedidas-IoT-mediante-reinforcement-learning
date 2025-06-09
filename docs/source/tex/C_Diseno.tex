@@ -3,7 +3,8 @@
 \section{Introducción}
 La especificación de diseño es una parte fundamental del desarrollo de software, ya que permite definir de forma detallada el comportamiento y la estructura del sistema a desarrollar. En este apéndice se presenta la especificación de diseño del proyecto, que incluye el diseño de datos, el diseño arquitectónico y el diseño procedimental.
 
-Para la transferencia de datos entre el frontend y el backend se ha utilizado las clases de transferencia de datos (DTOs) con ayuda de Thymeleaf. En cambio, para la transferencia de datos entre el backend y la API se ha utilizado JSON, ya que es un formato ligero y sencillo para la comunicación entre sistemas.
+\section{Diseño de datos}
+Para la transferencia de datos entre el frontend y el backend se han utilizado las clases de transferencia de datos (DTOs) con ayuda de Thymeleaf. En cambio, para la transferencia de datos entre el backend y la API se ha utilizado JSON, ya que es un formato ligero y sencillo para la comunicación entre sistemas.
 
 La motivación de usar DTOs es:
 \begin{itemize}
@@ -14,7 +15,7 @@ La motivación de usar DTOs es:
 
 
 
-\section{Diseño de datos}
+
 
 Para la gestión de los datos de la base de datos se ha utilizado una base de datos relacional, en este caso MySQL. Se ha diseñado un esquema de base de datos que incluye las siguientes tablas:
 
@@ -49,11 +50,29 @@ El mapa de navegación es una representación visual de las diferentes vistas de
 La \textbf{Figura~\ref{fig:mapanavegacion}} muestra la estructura de navegación de la aplicación web, incluyendo las diferentes vistas y cómo se conectan entre sí.
 
 \section{Diseño procedimental}
+El diseño procedimental de este proyecto se ha centrado en estructurar el código de forma modular, facilitando así el desarrollo, mantenimiento y la posible extensión del sistema. En el que, para conseguir esto, se han utilizado buenas prácticas de programación y patrones de diseño. 
+
+\subsection{Módulos}
+Se ha realizado la división en 3 módulos:
+\begin{itemize}
+    \item RL
+    \item app
+    \item docs
+\end{itemize}
+En el que cada módulo tiene el mismo nombre que en el repositorio.
+En el módulo de RL se encuentra todo lo relacionado con el aprendizaje por refuerzo, en el que proporciona en la carpeta principal lo relacionado con el entrenamiento y visualización de gráficas del modelo, y el sub-módulo de api, que proporciona una API REST para que desde la web pueda obtener datos de este módulo.
+
+En el módulo app proporciona todo lo necesario de la aplicación web hecha con Spring Boot, en el que está subdividida en módulos, separando la configuración, los controladores, los archivos de transferencia de datos, los servicios etc.
+
+En el módulo docs, proporciona todo lo relacionado con la generación de la documentación del proyecto, en el que encuentra los archivos base, y los archivos compilados.
+
+Los módulos anteriores se unen mediante docker-compose (menos el de la documentación), creando un contenedor para la API, y otro para la aplicación web, junto a estos, también necesita un contenedor de una base de datos MySQL para persistir los datos de la web, garantizando un diseño modular y escalable.
+
 
 \subsection{Patrones de diseño aplicados}
 Para el diseño procedimental es importante el uso de patrones de diseño que faciliten la reutilización del código y la separación de responsabilidades. En este proyecto se han utilizado los siguientes patrones de diseño:
 \begin{itemize}
-    \item \textbf{Método plantilla(template method): } Este patrón se ha utilizado para definir los generadores de paquetes de datos para el entrenamiento de los modelos de IA. Definiendo una vez la estructura del generador de paquetes, y sobreescribiendo en las subclases los pesos de los tamaños de los paquetes de datos.
+    \item \textbf{Método plantilla(template method): } Este patrón se ha utilizado para definir los generadores de paquetes de datos para el entrenamiento de los modelos de IA. Definiendo una vez la estructura del generador de paquetes, y sobrescribiendo en las subclases los pesos de los tamaños de los paquetes de datos.
     \item \textbf{Estrategia(strategy): } En los generadores de tráfico, este patrón permite que se puedan definir diferentes estrategias de generación de paquetes de datos, en este caso de tráfico benignos y DoS, que se pueden intercambiar fácilmente sin afectar al resto del sistema.
     \item \textbf{Máquina de estados(state machine): } Este patrón se ha utilizado para gestionar los diferentes estados del tráfico, en el que hay estado de ataque y normal, intercambiando en cada estado el generador de paquetes de datos correspondiente. Permitiendo que se puedan definir diferentes estados y modificar las transiciones entre ellos, facilitando la gestión del flujo de la aplicación.
     \item \textbf{Singleton: } Este patrón se ha utilizado para la clase de instanciación de la API, que asegura que solo haya una instancia de la clase en toda la aplicación.

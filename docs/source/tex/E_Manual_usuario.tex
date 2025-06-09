@@ -1,25 +1,61 @@
 \apendice{Documentación de usuario}
 
 \section{Introducción}
-La documentación de usuario es una parte fundamental en todo desarrollo software, ya que permite a los usuarios comprender cómo utilizar el sistema, sus funcionalidades y características. En este caso, esta apartado va a abordar los requisitos de usuario, la instalación del proyecto y el manual del usuario, proporcionando una guía para la correcta utilización del sistema desarrollado.
+La documentación de usuario es una parte fundamental en todo desarrollo de software, ya que permite a los usuarios comprender cómo utilizar el sistema, sus funcionalidades y características. En este caso, este apartado va a abordar los requisitos de usuario, la instalación del proyecto y el manual del usuario, proporcionando una guía para la correcta utilización del sistema desarrollado.
 
 \section{Requisitos de usuarios}
 \label{sec:requisitos-usuarios}
 
-Para la ejecución del proyecto sólo es necesario tener instalado Docker y Docker Compose, ya que el proyecto se ejecuta en contenedores de Docker. Para la instalación de Docker y Docker Compose se puede consultar la \hyperref[sec:instalacion]{sección de Instalación}.
-Para facilitar la descarga de los archivos fuente necesarios del proyecto, se recomienda instalar Git para poder clonar el repositorio de GitHub automáticamente. Simplemente se debe de abrir una terminal en la carpeta donde se quiere descargar el proyecto y ejecutar git clone y la URL del repositorio. En este caso sería: \textbf{git clone https://github.com/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning.git}
+Para la ejecución de la parte web del proyecto sólo es necesario tener instalado Docker y Docker Compose, ya que se ejecuta en contenedores de Docker. Para la instalación de Docker y Docker Compose se puede consultar la \hyperref[sec:instalacion]{sección de Instalación}.
+Para facilitar la descarga de los archivos fuente necesarios del proyecto, se recomienda instalar Git para poder clonar el repositorio de GitHub automáticamente. Simplemente se debe abrir una terminal en la carpeta donde se quiere descargar el proyecto y ejecutar git clone y la URL del repositorio. En este caso sería: \textbf{git clone https://github.com/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning.git}
 
 En cualquier caso, si no se quiere instalar Git, se puede descomprimir la carpeta comprimida disponible para descargar de GitHub.
 
+
+
+Se recomienda usar Python 3.12, y las versiones exactas de las dependencias ubicadas en el archivo de requerimientos, aunque probablemente en pueda funcionar en otras versiones.
+
+Por lo que el usuario sólo debe tener un dispositivo compatible con Docker y Docker Compose (solo si se quiere ejecutar en local la web) y un navegador web moderno y un equipo compatible con Python, en todos los casos. También necesitará un entorno como Visual Studio Code o Jupyter-Notebook para poder ejecutar el notebook asociado al aprendizaje por refuerzo.
+
+
 \section{Instalación}
 \label{sec:instalacion}
-Para la instalación del proyecto, se debe de tener instalado Docker y Docker Compose. Para la instalación de Docker y Docker Compose, se recomienda la instalación de Docker Desktop, que para ello se puede consultar la \href{https://docs.docker.com/get-docker/}{documentación oficial de Docker}. Una vez instalado, se debe de abrir una terminal en la carpeta donde se ha descargado el proyecto y ejecutar el siguiente comando:
+Para la instalación del proyecto, se debe tener instalado Docker y Docker Compose. Para la instalación de Docker y Docker Compose, se recomienda la instalación de Docker Desktop, que para ello se puede consultar la \href{https://docs.docker.com/get-docker/}{documentación oficial de Docker}. Una vez instalado, se debe abrir una terminal en la carpeta donde se ha descargado el proyecto y ejecutar el siguiente comando:
 \begin{verbatim}
 docker compose up -d
 \end{verbatim}
 Con este simple comando se descarga, instala, compila y ejecuta todo el proyecto sin necesidad de realizar ninguna otra acción.
-Una vez ejecutado el comando y pasados todas las tareas de Docker, se puede acceder a la aplicación web desde el navegador en la dirección \textbf{http://localhost:8081}. Cabe destacar que en la primera ejecución Docker necesitará mucho tiempo para descargar e intalar todos los recursos necesarios, pero en las siguientes ejecuciones será mucho más rápido.
+Una vez ejecutado el comando y pasadas todas las tareas de Docker, se puede acceder a la aplicación web desde el navegador en la dirección \textbf{http://localhost:8081}. Cabe destacar que en la primera ejecución, Docker necesitará mucho tiempo para descargar e instalar todos los recursos necesarios, pero en las siguientes ejecuciones será mucho más rápido.
+Las dependencias de Bootstrap 5 y plotly.js no hace falta instalarlas, ya que la web cuenta con los archivos de Bootstrap necesarios y plotly.js se importa automáticamente desde la red.
+
+
+
+Para la parte de aprendizaje por refuerzo, se necesita tener instalado Python~\cite{python} y las dependencias del archivo requirements.txt ubicado en la carpeta RL. Para esto, se deben ejecutar los siguientes comandos:
+\begin{verbatim}
+python -m venv venv
+\end{verbatim}
+Para crear un entorno virtual donde tener los paquetes instalados. Una vez creado, se debe activar el entorno, en este caso, el comando es para Windows con cmd:
+\begin{verbatim}
+venv\Scripts\activate
+\end{verbatim}
+Para activarlo en linux se puede hacer con el comando:
+\begin{verbatim}
+source venv/bin/activate
+\end{verbatim}
+Por último para instalar todas las dependencias se debe de usar:
+\begin{verbatim}
+    pip install -r RL/requirements.txt
+\end{verbatim}
+Cabe destacar que para la instalación de StableBaselines3 los paquetes de dependencias cambian dependiendo del sistema operativo, en este caso se han recogido en entorno Windows~\cite{stable}.
+
 
 \section{Manual del usuario}
+El manual del usuario es un elemento importante para que los usuarios que no tienen conocimientos sobre el sistema puedan utilizarlo sin problemas en poco tiempo, por eso se han creado distintos elementos para facilitar al usuario la interacción con el sistema.
 
+Para facilitar la presentación de la web, esta cuenta con un usuario por defecto con permisos de administrador, para poder comprobar la funcionalidad completa de la web.
 
+El manual de usuario que recorre la mayoría de la funcionalidad de la web se encuentra en el repositorio de GitHub en la carpeta \href{https://github.com/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning/tree/main/docs/video/web.mp4}{\texttt{docs/video/web.mp4}}.
+Este video también se encuentra disponible en la web, en el apartado de ayuda(que se encuentra n el círculo abajo a la izquierda de la pantalla) en el que aparte del vídeo hay un chat en el que se puede hacer preguntas sobre el proyecto y un bot las responde. 
+Para más documentación, se recomienda al usuario acceder al apartado \textit{Sobre el proyecto} en el que se encontrará pdfs con documentación más concreta y extensa.
+
+Para el entrenamiento de modelos se ha realizado otro vídeo disponible en la carpeta \href{https://github.com/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning/tree/main/docs/video/RL.mp4}{\texttt{docs/video/RL.mp4}} donde se muestra cómo conseguir entrenar y visualizar un modelo entrenado. Si se quiere una mayor personalización del modelo se deben ajustar los parámetros de la función de recompensa, para eso, se puede modificar en la función reward en el archivo \href{https://github.com/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning/blob/main/RL/custom_env/router_env.py}{\texttt{RL/custom\_env/router\_env.py}}.
