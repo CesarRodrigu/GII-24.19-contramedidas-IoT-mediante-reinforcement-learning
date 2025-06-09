@@ -64,14 +64,17 @@ Donde los parámetros a configurar son:
     \item \textbf{c5:} Parámetro de recompensa que se suma a la recompensa cuando no hay paquetes descartados y se permite el tráfico.
 \end{itemize}
 
-Para la optimización de la función de recompensa se ha visualizado la función de recompensa como dos hiperplanos, uno con la acción permitir y otro con la acción denegar. 
+Para la optimización de la función de recompensa se ha visualizado la función de recompensa como dos hiperplanos, uno con la acción permitir y otro con la acción denegar. Este gráfico interactivo se encuentra en la web en la sección de visualización de parámetros.
+
+El parámetro de precisión indica la cantidad de puntos que dibuja por eje, en el que valores mayores mostrarán resultados más precisos, pero se aumenta el tiempo de carga de los planos. Por otro lado, el parámetro de tolerancia indica las unidades de diferencia que tiene que haber en un punto entre los dos planos para que dibuje un punto rojo para indicar una "intersección" entre los planos.
+
 \imagen{reward_funct}{Función de recompensa del agente}{1.0}
 
 Donde el plano amarillo representa la acción de denegar, en el que tiene una pendiente poco pronunciada en comparación con el plano de permitir el tráfico.
 Los puntos rojos indican las regiones del plano donde la recompensa es muy parecida entre los dos planos.
 
 \subsubsection{Entrenamiento del agente}
-Para la evaluación del entrenamiento del agente se han usado las métricas de recompensa media, que indica cómo ha ido evolucionando la recompensa media a lo largo del tiempo, y \textit{explained variance}, una métrica importante para comprobar si el agente está aprendiendo o no, que indica la calidad de las predicciones, en las que valores negativos indican que el agente obtendría mejores resultados si tomara siempre la misma acción, en el que el mejor resultado posible es 1, indicando que las predicciones del agente son perfectas. ~\cite{JonathanHui2023}
+Para la evaluación del entrenamiento del agente se han usado las métricas de recompensa media, que indica cómo ha ido evolucionando la recompensa media a lo largo del tiempo, y \textit{explained variance}, una métrica importante para comprobar si el agente está aprendiendo o no, que indica la calidad de las predicciones, en las que valores negativos indican que el agente obtendría mejores resultados si tomara siempre la misma acción, en que el mejor resultado posible es 1, indicando que las predicciones del agente son perfectas. ~\cite{JonathanHui2023}
 En este caso estas son las estadísticas obtenidas durante el entrenamiento del agente:
 
 \imagen{training}{Estadísticas del entrenamiento del agente}{1.0}
@@ -117,7 +120,7 @@ Para garantizar la seguridad del código, se han seguido las siguientes práctic
     \item \textbf{Revisión de dependencias:} Se ha realizado una revisión automática de las dependencias utilizadas en el proyecto, para asegurarse de que no contienen vulnerabilidades conocidas. Utilizando Dependabot, que es una herramienta de GitHub que permite detectar vulnerabilidades en las dependencias del proyecto y sugerir actualizaciones para solucionarlas.
 
     \item \textbf{Revisión de código:} Se ha realizado una revisión de código mediante pull requests, donde se revisa el código automáticamente con GitHub Copilot, SonarQube y CodeQL analysis, para detectar posibles errores y vulnerabilidades en el código.
-    También se ha utilizado herramientas de análisis estático de código de GitHub como Code Scanning y Secret Scanning, que permiten detectar posibles errores y vulnerabilidades en el código, así como secretos expuestos en el código, como contraseñas, claves API, etc, pudiendo llegar a bloquear el commit si se detecta algún secreto expuesto.
+    También se han utilizado herramientas de análisis estático de código de GitHub como Code Scanning y Secret Scanning, que permiten detectar posibles errores y vulnerabilidades en el código, así como secretos expuestos en el código, como contraseñas, claves API, etc, pudiendo llegar a bloquear el commit si se detecta algún secreto expuesto.
 
     \item \textbf{Gestión de Secretos:} Para la gestión de secretos se ha utilizado un archivo \texttt{.env} que contiene las variables de entorno necesarias para la aplicación, como las credenciales de la base de datos, las claves API, etc. Este archivo no se deberís de incluir en el repositorio de Git, para evitar que los secretos queden expuestos, debiendo ser añadido al archivo \texttt{.gitignore} para evitar que se suba al repositorio. Sin embargo, para que se pueda utilizar y probar el proyecto por parte del tribunal se ha incluido el archivo \texttt{.env}, que contienen las variables de entorno mínimas para el funcionamiento del proyecto, pero no contiene los secretos reales, como credenciales SSH para subir contenido al servidor y a GitHub y claves API de Cloudflare y de Groq. Para poder usar la funcionalidad total de la parte web se debe de acceder a la url de la aplicación web, que es \url{https://www.cesarrv.com}.
 \end{itemize}
