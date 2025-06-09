@@ -45,34 +45,34 @@ class TestRouterEnv:
         assert allow_1 < deny_1, "Allow action should have lower reward than deny action when 1 discarded packets"
         assert allow_100 < deny_100, "Allow action should have lower reward than deny action when 100 discarded packets"
 
-    def test_registro_estados(self):
-        estados: list[BaseState] = self.env.registro_Estados()
+    def test_get_state_records(self):
+        estados: list[BaseState] = self.env.get_state_records()
 
         assert isinstance(
             estados, list), "registro_Estados should return a list"
         assert all(isinstance(estado, BaseState)
                    for estado in estados), "All items in the list should be instances of BaseState"
 
-    def test_procesar_por_tamano(self):
+    def test_process_by_size(self):
         assert len(self.env.queue) == 0, "Initial queue should be empty"
         self.env.reset()
         assert len(self.env.queue) == 0, "Initial queue should be empty"
-        self.env.procesar_por_tamaño()
+        self.env.process_by_size()
         assert len(self.env.queue) == 0, "Queue should still be empty"
 
-        assert self.env.mb_restantes == -1.0, "Initial Remaining MB should be -1.0"
+        assert self.env.remaining_mb == -1.0, "Initial Remaining MB should be -1.0"
 
-        tam: float = self.env.get_tam_ocu()
+        tam: float = self.env.get_size_ocu()
         assert tam >= 0, "Tam should be non-negative"
 
-    def test_get_tam_ocu(self):
+    def test_get_size_ocu(self):
         def compare_floats(a: float, b: float, epsilon: float = 1e-6) -> bool:
             return abs(a - b) < epsilon
 
-        assert compare_floats(self.env.get_tam_ocu(
+        assert compare_floats(self.env.get_size_ocu(
         ), 0.0), "Total size should be 0.0 when queue is empty"
         self.env.reset()
-        assert compare_floats(self.env.get_tam_ocu(
+        assert compare_floats(self.env.get_size_ocu(
         ), 0.0), "Total size should be 0.0 when queue is empty"
 
         packets: list[dict[str, float]] = [
@@ -82,13 +82,13 @@ class TestRouterEnv:
         sizes: list[float] = [packet["SIZE"] for packet in packets]
         expected_size: float | Literal[0] = sum(sizes)
 
-        assert compare_floats(self.env.get_tam_ocu(
+        assert compare_floats(self.env.get_size_ocu(
         ), expected_size), f"Total size should be {expected_size} when queue has {len(packets)} packets of sizes {sizes}"
         assert self.env.rate > 0, "Rate should be greater than 0"
 
-        self.env.procesar_por_tamaño()
+        self.env.process_by_size()
 
-        assert self.env.get_tam_ocu(
+        assert self.env.get_size_ocu(
         ) < expected_size, "Total size should lower than before after processing"
 
     def test_get_seed(self):
