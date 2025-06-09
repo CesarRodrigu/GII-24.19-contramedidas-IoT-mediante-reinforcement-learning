@@ -54,12 +54,15 @@ VALUES (1, 'ROLE_ADMIN');
 INSERT INTO WebDB.roles (id, role_name)
 VALUES (2, 'ROLE_USER');
 INSERT INTO WebDB.users (id, created, first_name, last_name, password, username)
-#admin-admin
-VALUES (1, '2025-05-08 10:17:01.452542', 'Nombre', 'apellido',
-        '$2a$10$QMAJrLsmAMxiVqTOyDkQo.p5vZrkAdO142SUqSl0ry3oYxiv59nWu', 'admin');
+-- # Usuario de prueba para la aplicación web
+-- # User: admin
+-- # Password: admin
+VALUES (1, '2025-05-08 10:17:01.452542', 'Nombre de prueba', 'Apellido de prueba',
+        '$2a$10$QMAJrLsmAMxiVqTOyDkQo.p5vZrkAdO142SUqSl0ry3oYxiv59nWu', 'admin'); 
+
 
 INSERT INTO WebDB.users_roles (roles_id, users_id)
 VALUES (1, 1);
 
 INSERT INTO WebDB.trained_model (model_id, user_id, name, description, extension, file, file_name)
-VALUES (1, 1, 'golaExamplea', 'aaaa', '.zip', 0x0504B0304140000000000500, 'golaExamplea.zip');
+VALUES (1, 1, 'Empty', 'Archivo comprimido vacío de prueba', '.zip', 0x504B0506000000000000000000000000000000000000, 'Empty.zip');
