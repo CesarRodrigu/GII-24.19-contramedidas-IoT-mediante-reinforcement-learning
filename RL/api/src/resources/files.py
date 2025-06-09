@@ -19,6 +19,14 @@ print("Data directory:", data_directory)
 
 class TrainedModel(Resource):
     def get(self, userid: int) -> Response:
+        """Get the trained model for a specific user.
+
+        Args:
+            userid (int): The ID of the user.
+
+        Returns:
+            Response: The response containing the trained model.
+        """
         name: str = 'Example.zip'
         print("User ID:", userid)
         namefile: str = os.path.join(data_directory, name)
@@ -27,11 +35,18 @@ class TrainedModel(Resource):
         return send_data("trained_model", name, encoded)
 
 
-class File_Stats(Resource):
+class FileStats(Resource):
     NAME: str = 'file.csv'
     TYPE: str = "stats"
-
     def get(self, modelid: int) -> Response:
+        """Get the file statistics for a specific model.
+
+        Args:
+            modelid (int): The ID of the model.
+
+        Returns:
+            Response: The response containing the file statistics.
+        """
         print("Model ID:", modelid)
         namefile: str = os.path.join(data_directory, self.NAME)
         with open(namefile, "rb") as f:
@@ -39,11 +54,11 @@ class File_Stats(Resource):
         return send_data(self.TYPE, self.NAME, encoded)
 
 
-class Monitor(File_Stats):
+class Monitor(FileStats):
     NAME: str = 'monitor.csv'
     TYPE: str = "modelStats"
 
 
-class Progress(File_Stats):
+class Progress(FileStats):
     NAME: str = 'progress.csv'
     TYPE: str = "trainingStats"

@@ -5,6 +5,11 @@ from numpy.random import Generator
 
 
 class PacketGenerator():
+    """Packet generator class.
+
+    Returns:
+        PacketGenerator: PacketGenerator instance that generates packets
+    """    
     sizes: list[tuple[int, int]] = [
         (64, 128),
         (128, 256),
@@ -53,10 +58,20 @@ class PacketGenerator():
             self.min_rate, self.max_rate)
 
     def generate_packet(self) -> dict[str, int]:
+        """Generates a single packet.
+
+        Returns:
+            dict[str, int]: A dictionary representing the packet.
+        """        
         return self.packet.sample()
 
     def generate_packets(self) -> list[dict[str, int]]:
-        # Como el rate sería por segundo habría que transformarlo a la unidad deseada
+        """Generates a list of packets.
+
+        Returns:
+            list[dict[str, int]]: A list of dictionaries representing the packets.
+        """        
+
         if self.min_rate < 1:
             if self._np_random.random() <= self.rate:
                 num_packets: int = 1
@@ -69,6 +84,11 @@ class PacketGenerator():
 
 
 class DoSPacketGenerator(PacketGenerator):
+    """Packet generator class for DoS attacks.
+
+    Args:
+        PacketGenerator (_type_): The base packet generator class.
+    """    
     sizes: list[tuple[int, int]] = [(64, 128),
                                     (128, 256),
                                     (256, 1024),
