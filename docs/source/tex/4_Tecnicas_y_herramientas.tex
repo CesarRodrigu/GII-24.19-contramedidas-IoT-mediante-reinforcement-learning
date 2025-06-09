@@ -3,9 +3,9 @@ Las técnicas y herramientas utilizadas en el desarrollo de un proyecto son fund
 
 Los principales lenguajes de programación utilizados en el proyecto son Python y Java.
 
-Python se ha utilizado principalmente para el desarrollo del agente de aprendizaje por refuerzo, debido a su amplia gama de bibliotecas y frameworks especializados en este campo, como Stable-Baselines3 y Gymnasium, también se ha usado para el desarrollo de la api con Flask-RESTful, para facilitar la posible interacción de la web con el agente, y que permite una implementación rápida y eficiente en recursos.
+Python se ha utilizado principalmente para el desarrollo del agente de aprendizaje por refuerzo, debido a su amplia gama de bibliotecas y frameworks especializados en este campo, como Stable-Baselines3~\cite{Raffin2021} y Gymnasium. También se ha usado para el desarrollo de la API con Flask-RESTful, para facilitar la posible interacción de la web con el agente, y que permite una implementación rápida y eficiente en recursos.
 
-Java se ha utilizado para el desarrollo de la aplicación web, aprovechando su robustez y escalabilidad, junto con el framework Spring Boot 3 para facilitar la creación de aplicaciones web, para la gestión de los paquetes asociados se ha utilizado Maven, que permite una gestión eficiente de las dependencias y la construcción del proyecto. Para las pruebas unitarias se ha utilizado JUnit, y para los informes de pruebas Jacoco. Spring Boot tiene una gran comunidad y soporte, lo que facilita la resolución de problemas y la implementación de nuevas funcionalidades, junto con la posibilidad de integrar fácilmente otras tecnologías y herramientas, como es el caso de persistencia de datos con JPA, Hibernate y MySQL, la integración de un sistema de autenticación y autorización robusto con Spring Security, o la integración de un modelo de lenguaje a través de una API.
+Java se ha utilizado para el desarrollo de la aplicación web, aprovechando su robustez y escalabilidad, junto con el framework Spring Boot 3 para facilitar la creación de aplicaciones web. Para la gestión de las dependencias se ha utilizado Maven, que permite una gestión eficiente de las dependencias y la construcción del proyecto. Para las pruebas unitarias se ha utilizado JUnit, y para los informes de pruebas Jacoco. Spring Boot tiene una gran comunidad y soporte, lo que facilita la resolución de problemas y la implementación de nuevas funcionalidades, junto con la posibilidad de integrar fácilmente otras tecnologías y herramientas, como es el caso de persistencia de datos con JPA, Hibernate y MySQL, la integración de un sistema de autenticación y autorización robusto con Spring Security, o la integración de un modelo de lenguaje a través de una API.
 
 Los principales entornos de desarrollo utilizados han sido:
 \begin{itemize}
@@ -21,46 +21,53 @@ Para la gestión de la documentación se ha utilizado LaTeX, que permite crear d
 
 Para la creación de diagramas y gráficos se ha utilizado Draw.io, que permite crear todos los diagramas de manera sencilla y rápida, con integración tanto en la web como en Visual Studio Code.
 
-Para la calidad de código y la detección de errores se ha utilizado SonarQube, que permite analizar el código fuente del proyecto y detectar posibles errores, vulnerabilidades y problemas de calidad. Se ha integrado con GitHub Actions para realizar análisis automáticos del código en cada commit y pull request. también se han utilizado AutoPep8 para el formateo del código Python, que permiten mantener un estilo de codificación consistente y mejorar la legibilidad del código.
+Para la calidad de código y la detección de errores se ha utilizado SonarQube, que permite analizar el código fuente del proyecto y detectar posibles errores, vulnerabilidades y problemas de calidad. Se ha integrado con GitHub Actions para realizar análisis automáticos del código en cada commit y pull request. También se han utilizado AutoPep8 para el formateo del código Python, que permite mantener un estilo de codificación consistente y mejorar la legibilidad del código.
 
+Para la gestión de los registros DNS, compra del dominio y seguridad de la aplicación web se ha utilizado Cloudflare. Para la compra del dominio se ha elegido Cloudflare debido a que ofrece un servicio de registro de dominios a precios competitivos y con una interfaz fácil de usar, además de que proporciona una gran variedad de servicios, reduciendo la necesidad de utilizar múltiples proveedores para diferentes servicios. Cloudflare proporciona en su capa gratuita amplios servicios de seguridad y rendimiento para aplicaciones web, incluyendo protección contra ataques DDoS, optimización del rendimiento y gestión de certificados SSL. Cloudflare es una plataforma muy popular y confiable, utilizada por muchas empresas, particulares y organizaciones en todo el mundo, con una alta efectividad. ~\cite{Nadeem2023,Adhar2023}
 
+En el despliegue de la aplicación se ha elegido un servidor AWS EC2, que permite un control total sobre la infraestructura y la configuración del servidor. Es una de las principales plataformas de computación en la nube más populares, confiables y seguras, con una amplia gama de servicios y características que permiten escalar y gestionar aplicaciones de manera eficiente. La capa gratuita permite la ejecución de aplicaciones pequeñas pero con funcionalidades limitadas. La capa gratuita, proporciona una instancia con 1GB de RAM, lo cual no es suficiente para ejecutar este proyecto, por lo que se ha optado por una instancia t3.medium, que proporciona 4GB de RAM a un precio asequible.
 
-En la siguiente tabla se muestran las herramientas y tecnologías utilizadas en cada parte del proyecto.
+En la siguiente tabla se muestran marcadas con X las herramientas y tecnologías utilizadas en cada parte del proyecto. 
+
 \tabla{Herramientas y tecnologías utilizadas en cada parte del proyecto}{l c c c c c c}{7}{herramientasportipodeuso}
 { \multicolumn{1}{l}{Herramientas} & \shortstack{Modelo de\\aprendizaje\\por refuerzo}  & Web & API REST & BD & Memoria &  \\}{ 
-Python            & X &   & X &   &   \\
-Jupyter Notebook  & X &   &   &   &   \\
-Stable-Baselines3 & X &   &   &   &   \\
-Gymnasium         & X &   &   &   &   \\
-Matplotlib        & X &   &   &   &   \\
-Java              &   & X &   &   &   \\
-Spring Boot 3     &   & X &   &   &   \\
-Maven             &   & X &   &   &   \\
-JUnit             &   & X &   &   &   \\
-Selenium          &   & X &   &   &   \\
-HTML5             &   & X &   &   &   \\
-CSS3              &   & X &   &   &   \\
-Plotly.js         &   & X &   &   &   \\
-JavaScript        &   & X &   &   &   \\
-Bootstrap 5       &   & X &   &   &   \\
-Flask-RESTful     &   &   & X &   &   \\
-Pytest            &   &   & X &   &   \\
-REST              &   & X & X &   &   \\
-JSON              & X & X & X &   &   \\
-Docker            & X & X & X & X &   \\
-Docker Compose    & X & X & X & X &   \\
-MySQL             &   &   &   & X &   \\
-SQL               & X &   &   & X &   \\
-Git               & X & X & X & X & X \\
-GitHub Projects   & X & X & X & X & X \\
-GitHub Actions    & X & X & X &   & X \\
-SonarQube         & X & X & X &   &   \\
-Draw.io           &   &   &   &   & X \\
-LaTeX             &   &   &   &   & X \\
-IntelliJ IDEA     &   & X &   & X &   \\
-VS Code           & X &   & X &   & X \\
-Mendeley          &   &   &   &   & X \\
-AWS EC2           &   & X & X & X &   \\
-Cloudflare        &   & X &   &   &   \\
-API Groq          &   & X &   &   &   \\
+Python                 & X &   & X &   &   \\
+Jupyter Notebook       & X &   &   &   &   \\
+Stable-Baselines3      & X &   &   &   &   \\
+Gymnasium              & X &   &   &   &   \\
+Matplotlib             & X &   &   &   &   \\
+Java                   &   & X &   &   &   \\
+Spring Boot 3          &   & X &   &   &   \\
+Maven                  &   & X &   &   &   \\
+JUnit                  &   & X &   &   &   \\
+Selenium               &   & X &   &   &   \\
+HTML5                  &   & X &   &   &   \\
+CSS3                   &   & X &   &   &   \\
+Plotly.js              &   & X &   &   &   \\
+JavaScript             &   & X &   &   &   \\
+Bootstrap 5            &   & X &   &   &   \\
+Flask-RESTful          &   &   & X &   &   \\
+Pytest                 &   &   & X &   &   \\
+REST                   &   & X & X &   &   \\
+JSON                   & X & X & X &   &   \\
+Docker                 & X & X & X & X &   \\
+Docker Compose         & X & X & X & X &   \\
+MySQL                  &   &   &   & X &   \\
+SQL                    & X &   &   & X &   \\
+Git                    & X & X & X & X & X \\
+GitHub Projects        & X & X & X & X & X \\
+GitHub Actions         & X & X & X &   & X \\
+GitHub Dependabot      & X & X & X &   & X \\
+GitHub Secret Scanning & X & X & X &   & X \\
+GitHub Code Scanning   & X & X & X &   & X \\
+GitHub Copilot         & X & X & X &   & X \\
+SonarQube              & X & X & X &   & X \\
+Draw.io                &   &   &   &   & X \\
+LaTeX                  &   &   &   &   & X \\
+IntelliJ IDEA          &   & X &   & X &   \\
+VS Code                & X &   & X &   & X \\
+Mendeley               &   &   &   &   & X \\
+AWS EC2                &   & X & X & X &   \\
+Cloudflare             &   & X &   &   &   \\
+API Groq               &   & X &   &   &   \\
 } 

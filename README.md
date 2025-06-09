@@ -1,5 +1,3 @@
-# GII-24.19-contramedidas-IoT-mediante-reinforcement-learning
-
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=CesarRodrigu_GII-24.19-contramedidas-IoT-mediante-reinforcement-learning&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=CesarRodrigu_GII-24.19-contramedidas-IoT-mediante-reinforcement-learning)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=CesarRodrigu_GII-24.19-contramedidas-IoT-mediante-reinforcement-learning&metric=bugs)](https://sonarcloud.io/summary/new_code?id=CesarRodrigu_GII-24.19-contramedidas-IoT-mediante-reinforcement-learning)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=CesarRodrigu_GII-24.19-contramedidas-IoT-mediante-reinforcement-learning&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=CesarRodrigu_GII-24.19-contramedidas-IoT-mediante-reinforcement-learning)
@@ -14,8 +12,11 @@
 [![CodeQL](https://github.com/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning/actions/workflows/github-code-scanning/codeql)
 ![GitHub language count](https://img.shields.io/github/languages/count/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning)
 ![GitHub top language](https://img.shields.io/github/languages/top/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning)
+![GitHub repo size](https://img.shields.io/github/repo-size/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning)
 [![Generate PDFs from LaTeX](https://github.com/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning/actions/workflows/Generate-PDFs.yml/badge.svg)](https://github.com/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning/actions/workflows/Generate-PDFs.yml)
+![Relative date](https://img.shields.io/date/1749506399?label=Release%20date)
+
 
 ![Website](https://img.shields.io/website?url=https%3A%2F%2Fwww.cesarrv.com%3Fstatus%3Dtrue)
 [![Deploy to AWS](https://github.com/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning/actions/workflows/aws.yml/badge.svg)](https://github.com/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning/actions/workflows/aws.yml)
@@ -28,14 +29,15 @@ automáticas que permitan mejorar la seguridad de dispositivos IoT ante posibles
 
 ## Tabla de Contenidos
 
-- [Descripción](#descripción)
-- [Estructura del proyecto](#estructura-del-proyecto)
-- [Tecnologías y lenguajes](#tecnologías-y-lenguajes)
-- [Instalación y uso](#instalación-y-uso)
-- [Ejemplos de uso](#ejemplos-de-uso)
-- [Contribuciones](#contribuciones)
-- [Créditos](#créditos)
-- [Licencia](#licencia)
+- [GII-24.19: Contramedidas IoT mediante Reinforcement Learning](#gii-2419-contramedidas-iot-mediante-reinforcement-learning)
+  - [Tabla de Contenidos](#tabla-de-contenidos)
+  - [Descripción](#descripción)
+  - [Estructura del proyecto](#estructura-del-proyecto)
+  - [Tecnologías y lenguajes](#tecnologías-y-lenguajes)
+  - [Instalación y uso](#instalación-y-uso)
+  - [Reinforcement Learning](#reinforcement-learning)
+  - [Contribuciones](#contribuciones)
+  - [Créditos](#créditos)
 
 ## Descripción
 
@@ -99,7 +101,7 @@ Las principales tecnologías y lenguajes utilizados en este proyecto son:
 ## Reinforcement Learning
 
 Para ejecutar los experimentos de Reinforcement Learning, asegúrate de tener instalado Jupyter Notebook y las
-dependencias necesarias, indicadas en el archivo `requirements.txt`. Luego, abre el Jupyter Notebook y ejecuta las
+dependencias necesarias, indicadas en el archivo `requirements.txt` de la carpeta `RL`. Luego, abre el Jupyter Notebook y ejecuta las
 celdas de código.
 
 ## Contribuciones

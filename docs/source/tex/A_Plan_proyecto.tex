@@ -1,37 +1,111 @@
 \apendice{Plan de Proyecto Software}
 
 \section{Introducción}
+En este apéndice se pretende mostrar el plan de proyecto software que se ha seguido durante el desarrollo del proyecto.
 
+La implementación del plan de proyecto siguiendo una metodología ágil, ha permitido una mayor flexibilidad y adaptabilidad a los cambios que han surgido durante el desarrollo. En este caso, se ha utilizado principalmente la metodología de Kanban, debido a la flexibilidad que presenta en la organización y gestión del trabajo.
 
+En cuanto a la estructura de este anexo, se explica la planificación temporal del proyecto y el estudio de viabilidad, tanto económica como legal. 
 
 \subsection{Kanban}
-La metodología Kanban se ha utilizado para gestionar el flujo de trabajo del proyecto. En el que se usa el tablero de Kanban perdeterminado en los GitHub Projects, donde se han usado las siguientes columnas:
+La metodología Kanban~\cite{JuliaMartins2025} se ha utilizado para gestionar el flujo de trabajo del proyecto. En el que se usa el tablero de Kanban predeterminado en los GitHub Projects, donde se han usado las siguientes columnas:
 \begin{itemize}
     \item \textbf{Backlog:} En esta columna se encuentran todas las tareas que se han propuesto para el proyecto, pero que aún no se han comenzado a desarrollar, limitado a 5 tareas.
-    \item \textbf{Ready:} En esta columna se encuentran todas las tareas que estaban en el "Backlog", y que están listas para ser desarrolladas.
+    \item \textbf{Ready:} En esta columna se encuentran todas las tareas que estaban en el \textit{Backlog}, y que están listas para ser desarrolladas.
     \item \textbf{In Progress:} En esta columna se encuentran todas las tareas que están en proceso de desarrollo, limitado a 3 tareas.
     \item \textbf{In Review:} En esta columna se encuentran todas las tareas que han sido completadas y están en revisión por parte de los autores del proyecto, limitado a 5 tareas.
     \item \textbf{Done:} En esta columna se encuentran todas las tareas que ya han sido completadas.
 \end{itemize}
 
-Todas las tareas que se han terminado quedan registradas en la columna "Done", y se han ido moviendo a lo largo de las columnas según se ha ido avanzando en el desarrollo del proyecto. En cada tarea, si forma parte de desarrollo de una parte de código o documentación, quedan registrado en la tarea una rama de desarrollo de GitHub, y una pull request asociada a la tarea en la que se han incorporado los cambios realizados a la rama principal. En cada pull request se han incluido comentarios creados pro GitHub Copilot, en la que se ha incluido una descripción de los cambios realizados, y una lista de los archivos que han sido modificados, y una revisión de errores o propuestas de mejora para implementar antes de la incorporación de cambios.
+Todas las tareas que se han terminado quedan registradas en la columna \textit{Done}, y se han ido moviendo a lo largo de las columnas según se ha ido avanzando en el desarrollo del proyecto. En cada tarea, si forma parte de desarrollo de una parte de código o documentación, quedan registrado en la tarea una rama de desarrollo de GitHub, y una pull request asociada a la tarea en la que se han incorporado los cambios realizados a la rama principal. En cada pull request se han incluido comentarios creados pro GitHub Copilot, en la que se ha incluido una descripción de los cambios realizados, y una lista de los archivos que han sido modificados, y una revisión de errores o propuestas de mejora para implementar antes de la incorporación de cambios.
 
 \section{Planificación temporal}
-Cada semana, si es necesario se actualiza el tablero del proyecto.
-Se han planificado cada semana una reunión de seguimiento del proyecto con los tutores, en la que se han revisado las tareas que se han realizado a lo largo de la semana. En la que se plantean propuestas de mejora y correcciones a las tareas realizadas.
+Cada semana, si es necesario, se actualiza el tablero del proyecto.
+Se ha planificado cada semana una reunión de seguimiento del proyecto con los tutores, en la que se han revisado las tareas que se han realizado a lo largo de la semana. En la que se plantean propuestas de mejora y correcciones a las tareas realizadas.
 
-Las reuniones semanales empezaron el día 6 de febrero de 2025 hasta el día 5 de junio de 2025, en el que cada jueves a las 10:00 se han realizado las reuniones, a excepción de festivos y vacaciones.
+Las reuniones semanales empezaron el día 6 de febrero de 2025 hasta el día 5 de junio de 2025, en que cada jueves a las 10:00, se han realizado las reuniones, a excepción de festivos y vacaciones.
 
-\subsection{Burn down}
+\textbf{Aclaración:} Como la generación de esta documentación corresponde a una tarea aún en curso, en el diagrama aparece una tarea en estado "En progreso". No obstante, en el momento de la entrega final, todas las tareas estarán ubicadas en la columna "Done".
+
+\subsection{Burn up}
+El gráfico de Burn up muestra el progreso del proyecto a lo largo del tiempo, en el que se puede ver la cantidad de trabajo completado y el trabajo restante. En el eje horizontal se muestra el tiempo, y en el eje vertical se muestra la cantidad de trabajo completado. La línea morada representa el trabajo completado, y la línea verde representa el trabajo restante. El área entre las dos líneas representa el trabajo pendiente.
+
+\imagen{burn_up}{Gráfico de Burn up del proyecto}
 
 \subsection{Diagrama de estado}
+El diagrama de estado del proyecto muestra los diferentes estados en los que se encuentran actualmente el estado de las tareas del proyecto. Como el desarrollo del proyecto ya se ha terminado, el estado de las tareas se encuentra en "Done". 
 
-\subsecciones
+
+\imagen{project_status_chart}{Diagrama de estado del proyecto}
+
+\subsection{Diagrama de trabajo por tema}
+El diagrama de trabajo por tema muestra los diferentes temas en los que se ha trabajado a lo largo del proyecto, y la cantidad de trabajo realizado en cada uno de ellos. En el eje horizontal se muestran los diferentes temas, y en el eje vertical se muestra la cantidad de trabajo realizado.
+Donde de izquierda a derecha se pueden ver: Lecturas de artículos,  Procesos de CI, Desarrollo de la web, con la API y el frontend, Documentación, Desarrollo y entrenamiento del agente.
+
+\imagen{project_stimated}{Diagrama de trabajo por tema del proyecto}
+
+El orden de los temas que han requerido más trabajo ha sido el siguiente:
+\begin{enumerate}
+    \item \textbf{Desarrollo y entrenamiento del agente \#7:} El tema que más trabajo ha requerido ha sido el desarrollo y entrenamiento del agente, ya que ha requerido una investigación previa, tanto para la implementación del agente y entorno como por el uso de aprendizaje por refuerzo.
+    \item \textbf{Desarrollo de la web, con la api y el frontend \#6:} La parte de desarrollo de la aplicación web también ha requerido un gran esfuerzo, ya que se ha tenido que desarrollar tanto el backend como el frontend, así como la integración con la API REST y la base de datos.
+    \item \textbf{Documentación \#68:}  Ya que se ha tenido que documentar tanto el código como el proyecto en general, así como la memoria y anexos del proyecto.
+    \item \textbf{Procesos de CI \#47:} Los procesos de integración continua y calidad de código han sido claves en el inicio del proyecto para asegurar la calidad del código y la correcta ejecución de las pruebas, así como para facilitar el despliegue de la aplicación web.
+    \item \textbf{Lecturas de artículos \#10:} La lectura de artículos ha sido necesaria para la investigación previa al desarrollo del proyecto, así como para la comprensión de los conceptos y técnicas utilizados en el proyecto, y la mejora de la función de recompensa del agente.
+\end{enumerate}
 
 \section{Estudio de viabilidad}
+Realizar un estudio de viabilidad es una parte importante del futuro de un proyecto, ya que permite evaluar si el proyecto es viable desde diferentes perspectivas. En este caso, se ha realizado un estudio de viabilidad económica y legal, en el que se pretende estudiar cúanto dinero hace falta para realizar las tareas del proyecto, y si se cumplen las normativas legales necesarias para su desarrollo y despliegue.
 
 \subsection{Viabilidad económica}
 
+Los costes se dividen principalmente en dos categorías: costes de personal y costes de infraestructura.
+
+Los costes de personal incluyen los salarios de los integrantes del proyecto. En este caso, se ha considerado ún unico empleado, en el cual ha trabajado en el proyecto de forma activa durante más de 5 meses, con una dedicación aproximada de 17 horas semanales, en el que dan unas horas totales de aproximadamente 380 horas de trabajo totales. El salario estimado para el empleado con cargo de desarrollador junior es de 11,02 euros por hora~\cite{salario}, lo que da un coste total de personal de aproximadamente 4187 euros en el tiempo en el que se ha trabajado. En el que para un salario a tiempo completo serían aproximadamente 1790 euros al mes~\cite{salario}.
+
+
+Los costes de infraestructura incluyen los gastos relacionados con la infraestructura necesaria para el desarrollo y despliegue del proyecto, como servidores, servicios en la nube y licencias de software. En este caso, debido a que ha utilizado en su mayoría servicios gratuitos, los costes de infraestructura son bajos.
+Los únicos servicios de pago que se han utilizado es el dominio de la web, comprado en Cloudflare, y el servicio de hosting de la web, que se ha realizado en AWS.
+
+El dominio de la web, al ser \textit{.com} tiene un coste de 10,44 dólares al año, lo que equivale a aproximadamente 9,49 euros al año.
+
+Para calcular el precio estimado del hosting de la web, se ha utilizado la calculadora de precios de AWS~\cite{awsCalculator}, en el que se ha estimado un coste mensual de aproximadamente 1,39 dólares al mes, con un coste anual de 16,68 dólares , lo que equivale a aproximadamente 14,64 euros al año, mostrado en la \textbf{Figura~\ref{fig:precio}}. Para la estimación del coste se ha tenido en cuenta el uso de una instancia t3.medium, que es de las más económicas, y el uso de 1 GB de almacenamiento en Amazon S3, que es el servicio de almacenamiento de AWS, que en este caso entra en la capa gratuita. Además, se ha tenido en cuenta el uso de 1 GB de transferencia de datos al mes, que es el límite gratuito de AWS. Es importante remarcar que se ha simulado con un uso de 1 hora al día, ya que la web no requiere un uso mayor.
+
+\imagen{precio}{Precio estimado de AWS}
+
+Como se muestra en la \textbf{Figura~\ref{fig:costes_mayo}}, el coste usado en mayo de 2025 ha sido de aproximadamente 0,60 dólares, lo que equivale a aproximadamente 0,53 euros, ya que el proyecto se ha desplegado a finales en mayo de 2025. Como se puede obvservar, el mayor coste ha sido el de VPC, que corresponde al uso de una IP fija, facilitando la dirección desde los DNS de Cloudflare, en el que en el plan gratuito incluye la IP fija mientras se use una instancia t3.medium, que es la más económica, que cumpla con los requisitos de la aplicación. Debido a que el proyecto ha estado con el servidor apagado para reducir costes derivó en coste por uso de la VPC. Para optimizar este costo se realizó un script en el servidor en el que cuando se enciende, hace una petición a la API de Cloudflare para actualizar los DNS, así eliminado la necesitadad de VPS, manteniendo los cambios de ip transparentes para el usuario.
+
+\imagen{costes_mayo}{Costes de AWS en mayo}
+
+Los costes totales del proyecto, sumando los costes de personal y de infraestructura, son aproximadamente 1792,02 euros, que se desglosan de la siguiente manera:
+\begin{itemize}
+    \item \textbf{Costes de personal:} 1790 euros.
+    \item \textbf{Costes de infraestructura:} 2,02 euros (9,49/12 euros del dominio + 1,23 euros de AWS).
+\end{itemize}
+
+
+En resumen, la viabilidad económica del proyecto se ha evaluado teniendo en cuenta los costes de personal y de infraestructura, determinando que el proyecto es viable económicamente, ya que los costes totales son bastante reducidos para el posible potencial del proyecto.
+
 \subsection{Viabilidad legal}
+Para la viabilidad legal del proyecto, se ha tenido en cuenta la normativa vigente en materia de protección de datos y propiedad intelectual.
+Las normativas aplicables más relevantes son:
+\begin{itemize}
+    \item \textbf{Reglamento General de Protección de Datos (RGPD):} Este reglamento establece las normas para la protección de datos personales en la Unión Europea.~\cite{RGPD}
+    \item \textbf{Ley Orgánica de Protección de Datos y Garantía de los Derechos Digitales (LOPDGDD):} Esta ley complementa el RGPD en España y establece normas adicionales para la protección de datos personales.~\cite{LOPDGDD}	
+\end{itemize}
+
+Para analizar la viabilidad legal del proyecto, se debe tener en cuenta que el desarrollo y la implementación de un agente de aprendizaje por refuerzo encargado de la mitigación de ataques permitiendo o denegando el tráfico de red, debe garantizar que se cumplen las normativas vigentes.
+
+En relación con la protección de datos personales del agente, cumple la normativa vigente, ya que no se recopilan ni procesan datos personales de los usuarios, ya que no obtiene información personal, ya que solo lee la capacidad de la cola, no accede a los datos de los paquetes. En la parte de la web, debido a que tampoco se recopilan datos personales de los usuarios, ya que en el registro de usuarios no se solicita información personal, y la única información que se almacena es el nombre de usuario y la contraseña, que se almacenan de forma segura en la base de datos, cumpliendo las mejores prácticas de seguridad, principalmente la autentificación y autorización de los usuarios, ya que utiliza Spring Security ~\cite{SpringSecurity}.
+También usa servicios en la nube de terceros, como AWS~\cite{PPAWS}, Cloudflare~\cite{PPCloudflare} y GitHub~\cite{PPGithub}, que cumplen con las normativas de protección de datos y seguridad, ya que se utilizan para el despliegue de la aplicación web, la gestión de dominios y seguridad del tráfico de la web y el control de versiones del código fuente, respectivamente.
+
+En cuanto a las licencias de los paquetes y liberías usadas, se han utilizado principalmente:
+\begin{itemize}
+    \item \textbf{BSD-3-Clause:} Usada por más de 15 dependencias del proyecto.
+    \item \textbf{BSD-2-Clause:} Usada por más de 13 dependencias del proyecto.
+    \item \textbf{MIT:} Usada por 6 dependencias del proyecto.
+    \item \textbf{Apache-2.0:} Usada por 5 dependencias del proyecto.
+\end{itemize}
+Todas estas licencias son compatibles con el proyecto, ya que permiten su uso y compercialización de la aplicación, siempre y cuando se cumplan las condiciones establecidas en cada licencia. En este caso, se ha cumplido con las condiciones de las licencias, ya que se ha incluido la información de las licencias en el proyecto, y no se ha modificado el código de las dependencias, ya que se han utilizado tal cual están en sus repositorios oficiales.
 
 
+En resumen el proyecto cumple con la normativa vigente en materia de protección de datos y propiedad intelectual, permitiendo su desarrollo y despliegue sin problemas legales.
