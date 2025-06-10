@@ -9,17 +9,18 @@ El proyecto se ha dividido en tres partes, cada una de las cuales tiene un objet
 
 \section{Generación del entorno de simulación y la generación de los datos de entrenamiento}
 Para el entorno de simulación se ha utilizado la librería de Python \texttt{Gymnasium}, que facilita la creación del entorno de simulación para el agente de aprendizaje por refuerzo.
-La arquitectura del entorno es la siguiente:
+La arquitectura del entorno se encuentra en la \textbf{Figura~\ref{fig:RedInicial}}.Esta arquitectura simula una generación de paquetes que son enviado a un dispositivo que pueda controlar el flujo de paquetes, que en este caso es un \textit{router} simulado, que la gestión que hace de los paquetes entrantes es introducirlos en una simple cola. Junto al router se implementa el agente, que se encarga de decidir si descarta los paquetes, o permite el paso a su destino original.
 \imagen{RedInicial}{Arquitectura del entorno de simulación}{1.0}
 
 La generación de los datos de entrenamiento se ha realizado creando generadores de paquetes, tanto de tráfico benigno como de tráfico atacante, que simulan el tráfico que se puede generar en un entorno de dispositivos de internet de las cosas. Los atributos de los paquetes se generan siguiendo una distribución por probabilidades, para que se asemeje lo más posible al tráfico real que se puede generar en un entorno de dispositivos de internet de las cosas, tanto cuando reciben un ataque de denegación de servicio, como cuando no.
 
-En el entorno de entrenamiento, los estados de ataque y benigno cambian siguiendo una máquina de estados, en la que hay una cierta probabilidad de que el estado cambie. En cuanto entre cada cambio de estado, los paquetes transmitidos tienen las mismas características, es decir, cada ataque tiene un patrón de tráfico específico que cambia cuando cambia de estado. Esto permite que los ataques sean variables para que el agente pueda aprender a detectar ataques de denegación de servicio con diferentes características.
 
-\section{Desarrollo del entorno y el agente de aprendizaje por refuerzo}
+En el entorno de entrenamiento, los estados de ataque y benigno cambian siguiendo una máquina de estados, en la que hay una cierta probabilidad de que el estado cambie. Entre cada cambio de estado, los paquetes transmitidos tienen las mismas características, es decir, cada ataque tiene un patrón de tráfico específico que cambia cuando cambia de estado. Esto permite que los ataques sean variables para que el agente pueda aprender a detectar ataques de denegación de servicio con diferentes características.
+
+\section{Desarrollo del entorno y el agente}
 
 \subsection{Algoritmo de entrenamiento del agente}
-En el entrenamiento del agente se ha usado el algoritmo de aprendizaje por refuerzo Proximal Policy Optimization (PPO), que es un algoritmo de optimización de políticas que se basa en la idea de maximizar la función de recompensa esperada, y que ha demostrado ser efectivo en una amplia variedad de entornos y tareas.~\cite{Siboo2023, Yu2022}
+En el entrenamiento del agente se ha usado el algoritmo de aprendizaje por refuerzo Proximal Policy Optimization (PPO), que es un algoritmo de optimización de políticas que se basa en la idea de maximizar la función de recompensa esperada, y que ha demostrado ser efectivo~\cite{Siboo2023, Yu2022} en una amplia variedad de entornos y tareas.
 El algoritmo PPO se encuentra implementado en la librería de Python \texttt{Stable Baselines3}, que es una librería de aprendizaje por refuerzo que proporciona implementaciones de algoritmos de aprendizaje por refuerzo basados en PyTorch, y que es ampliamente utilizada en la comunidad de aprendizaje por refuerzo.~\cite{Raffin2021}
 Este tiene una compatibilidad total con la librería \texttt{Gymnasium}, que es la librería que se ha usado para crear el entorno de simulación, y con distintos tipos de espacios, que son cómo se han definido los estados, las acciones y las recompensas del entorno de simulación. En el caso de PPO, tiene compatibilidad con todos los espacios de \texttt{Gymnasium}, incluyendo espacios Box, Discrete, MultiDiscrete y MultiBinary, junto con la capacidad de multiprocesamiento, lo que permite entrenar el agente en múltiples entornos de simulación al mismo tiempo, mejorando así la eficiencia del entrenamiento y reduciendo el tiempo necesario para entrenar el agente.
 Busca un equilibrio entre la simplicidad y el rendimiento del mismo, proporcionando una implementación más sencilla que otros algoritmos de optimización de políticas, como el algoritmo Trust Region Policy Optimization (TRPO), también permite una gran flexibilidad en la configuración del entorno, y durante el entrenamiento del agente suele mantener una gran estabilidad, lo que lo hace adecuado para este tipo de entornos y tareas.
@@ -38,21 +39,23 @@ Para calcular los descartados, el agente cuenta todos los paquetes que no han po
 
 \subsubsection{Función de recompensa}
 La función de recompensa utilizada es la siguiente: 
+
 \[
-\text{reward} = 
+\text{\textit{reward}} = 
 \begin{cases}
-    -c \cdot \text{des}^2 + c_3 \cdot (\text{o\_ant} - \text{o\_act}) \cdot \text{o\_act}, & \text{si } \text{des} > 0 \text{ y } \text{act} = \text{PERMITIR} \\
-    -c_2 \cdot \text{des} + c_3 \cdot (\text{o\_ant} - \text{o\_act}) \cdot \text{o\_act}, & \text{si } \text{des} > 0 \text{ y } \text{act} \ne \text{PERMITIR} \\
-    (1 - \text{o\_act}) \cdot c_4 + c_5, & \text{si } \text{des} <= 0 \text{ y } \text{act} = \text{PERMITIR} \\
-    (1 - \text{o\_act}) \cdot c_4, & \text{si } \text{des} <= 0 \text{ y } \text{act} \ne \text{PERMITIR}
+    -c \cdot \text{des}^2 + c_3 \cdot (\text{o\_an} - \text{o\_ac}) \cdot \text{o\_ac}, & \text{si } \text{des} > 0 \text{ y } \text{act} = \text{PERM} \\
+    -c_2 \cdot \text{des} + c_3 \cdot (\text{o\_an} - \text{o\_ac}) \cdot \text{o\_ac}, & \text{si } \text{des} > 0 \text{ y } \text{act} \ne \text{PERM} \\
+    (1 - \text{o\_ac}) \cdot c_4 + c_5, & \text{si } \text{des} <= 0 \text{ y } \text{act} = \text{PERM} \\
+    (1 - \text{o\_ac}) \cdot c_4, & \text{si } \text{des} <= 0 \text{ y } \text{act} \ne \text{PERM}
 \end{cases}
 \]
+
 Las variables que se usan en la función de recompensa son:
 \begin{itemize}
     \item \textbf{des:} Número de paquetes descartados en el instante actual de tiempo. Es un número entero mayor o igual que 0.
-    \item \textbf{o\_ant:} Ocupación de la cola de paquetes en el instante anterior, es decir, la ocupación de la cola de paquetes antes de tomar la acción actual. Es un número flotante entre 0 y 1.
-    \item \textbf{o\_act:} Ocupación de la cola de paquetes en el instante actual. Es un número flotante entre 0 y 1.
-    \item \textbf{act:} Acción tomada por el agente, que puede ser PERMITIR o DENEGAR el flujo de paquetes.
+    \item \textbf{o\_an:} Ocupación de la cola de paquetes en el instante anterior, es decir, la ocupación de la cola de paquetes antes de tomar la acción actual. Es un número flotante entre 0 y 1.
+    \item \textbf{o\_ac:} Ocupación de la cola de paquetes en el instante actual. Es un número flotante entre 0 y 1.
+    \item \textbf{act:} Acción tomada por el agente, que puede ser PERMITIR (PERM en la función) o DENEGAR el flujo de paquetes.
 \end{itemize}
 
 Donde los parámetros a configurar son:
@@ -64,28 +67,29 @@ Donde los parámetros a configurar son:
     \item \textbf{c5:} Parámetro de recompensa que se suma a la recompensa cuando no hay paquetes descartados y se permite el tráfico.
 \end{itemize}
 
-Para la optimización de la función de recompensa se ha visualizado la función de recompensa como dos hiperplanos, uno con la acción permitir y otro con la acción denegar. Este gráfico interactivo se encuentra en la web en la sección de visualización de parámetros.
+Para la optimización de la función de recompensa se ha visualizado la función de recompensa como dos hiperplanos, uno con la acción permitir y otro con la acción denegar. Este gráfico interactivo se encuentra en la web en la sección de visualización de parámetros, representado en la \textbf{Figura~\ref{fig:reward_funct}}.
 
-El parámetro de precisión indica la cantidad de puntos que dibuja por eje, en el que valores mayores mostrarán resultados más precisos, pero se aumenta el tiempo de carga de los planos. Por otro lado, el parámetro de tolerancia indica las unidades de diferencia que tiene que haber en un punto entre los dos planos para que dibuje un punto rojo para indicar una "intersección" entre los planos.
+\imagen{reward_funct}{Función de recompensa del agente}{0.55}
 
-\imagen{reward_funct}{Función de recompensa del agente}{1.0}
+El parámetro de precisión indica la cantidad de puntos que dibuja por eje, en el que valores mayores mostrarán resultados más precisos, pero se aumenta el tiempo de carga de los planos. Por otro lado, el parámetro de tolerancia indica las unidades de diferencia que tiene que haber en un punto entre los dos planos para que dibuje un punto rojo para indicar una ``intersección'' entre los planos.
+
 
 Donde el plano amarillo representa la acción de denegar, en el que tiene una pendiente poco pronunciada en comparación con el plano de permitir el tráfico.
 Los puntos rojos indican las regiones del plano donde la recompensa es muy parecida entre los dos planos.
 
 \subsubsection{Entrenamiento del agente}
-Para la evaluación del entrenamiento del agente se han usado las métricas de recompensa media, que indica cómo ha ido evolucionando la recompensa media a lo largo del tiempo, y \textit{explained variance}, una métrica importante para comprobar si el agente está aprendiendo o no, que indica la calidad de las predicciones, en las que valores negativos indican que el agente obtendría mejores resultados si tomara siempre la misma acción, en que el mejor resultado posible es 1, indicando que las predicciones del agente son perfectas. ~\cite{JonathanHui2023}
+Para la evaluación del entrenamiento del agente se han usado las métricas de recompensa media, que indica cómo ha ido evolucionando la recompensa media a lo largo del tiempo, y \textit{explained variance}, una métrica importante para comprobar si el agente está aprendiendo o no, que indica la calidad de las predicciones, en las que valores negativos indican que el agente obtendría mejores resultados si tomara siempre la misma acción, en que el mejor resultado posible es 1~\cite{JonathanHui2023}, indicando que las predicciones del agente son perfectas. 
 En este caso estas son las estadísticas obtenidas durante el entrenamiento del agente:
 
-\imagen{training}{Estadísticas del entrenamiento del agente}{1.0}
+\imagen{training}{Estadísticas del entrenamiento del agente}{0.75}
 
-Como se puede observar en la imagen anterior, la recompensa media ha ido aumentando a lo largo del tiempo, mejorando con el tiempo. En cambio, la explained variance ha sido más variable, aunque con un valor relativamente bueno.
+Como se puede observar en la imagen anterior, la recompensa media ha ido aumentando a lo largo del tiempo, mejorando con el tiempo. En cambio, la \textit{explained variance} ha sido más variable, aunque con un valor relativamente bueno.
 
 \subsubsection{Evaluación del agente}
 Para la evaluación del agente ya entrenado, se genera un entorno de simulación, en el que se guardan los estados de los generadores de paquetes, para posteriormente poderlo comparar con las acciones tomadas por el agente, y así poder evaluar su rendimiento.
 Durante las predicciones del agente en el entorno, también se han guardado otros datos relevantes, como la ocupación de la cola en cada instante o la acción tomada.
 
-\imagen{RewardsActions}{Estadísticas de la evaluación del agente}{1.0}
+\imagen{RewardsActions}{Estadísticas de la evaluación del agente}{0.75}
 
 Como se puede ver en la imagen anterior, el fondo rojo indica que está en un estado de ataque, mandando paquetes de denegación de servicio hacia el agente, y el fondo blanco, lo contrario, es decir, generando tráfico benigno. En verde se puede ver el porcentaje de ocupación de la cola de paquetes, y en azul las acciones tomadas, donde 0 indica que el agente ha permitido el tráfico y 1 que lo ha denegado. Se puede apreciar que el agente ha aprendido a denegar el tráfico para que no sature la cola de paquetes, cumpliendo con el objetivo del proyecto, que es evitar la saturación de la cola de paquetes y denegar el tráfico de denegación de servicio, permitiendo así que el tráfico benigno pueda ser procesado.
 

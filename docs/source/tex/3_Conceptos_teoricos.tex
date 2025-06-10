@@ -22,7 +22,9 @@ Se usa en situaciones donde:
 	\item Se tiene retroalimentación escasa o tardía de la acción que se ha tomado
 	\item El agente debe aprender a través de la experiencia acumulada.
 \end{itemize}
-Es especialmente útil en entornos muy variables o dinámicos, donde se tienen que tomar acciones secuencialmente y se necesita una adaptación a los cambios en el entorno.
+Es especialmente útil en entornos muy variables o dinámicos, donde se tienen que tomar acciones secuencialmente y se necesita una adaptación a los cambios en el entorno. En la Figura~\ref{fig:RL} se muestra cómo funciona el aprendizaje por refuerzo.
+
+\imagen{RL}{Diagrama explicativo del funcionamiento del aprendizaje por refuerzo}{0.5}
 
 
 \section{Redes de computadoras}
@@ -45,13 +47,13 @@ Los protocolos de red son un pilar fundamental en la comunicación de computador
 Algunos de los protocolos más comunes son:
 \begin{itemize}
 	\item \textbf{HTTP (HyperText Transfer Protocol):} Es el protocolo que se usa par la transferencia de datos en internet. Permite la comunicación entre navegadores web y servidores. Sin embargo, HTTP tiene problemas de seguridad, ya que los datos no se transmiten cifrados.
-	\item \textbf{TLS (Transport Layer Security):} Es un protocolo criptográfico que proporciona comunicaciones seguras sobre una red, su predecesesor es la capa de puertos seguros o SSL. TLS cifra los datos antes de enviarlos y verifica que no hayan sido alterados durante la transmisión. Es ampliamente utilizado en protocolos como HTTPS, correo electrónico, y otros servicios en línea. ~\cite{SushilJajodia2025}
+	\item \textbf{TLS (Transport Layer Security):} Es un protocolo criptográfico que proporciona comunicaciones seguras sobre una red~\cite{SushilJajodia2025}, su predecesesor es la capa de puertos seguros o SSL. TLS cifra los datos antes de enviarlos y verifica que no hayan sido alterados durante la transmisión. Es ampliamente utilizado en protocolos como HTTPS, correo electrónico, y otros servicios en línea.
 
-	\item \textbf{HTTPS (HTTP Secure):} Es la versión de tranmisión de datos segura de HTTP. Utiliza una capa adicional de seguridad llamada TLS (Transport Layer Security) para cifrar la información durante la transmisión. Esto garantiza la seguridad de los datos, protegiendo contra ataques como la interceptación o modificación de mensajes. ~\cite{SushilJajodia2025}
+	\item \textbf{HTTPS (HTTP Secure):} Es la versión de transmisión de datos segura de HTTP~\cite{SushilJajodia2025}. Utiliza una capa adicional de seguridad llamada TLS (Transport Layer Security) para cifrar la información durante la transmisión. Esto garantiza la seguridad de los datos, protegiendo contra ataques como la interceptación o modificación de mensajes. 
 
-	\item \textbf{TCP/IP (Transmission Control Protocol / Internet Protocol):} Es el conjunto de protocolos más utilizado en Internet. TCP se encarga de dividir los mensajes en paquetes, enviarlos y asegurarse de que lleguen completos y en orden. El protocolo TCP está hecho para ser utilizado con el IP, que se encarga de direccionar y enrutar los paquetes hacia su destino a través de la red.~\cite{Protocolo}
+	\item \textbf{TCP/IP (Transmission Control Protocol / Internet Protocol):} Es el conjunto de protocolos más utilizado en Internet. TCP~\cite{Protocolo} se encarga de dividir los mensajes en paquetes, enviarlos y asegurarse de que lleguen completos y en orden. El protocolo TCP está hecho para ser utilizado con el IP, que se encarga de direccionar y enrutar los paquetes hacia su destino a través de la red.
 
-	\item \textbf{IPv4 (Internet Protocol version 4) y IPv6 (Internet Protocol version 6):} Es la cuarta versión del protocolo Internet Protocol(IP) y la más utilizada. Utiliza direcciones de 32 bits. Debido al crecimiento de dispositivos conectados, se ha ido agotando el espacio de direcciones IPv4.
+	\item \textbf{IPv4 (Internet Protocol version 4) e IPv6 (Internet Protocol version 6):} Es la cuarta versión del protocolo Internet Protocol(IP) y la más utilizada. Utiliza direcciones de 32 bits. Debido al crecimiento de dispositivos conectados, se ha ido agotando el espacio de direcciones IPv4.
 	IPv6 Es la versión más reciente del protocolo IP. Utiliza direcciones de 128 bits, lo que soluciona el problema de las direcciones limitadas IPv4. IPv6 también mejora aspectos como la eficiencia y configuración entre otros.
 
 	\item \textbf{DNS (Domain Name System):} Es el sistema que traduce los nombres de dominio en direcciones IP, facilitando al usuario el acceso a los servidores que proporcionan la información solicitada. Principalmente permite que los usuarios accedan a sitios web usando nombres fáciles de recordar(dominios) en lugar de números IP difíciles de manejar.
@@ -61,15 +63,15 @@ Algunos de los protocolos más comunes son:
 
 En cuanto a los dispositivos con funciones de seguridad de red, los principales son:
 \begin{itemize}
-	\item \textbf{Firewalls:} Son dispositivos hardware o software que controlan el tráfico de red, permitiendo o bloqueando el paso de paquetes según reglas predefinidas. Se utilizan para proteger la red de accesos no autorizados y ataques informáticos. ~\cite{SushilJajodia2025}
+	\item \textbf{Firewalls:} Son dispositivos hardware o software que controlan el tráfico de red, permitiendo o bloqueando el paso de paquetes según reglas predefinidas~\cite{SushilJajodia2025}. Se utilizan para proteger la red de accesos no autorizados y ataques informáticos. 
 
-	\item \textbf{Proxies:} Como Cloudflare, son servidores que actúan como intermediarios entre los dispositivos finales y los servidores de destino. Se utilizan para mejorar el rendimiento, la seguridad y la privacidad de la red. ~\cite{SushilJajodia2025}
+	\item \textbf{Proxies:} Como Cloudflare, son servidores que actúan como intermediarios entre los dispositivos finales y los servidores de destino~\cite{SushilJajodia2025}. Se utilizan para mejorar el rendimiento, la seguridad y la privacidad de la red. 
 
 	\item \textbf{CDN (Content Delivery Network):} Son redes de servidores distribuidos en distintas ubicaciones que almacenan copias del contenido estático (como imágenes, scripts etc) para entregarlo de forma más rápida y eficiente al usuario. Además de mejorar el rendimiento, muchas CDN también contribuyen a la seguridad al absorber tráfico malicioso. Cloudflare es un ejemplo de CDN que ofrece servicios de seguridad y rendimiento para aplicaciones web.
 \end{itemize}
 
 \section{Interfaces de Programación de Aplicaciones}
-Una API (\textit{Application Programming Interface}) es un conjunto de definiciones y protocolos que permiten que dos aplicaciones se comuniquen entre sí. Las APIs actúan como una interfaz que facilita el acceso a funcionalidades o datos de un sistema sin necesidad de conocer su implementación interna.~\cite{Api}
+Una API (\textit{Application Programming Interface}) es un conjunto de definiciones y protocolos que permiten que dos aplicaciones se comuniquen entre sí. Las APIs~\cite{Api} actúan como una interfaz que facilita el acceso a funcionalidades o datos de un sistema sin necesidad de conocer su implementación interna.
 Una API REST (\textit{Representational State Transfer}) es un tipo de API que sigue los principios de la arquitectura REST, siguiendo estos principios:
 \begin{itemize}
 	\item \textbf{Cliente-servidor:} La API REST separa el cliente del servidor, permitiendo que ambos se desarrollen de forma independiente, pero manteniendo la comunicación entre ellos.
@@ -80,23 +82,23 @@ Una API REST (\textit{Representational State Transfer}) es un tipo de API que si
 Estas llamadas a la API REST se realizan a través de peticiones HTTP, utilizando los métodos más comunes del protocolo, como GET para obtener datos del servidor, POST para enviar o crear datos, PUT para actualizar recursos existentes y DELETE para eliminar recursos. Existen otros métodos menos utilizados, pero estos son los más frecuentes.
 
 \section{Internet de las cosas}
-Los dispositivos de Internet de las cosas, o por sus siglas en inglés \textit{Internet of Things} (IoT), son dispositivos físicos que están conectados a una red y se encargan de enviar, recibir y procesar datos del mundo real. ~\cite{AzizAlKabir2023} 
+Los dispositivos de Internet de las cosas, o por sus siglas en inglés \textit{Internet of Things} (IoT)~\cite{AzizAlKabir2023}, son dispositivos físicos que están conectados a una red y se encargan de enviar, recibir y procesar datos del mundo real. 
 
-Actualmente estos dispositivos están muy extendidos y son fundamentales para el funcionamiento de muchas aplicaciones y servicios en línea, como la domótica, la monitorización de la salud, la gestión de la energía, cámaras de seguridad, etc. Estos dispositivos se caracterizan por la escasa capacidad de procesamiento y almacenamiento, siendo también muy susceptibles a ataques informáticos debido a su baja seguridad. Un ataque muy común en estos dispositivos es el ataque de denegación de servicio, que busca saturar los recursos del dispositivo o de la red a la que está conectado, impidiendo su correcto funcionamiento, o incluso utilizando estos dispositivos para formar botnets. ~\cite{kolias2017}
+Actualmente estos dispositivos están muy extendidos y son fundamentales para el funcionamiento de muchas aplicaciones y servicios en línea, como la domótica, la monitorización de la salud, la gestión de la energía, cámaras de seguridad, etc. Estos dispositivos se caracterizan por la escasa capacidad de procesamiento y almacenamiento, siendo también muy susceptibles a ataques informáticos debido a su baja seguridad. Un ataque muy común en estos dispositivos es el ataque de denegación de servicio, que busca saturar los recursos del dispositivo o de la red a la que está conectado, impidiendo su correcto funcionamiento, o incluso utilizando estos dispositivos para formar botnets~\cite{kolias2017}. 
 
 
 \section{Ataques informáticos}
 Los ataques informáticos son acciones que tienen como objetivo comprometer la seguridad de los sistemas, redes o datos.
-Estas acciones, cuyo objetivo es afectar a uno o varios de los tres pilares fundamentales de la ciberseguridad: la confidencialidad, integridad y disponibilidad (conocidos como el triángulo CIA).~\cite{NicholasEdwards2020, Chaeikar2012} 
+Estas acciones, cuyo objetivo es afectar a uno o varios de los tres pilares fundamentales de la ciberseguridad: la confidencialidad, integridad y disponibilidad (conocidos como el triángulo CIA)~\cite{NicholasEdwards2020, Chaeikar2012}.
 
 Actualmente, los ataques informáticos son una amenaza constante para la seguridad de las redes y sistemas. Estos ataques pueden tener diferentes objetivos, como robar información, interrumpir servicios, entre otros.
 
 \begin{itemize}
-    \item \textbf{Ataques de denegación de servicio (DoS y DDoS):} Buscan saturar los recursos de un sistema o red, impidiendo el acceso de los usuarios legítimos a los servicios. Denied of Service (DoS) se refiere a un ataque desde una sola fuente, mientras que Distributed Denied of Service (DDoS) implica la versión distribuida, atacando desde múltiples fuentes. Para ataques DDoS se suelen usar redes de bots o \textit{botnets}, que son redes de dispositivos comprometidos que se controlan de forma remota para llevar a cabo el ataque. Debido a la gran cantidad de dispositivos de internet de las cosas que se usan actualmente, y su baja seguridad, son un objetivo común para los atacantes que buscan crear redes de bots. ~\cite{kolias2017}
+    \item \textbf{Ataques de denegación de servicio (DoS y DDoS):} Buscan saturar los recursos de un sistema o red, impidiendo el acceso de los usuarios legítimos a los servicios. Denied of Service (DoS) se refiere a un ataque desde una sola fuente, mientras que Distributed Denied of Service (DDoS) implica la versión distribuida, atacando desde múltiples fuentes. Para ataques DDoS se suelen usar redes de bots o \textit{botnets}~\cite{kolias2017}, que son redes de dispositivos comprometidos que se controlan de forma remota para llevar a cabo el ataque. Debido a la gran cantidad de dispositivos de internet de las cosas que se usan actualmente, y su baja seguridad, son un objetivo común para los atacantes que buscan crear redes de bots. 
 
-    \item \textbf{Malware:} Es un programa informático malicioso diseñado para dañar, robar o modificar la información o sistemas informáticos. Incluye virus, gusanos, troyanos, ransomware, entre otros. ~\cite{SushilJajodia2025}
+    \item \textbf{Malware:} Es un programa informático malicioso diseñado para dañar, robar o modificar la información o sistemas informáticos~\cite{SushilJajodia2025}. Incluye virus, gusanos, troyanos, ransomware, entre otros. 
 
-    \item \textbf{Exploits de vulnerabilidades:} Son técnicas o herramientas que aprovechan de fallos de seguridad en el software o hardware para comprometer el sistema. ~\cite{SushilJajodia2025}
+    \item \textbf{Exploits de vulnerabilidades:} Son técnicas o herramientas que aprovechan de fallos de seguridad~\cite{SushilJajodia2025} en el software o hardware para comprometer el sistema. 
 
 	\item \textbf{Ataques CSRF(Cross-Site Request Forgery):} CSRF es un tipo de ataque que fuerza a un usuario autenticado en el sistema para que realice acciones no deseadas. El atacante envía una solicitud al navegador del usuario, que se ejecuta sin su conocimiento, aprovechando la sesión activa del usuario.
 
@@ -106,9 +108,9 @@ Actualmente, los ataques informáticos son una amenaza constante para la segurid
 Para que los ataques informáticos no tengan éxito, es importante implementar medidas de seguridad adecuadas y mitigar los ataques que se detecten en la medida de lo posible. 
 Algunas de las mitigaciones más comunes son:
 \begin{itemize}
-	\item \textbf{Descartar paquetes:} Se descartan los paquetes que se consideran basados en reglas establecidas, por ejemplo, paquetes que no cumplen con el formato esperado, que provienen de ciertas direcciones IP, ubicaciones geográficas, protocolos etc. ~\cite{Yungaicela-Naula2022, Liu2018} 
+	\item \textbf{Descartar paquetes:} Se descartan los paquetes que se consideran basados en reglas establecidas~\cite{Yungaicela-Naula2022, Liu2018} , por ejemplo, paquetes que no cumplen con el formato esperado, que provienen de ciertas direcciones IP, ubicaciones geográficas, protocolos etc. 
 
     \item \textbf{Rate limiting:} Consiste en limitar la cantidad de peticiones que puede realizar un cliente en un intervalo de tiempo determinado. Esto permite evitar que el servidor se pueda saturar por un gran número de peticiones desde un mismo cliente, ya sea un cliente legítimo o un bot malicioso que realice escaneos masivos, ataques de denegación de servicio o ataques de fuerza bruta.
 
-    \item \textbf{Desafíos interactivos (tipo CAPTCHA):} Es común encontrar en aplicaciones web desafíos para verificar si el usuario que intenta acceder al recurso es humano o no. Estos desafíos suelen ser imágenes, preguntas o tareas que requieren la intervención del usuario para conseguir pasarlos.~\cite{CloudflareDocsTeam2025}
+    \item \textbf{Desafíos interactivos (tipo CAPTCHA):} Es común encontrar en aplicaciones web desafíos~\cite{CloudflareDocsTeam2025} para verificar si el usuario que intenta acceder al recurso es humano o no. Estos desafíos suelen ser imágenes, preguntas o tareas que requieren la intervención del usuario para conseguir pasarlos.
 \end{itemize}
