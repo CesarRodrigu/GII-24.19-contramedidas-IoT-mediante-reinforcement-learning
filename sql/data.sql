@@ -65,4 +65,4 @@ INSERT INTO WebDB.users_roles (roles_id, users_id)
 VALUES (1, 1);
 
 INSERT INTO WebDB.trained_model (model_id, user_id, name, description, extension, file, file_name)
-VALUES (1, 1, 'Empty', 'Archivo comprimido vacío de prueba', '.zip', 0x504B0506000000000000000000000000000000000000, 'Empty.zip');
+VALUES (1, 1, 'Empty', 'Archivo comprimido vacio de prueba', '.zip', 0x504B0506000000000000000000000000000000000000, 'Empty.zip');
