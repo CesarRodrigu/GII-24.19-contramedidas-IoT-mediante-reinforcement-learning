@@ -89,7 +89,7 @@ Actualmente estos dispositivos están muy extendidos y son fundamentales para el
 
 \section{Ataques informáticos}
 Los ataques informáticos son acciones que tienen como objetivo comprometer la seguridad de los sistemas, redes o datos.
-Estas acciones, cuyo objetivo es afectar a uno o varios de los tres pilares fundamentales de la ciberseguridad: la confidencialidad, integridad y disponibilidad (conocidos como el triángulo CIA)~\cite{NicholasEdwards2020, Chaeikar2012}.
+Estas acciones, cuyo objetivo es afectar a uno o varios de los tres pilares fundamentales de la ciberseguridad: la confidencialidad, integridad y disponibilidad (conocidos como el triángulo CIA)~\cite{Chaeikar2012, NicholasEdwards2020}.
 
 Actualmente, los ataques informáticos son una amenaza constante para la seguridad de las redes y sistemas. Estos ataques pueden tener diferentes objetivos, como robar información, interrumpir servicios, entre otros.
 
@@ -100,15 +100,15 @@ Actualmente, los ataques informáticos son una amenaza constante para la segurid
 
     \item \textbf{Exploits de vulnerabilidades:} Son técnicas o herramientas que aprovechan de fallos de seguridad~\cite{SushilJajodia2025} en el software o hardware para comprometer el sistema. 
 
-	\item \textbf{Ataques CSRF(Cross-Site Request Forgery):} CSRF es un tipo de ataque que fuerza a un usuario autenticado en el sistema para que realice acciones no deseadas. El atacante envía una solicitud al navegador del usuario, que se ejecuta sin su conocimiento, aprovechando la sesión activa del usuario.
+	\item \textbf{Ataques CSRF (Cross-Site Request Forgery):} CSRF es un tipo de ataque que fuerza a un usuario autenticado en el sistema para que realice acciones no deseadas. El atacante envía una solicitud al navegador del usuario, que se ejecuta sin su conocimiento, aprovechando la sesión activa del usuario.
 
-	\item \textbf{Ataques XSS(Cross-Site Scripting):} XSS es un tipo de ataque que permite a un atacante incluir scripts maliciosos en una página web, que se ejecutan en el navegador de los usuarios que visitan esa página. Estos scripts pueden robar información del usuario, o realizar acciones no autorizadas en nombre del usuario.
+	\item \textbf{Ataques XSS (Cross-Site Scripting):} XSS es un tipo de ataque que permite a un atacante incluir scripts maliciosos en una página web, que se ejecutan en el navegador de los usuarios que visitan esa página. Estos scripts pueden robar información del usuario, o realizar acciones no autorizadas en nombre del usuario.
 \end{itemize}
 
 Para que los ataques informáticos no tengan éxito, es importante implementar medidas de seguridad adecuadas y mitigar los ataques que se detecten en la medida de lo posible. 
 Algunas de las mitigaciones más comunes son:
 \begin{itemize}
-	\item \textbf{Descartar paquetes:} Se descartan los paquetes que se consideran basados en reglas establecidas~\cite{Yungaicela-Naula2022, Liu2018} , por ejemplo, paquetes que no cumplen con el formato esperado, que provienen de ciertas direcciones IP, ubicaciones geográficas, protocolos etc. 
+	\item \textbf{Descartar paquetes:} Se descartan los paquetes que se consideran basados en reglas establecidas~\cite{Liu2018,Yungaicela-Naula2022}, por ejemplo, paquetes que no cumplen con el formato esperado, que provienen de ciertas direcciones IP, ubicaciones geográficas, protocolos etc. 
 
     \item \textbf{Rate limiting:} Consiste en limitar la cantidad de peticiones que puede realizar un cliente en un intervalo de tiempo determinado. Esto permite evitar que el servidor se pueda saturar por un gran número de peticiones desde un mismo cliente, ya sea un cliente legítimo o un bot malicioso que realice escaneos masivos, ataques de denegación de servicio o ataques de fuerza bruta.
 

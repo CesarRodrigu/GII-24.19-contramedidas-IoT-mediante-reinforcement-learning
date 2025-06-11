@@ -1,22 +1,24 @@
 \capitulo{7}{Conclusiones y Líneas de trabajo futuras}
 
 \section{Conclusiones}
-El proyecto ha conseguido desarrollar un agente, que mediante el uso de técnicas de aprendizaje por refuerzo es capaz de mitigar ataques de denegación de servicio en un entorno de simulación basado en dispositivos  del Internet de las Cosas. Debido a que los dispositivos IoT presentan características particulares, como pueden ser recursos limitados y heterogeneidad en sus comportamientos conlleva a que la mitigación de los ataques en este tipo de entornos tiene mucho impacto y es un desafío considerable.
+El proyecto ha conseguido desarrollar un agente, que mediante el uso de técnicas de aprendizaje por refuerzo es capaz de mitigar ataques de denegación de servicio en un entorno de simulación basado en dispositivos  del Internet de las Cosas. Debido a que los dispositivos IoT presentan características particulares, como pueden ser recursos limitados y heterogeneidad en sus comportamientos, ello conlleva a que la mitigación de los ataques en este tipo de entornos tenga mucho impacto y sea un desafío considerable.
 
-El agente desarrollado con el algoritmo PPO ha demostrado la capacidad de aprendizaje de los patrones de los ataques para evitar la saturación del sistema, y por consecuencia la denegación de servicio a los usuarios. Gracias a la librería de Gymnasium, ha permitido la creación de un entorno dinámico personalizado, en el que simula un router, que decide en cada instante si el tráfico se reenvía o se deniega. En este entorno, el agente ha sido capaz, a partir solamente de conocer el porcentaje de ocupación de la cola y los paquetes descartados en el último instante, decidir cuando permite o deniega el tráfico para mitigar los posibles ataques, minimizando los paquetes que se descartan. La función de recompensa ha sido clave para que se penalice por la pérdida de paquetes como la denegación de tráfico legítimo. El proceso de ajuste y visualización interactiva ha sido clave para entrenar un agente equilibrado.
+El agente desarrollado con el algoritmo PPO ha demostrado la capacidad de aprendizaje de los patrones de los ataques para evitar la saturación del sistema, y por consecuencia la denegación de servicio a los usuarios. Gracias al uso de la librería \textbf{Gymnasium}, en el presente trabajo se ha realizado la creación de un entorno dinámico y personalizado, en el que se simula un \textit{router}, que decide en cada instante si el tráfico se reenvía o se deniega. 
+En este entorno, el agente ha sido capaz, a partir de solamente conocer el porcentaje de ocupación de la cola y los paquetes descartados en el último instante, decidir cuando permite o deniega el tráfico para mitigar los posibles ataques, minimizando los paquetes que se descartan. 
+La función de recompensa ha sido clave tanto en la penalización por pérdida de paquetes, como la denegación de tráfico legítimo. El proceso de ajuste y visualización interactiva ha sido un apoyo que ha permitido entrenar un agente equilibrado.
 
-Por otro lado, en la aplicación web desarrollada es importante la visualización de los datos y de la documentación del proyecto, permitiendo a los usuarios tener un mayor conocimiento del proyecto.
+Por otro lado, en la aplicación web desarrollada es importante en términos de visualización de datos y de documentación del proyecto, permitiendo a los usuarios tener un mayor conocimiento del trabajo realizado a lo largo de este trabajo de fin de grado.
 
-En resumen, el proyecto no solo ha logrado una solución eficaz para la mitigación de ataques de denegación de servicio mediante aprendizaje por refuerzo, sino que también se ha realizado una herramienta de apoyo, como es la web, que proporciona un apoyo visual y un sistema en el que visualizar las estadísticas de los modelos más fácilmente.
+En resumen, el proyecto no solo se ha logrado una solución eficaz para la mitigación de ataques de denegación de servicio mediante aprendizaje por refuerzo, sino que también se ha realizado una herramienta de apoyo, como es la interfaz web, donde se proporciona un apoyo visual y un sistema en el que visualizar las estadísticas de los modelos más fácilmente, permitiendo una mejor comprensión del trabajo realizado.
 
 \section{Líneas de trabajo futuras}
-Para la continuación del proyecto se han planteado varias líneas de trabajo futuras, que buscan mejorar el rendimiento del agente y la funcionalidad de la aplicación web. 
+Como posibles líneas futuras del proyecto se han planteado varias que, principalmente buscan mejorar el rendimiento del agente y la funcionalidad de la aplicación web. 
 
 \subsection{Mejoras en el agente de aprendizaje por refuerzo}
 Las principales líneas de trabajo son:
 \begin{itemize}
     \item \textbf{Mejora en el entorno de simulación:} Llevar la simulación a un entorno de simulación de tráfico, como GNS3, en el que se implemente el agente y se pueda ver y evaluar cual es su desempeño en un entorno más complejo.
-    \item \textbf{Mejora en la recompensa:} Optimizar la función de recompensa, añadiendo más variables para que el agente tenga más información relevante y así mejorar su aprendizaje.
+    \item \textbf{Mejora en la recompensa:} Optimizar la función de recompensa añadiendo más variables, así el agente puede tener una mayor información relevante y mejorar su aprendizaje.
     \item \textbf{Mitigación de más ataques:} Añadir al agente la posibilidad de mitigación de más tipos de ataques como:
     \begin{itemize}
         \item Escaneo de puertos (PortScan)
