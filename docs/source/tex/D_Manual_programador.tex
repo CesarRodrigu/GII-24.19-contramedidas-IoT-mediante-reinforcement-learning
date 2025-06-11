@@ -28,7 +28,9 @@ A parte de estas carpetas, en el directorio principal se puede encontrar los sig
 \section{Manual del programador}
 \label{sec:manual-programador}
 
-En la parte de gestión del \href{https://github.com/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning}{repositorio GitHub}, se ha realizado mediante un \href{https://github.com/users/CesarRodrigu/projects/6}{proyecto de GitHub} en el que se ha realizado la gestión de tareas(issues) y la planificación de las mismas, en las que la mayoría se han convertido en ramas de desarrollo para añadir los cambios propuestos.
+En la parte de gestión del \href{https://github.com/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning}{repositorio GitHub}, se ha realizado mediante un \href{https://github.com/users/CesarRodrigu/projects/6}{proyecto de GitHub} en el que se ha realizado la gestión de tareas (\textit{issues}) y la planificación de las mismas, en las que la mayoría se han convertido en ramas de desarrollo para añadir los cambios propuestos.
+
+El código del proyecto está documentado con comentarios, en los que se indica el funcionamiento de la clase, método, variable, etc. En el caso de la aplicación web, cuenta con un Javadoc en la carpeta de docs en el que se puede ver la documentación interna del código en formato HTML.
 
 \subsection{Acciones de GitHub}
 \label{subsec:acciones}
@@ -37,7 +39,7 @@ Las acciones de GitHub (GitHub Actions) son una herramienta de integración cont
     \item \textbf{Compilación de la documentación:} Se ha creado una acción que compila la documentación del proyecto en formato LaTeX a PDF. Esta acción se ejecuta cada vez que se realiza un push a la rama principal del repositorio en el que se han cambiado los archivos fuente de la propia documentación.
     \item \textbf{SonarQube:} Para las pruebas de calidad de código, se ha implementado SonarQube, que permite analizar el código en busca de errores, vulnerabilidades y problemas de calidad, según las reglas definidas en el proyecto. Cada vez que se añaden cambios a una incorporación de cambios o a la rama principal, se ejecuta una acción que analiza el código, ejecuta los test relacionados para obtener su cobertura y genera un informe de calidad. Este informe se puede consultar en la página de \href{https://sonarcloud.io/project/overview?id=CesarRodrigu_GII-24.19-contramedidas-IoT-mediante-reinforcement-learning}{SonarCloud del proyecto} y también se comenta en la \hyperref[subsec:sonarqube]{subsección dedicada a SonarQube}.
 
-    \item \textbf{CodeQL:} GitHub CodeQL es una herramienta de análisis de código estático que permite detectar vulnerabilidades y errores en el código fuente. Cuando detecta un error suguiere una posible solución mediante Copilot. Esta acción se ejecuta por cada incorporación de cambios al repositorio.
+    \item \textbf{CodeQL:} GitHub CodeQL es una herramienta de análisis de código estático que permite detectar vulnerabilidades y errores en el código fuente. Cuando detecta un error, sugiere una posible solución mediante Copilot. Esta acción se ejecuta por cada incorporación de cambios al repositorio.
     \item \textbf{Dependabot:} Dependabot es una herramienta de GitHub que ayuda a mantener las dependencias del proyecto actualizadas y seguras, en este caso solo está configurada para que actualice las dependencias si se ha detectado una vulnerabilidad en alguna de ellas. Dependabot crea automáticamente una solicitud de incorporación de cambios para corregirlas, sugiriendo la versión que corrige esa vulnerabilidad.
 \end{itemize}
 
@@ -95,6 +97,8 @@ Los distintos tipos de pruebas que se han realizado en el proyecto son:
     \item \textbf{Pruebas funcionales:} Se han realizado pruebas funcionales a través de Selenium, que permite, a traves de Selenium IDE, grabar pruebas simulando la interacción del usuario con la web. Gracias a la función de exportación de Selenium IDE las pruebas se pueden ejecutar tanto cargando el archivo WebTests.side, como ejecutando las pruebas de Java de la carpeta app/src/test/java/es/cesar/app/web (una vez ya iniciada la web) con un perfil de Spring Boot distinto a 'coverage', aceptando el perfil nativo. Se recomienda cargar el archivo WebTests.side en la extensión de Selenium IDE del navegador, ya que es más fácil de ejecutar y permite ver los resultados de las pruebas de forma más visual.
 \end{itemize}
 
+Para el desarrollo de las pruebas se ha utilizado la metodología \textbf{Arrange Act y Assert}, que en español sería Organizar, Actuar y Afirmar, que pretende seguir una misma estructura en todas las pruebas de primero declarar las variables necesarias, luego llamar a las funciones que se quieren probar y por último comprobar si los resultados son los correctos.
+
 El objetivo de las pruebas es garantizar que la aplicación funciona correctamente y cumple con los requisitos funcionales y no funcionales definidos en la especificación del proyecto.
-La integración continua de estas pruebas permite detectar y corregir errores cada vez que si incorporan cambios al código, lo que mejora la calidad del software y reduce el riesgo de introducir errores en el sistema.
-Una alta cobertura de pruebas unitarias, como es en este caso, (superior al 90\% ) proporciona una garantía de calidad, significando que la mayoría del código se prueba de forma automática, facilitando la evolución del software.
+La integración continua de estas pruebas permite detectar y corregir errores cada vez que se incorporan cambios al código, lo que mejora la calidad del software y reduce el riesgo de introducir errores en el sistema.
+Una alta cobertura de pruebas unitarias, como es en este caso, (superior al 85\% ) proporciona una garantía de calidad, significando que la mayoría del código se prueba de forma automática, facilitando la evolución del software.

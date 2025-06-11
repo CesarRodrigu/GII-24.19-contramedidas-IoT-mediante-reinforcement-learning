@@ -1,33 +1,34 @@
 \capitulo{7}{Conclusiones y Líneas de trabajo futuras}
 
 \section{Conclusiones}
-El proyecto ha conseguido desarrollar un agente, que mediante el uso de aprendizaje por refuerzo es capaz de mitigar ataques de denegación de servicio en un entorno de simulación basado en dispositivos IoT.
+El proyecto ha conseguido desarrollar un agente, que mediante el uso de técnicas de aprendizaje por refuerzo es capaz de mitigar ataques de denegación de servicio en un entorno de simulación basado en dispositivos  del Internet de las Cosas. Debido a que los dispositivos IoT presentan características particulares, como pueden ser recursos limitados y heterogeneidad en sus comportamientos, ello conlleva a que la mitigación de los ataques en este tipo de entornos tenga mucho impacto y sea un desafío considerable.
 
-También en la aplicación web desarrollada es importante la visualización de los datos y de la documentación del proyecto, permitiendo a los usuarios una mayor compresión del proyecto.
+El agente desarrollado con el algoritmo PPO ha demostrado la capacidad de aprendizaje de los patrones de los ataques para evitar la saturación del sistema, y por consecuencia la denegación de servicio a los usuarios. Gracias al uso de la librería \textbf{Gymnasium}, en el presente trabajo se ha realizado la creación de un entorno dinámico y personalizado, en el que se simula un \textit{router}, que decide en cada instante si el tráfico se reenvía o se deniega. 
+En este entorno, el agente ha sido capaz, a partir de solamente conocer el porcentaje de ocupación de la cola y los paquetes descartados en el último instante, decidir cuando permite o deniega el tráfico para mitigar los posibles ataques, minimizando los paquetes que se descartan. 
+La función de recompensa ha sido clave tanto en la penalización por pérdida de paquetes, como la denegación de tráfico legítimo. El proceso de ajuste y visualización interactiva ha sido un apoyo que ha permitido entrenar un agente equilibrado.
+
+Por otro lado, en la aplicación web desarrollada es importante en términos de visualización de datos y de documentación del proyecto, permitiendo a los usuarios tener un mayor conocimiento del trabajo realizado a lo largo de este trabajo de fin de grado.
+
+En resumen, el proyecto no solo se ha logrado una solución eficaz para la mitigación de ataques de denegación de servicio mediante aprendizaje por refuerzo, sino que también se ha realizado una herramienta de apoyo, como es la interfaz web, donde se proporciona un apoyo visual y un sistema en el que visualizar las estadísticas de los modelos más fácilmente, permitiendo una mejor comprensión del trabajo realizado.
 
 \section{Líneas de trabajo futuras}
-Para la continuación del proyecto se han planteado varias líneas de trabajo futuras, que buscan mejorar el rendimiento del agente y la funcionalidad de la aplicación web. 
+Como posibles líneas futuras del proyecto se han planteado varias que, principalmente buscan mejorar el rendimiento del agente y la funcionalidad de la aplicación web. 
 
 \subsection{Mejoras en el agente de aprendizaje por refuerzo}
 Las principales líneas de trabajo son:
 \begin{itemize}
-    \item \textbf{Mejora en la recompensa:} Optimizar la función de recompensa, añadiendo más variables para que el agente tenga más información relevante y así poder aprender.
+    \item \textbf{Mejora en el entorno de simulación:} Llevar la simulación a un entorno de simulación de tráfico, como GNS3, en el que se implemente el agente y se pueda ver y evaluar cual es su desempeño en un entorno más complejo.
+    \item \textbf{Mejora en la recompensa:} Optimizar la función de recompensa añadiendo más variables, así el agente puede tener una mayor información relevante y mejorar su aprendizaje.
     \item \textbf{Mitigación de más ataques:} Añadir al agente la posibilidad de mitigación de más tipos de ataques como:
     \begin{itemize}
         \item Escaneo de puertos (PortScan)
         \item Escaneo de sistema operativo (OSScan)
     \end{itemize}
-    \item \textbf{Desarrollar e implementar un clasificador de ataques previo al agente:} Añadiendo un clasificador de ataques que permita clasificar los ataques recibidos en diferentes categorías, para poder aplicar diferentes estrategias de mitigación según el tipo de ataque. En caso que el clasificador no pueda clasificar el ataque con suficiente confianza, se podría aplicar una estrategia de mitigación genérica por el agente.
 \end{itemize}
 
 \subsection{Mejoras en la aplicación web}
 Las principales líneas de trabajo son:
 \begin{itemize}
-    \item \textbf{Mejora en el entorno de simulación:} Llevar la simulación a un entorno de simulación de tráfico, como GNS3, en el que se implemente el agente y se pueda ver y evaluar cual es su desempeño en un entorno más complejo.
-    \item \textbf{Optimización del rendimiento:} Mejorar la eficiencia de la aplicación web, reduciendo los tiempos de carga y optimizando el uso de recursos.
     \item \textbf{Mejora de la interfaz de usuario:} Realizar cambios en el diseño y la usabilidad de la aplicación para facilitar la interacción del usuario. En cuanto a la parte técnica, se plantea la sustitución de los estilos de Bootstrap 5 por un framework de frontend moderno como \textit{React}, \textit{Vue.js} o \textit{Angular}, lo que permitiría una interfaz más dinámica, modular y fácil de mantener.
     \item \textbf{Ampliación de funcionalidades:} Incluir nuevas características en la aplicación web, como la posibilidad de ajustar los parámetros de entrenamiento del agente desde la aplicación web, permitiendo a los usuarios personalizar el comportamiento del agente según sus necesidades.
-    \item \textbf{Mejora de la seguridad:} Implementar medidas adicionales para proteger la aplicación web y los datos de los usuarios, como la autenticación de dos factores y el cifrado de las comunicaciones mediante el protocolo HTTPS entre Cloudflare y el servidor de AWS.
-    \item \textbf{Ampliar las pruebas:} Incrementar las pruebas de software para asegurar la calidad y estabilidad de la aplicación, haciendo énfasis en las pruebas de Selenium, para asegurar el correcto funcionamiento de la aplicación web en diferentes navegadores y dispositivos.
-    \item \textbf{Mejora de la documentación del proyecto:} Ampliar y mejorar la documentación del proyecto, incluyendo guías más detalladas de usuario, manuales de instalación y uso en diferentes idiomas, mejorando las ya existentes en español y creando nuevas en inglés.
 \end{itemize}

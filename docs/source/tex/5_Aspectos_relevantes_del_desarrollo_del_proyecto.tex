@@ -9,26 +9,28 @@ El proyecto se ha dividido en tres partes, cada una de las cuales tiene un objet
 
 \section{Generación del entorno de simulación y la generación de los datos de entrenamiento}
 Para el entorno de simulación se ha utilizado la librería de Python \texttt{Gymnasium}, que facilita la creación del entorno de simulación para el agente de aprendizaje por refuerzo.
-La arquitectura del entorno es la siguiente:
+La arquitectura del entorno se encuentra en la \textbf{Figura~\ref{fig:RedInicial}}. Esta arquitectura simula una generación de paquetes que son enviados a un dispositivo que pueda controlar el flujo de paquetes, que en este caso es un \textit{router} simulado, que la gestión que hace de los paquetes entrantes es introducirlos en una simple cola. Junto al \textit{router} se implementa el agente, que se encarga de decidir si descarta los paquetes, o permite el paso a su destino original.
 \imagen{RedInicial}{Arquitectura del entorno de simulación}{1.0}
 
 La generación de los datos de entrenamiento se ha realizado creando generadores de paquetes, tanto de tráfico benigno como de tráfico atacante, que simulan el tráfico que se puede generar en un entorno de dispositivos de internet de las cosas. Los atributos de los paquetes se generan siguiendo una distribución por probabilidades, para que se asemeje lo más posible al tráfico real que se puede generar en un entorno de dispositivos de internet de las cosas, tanto cuando reciben un ataque de denegación de servicio, como cuando no.
 
-En el entorno de entrenamiento, los estados de ataque y benigno cambian siguiendo una máquina de estados, en la que hay una cierta probabilidad de que el estado cambie. En cuanto entre cada cambio de estado, los paquetes transmitidos tienen las mismas características, es decir, cada ataque tiene un patrón de tráfico específico que cambia cuando cambia de estado. Esto permite que los ataques sean variables para que el agente pueda aprender a detectar ataques de denegación de servicio con diferentes características.
 
-\section{Desarrollo del entorno y el agente de aprendizaje por refuerzo}
+En el entorno de entrenamiento, los estados de ataque y benigno cambian siguiendo una máquina de estados, en la que hay una cierta probabilidad de que el estado cambie. Entre cada cambio de estado, los paquetes transmitidos tienen las mismas características, es decir, cada ataque tiene un patrón de tráfico específico que cambia cuando cambia de estado. Esto permite que los ataques sean variables para que el agente pueda aprender a detectar ataques de denegación de servicio con diferentes características.
+
+\section{Desarrollo del entorno y el agente}
 
 \subsection{Algoritmo de entrenamiento del agente}
-En el entrenamiento del agente se ha usado el algoritmo de aprendizaje por refuerzo Proximal Policy Optimization (PPO), que es un algoritmo de optimización de políticas que se basa en la idea de maximizar la función de recompensa esperada, y que ha demostrado ser efectivo en una amplia variedad de entornos y tareas.~\cite{Siboo2023, Yu2022}
-El algoritmo PPO se encuentra implementado en la librería de Python \texttt{Stable Baselines3}, que es una librería de aprendizaje por refuerzo que proporciona implementaciones de algoritmos de aprendizaje por refuerzo basados en PyTorch, y que es ampliamente utilizada en la comunidad de aprendizaje por refuerzo.~\cite{Raffin2021}
-Este tiene una compatibilidad total con la librería \texttt{Gymnasium}, que es la librería que se ha usado para crear el entorno de simulación, y con distintos tipos de espacios, que son cómo se han definido los estados, las acciones y las recompensas del entorno de simulación. En el caso de PPO, tiene compatibilidad con todos los espacios de \texttt{Gymnasium}, incluyendo espacios Box, Discrete, MultiDiscrete y MultiBinary, junto con la capacidad de multiprocesamiento, lo que permite entrenar el agente en múltiples entornos de simulación al mismo tiempo, mejorando así la eficiencia del entrenamiento y reduciendo el tiempo necesario para entrenar el agente.
+En el entrenamiento del agente se ha usado el algoritmo de aprendizaje por refuerzo Proximal Policy Optimization (PPO), que es un algoritmo de optimización de políticas que se basa en la idea de maximizar la función de recompensa esperada, y que ha demostrado ser efectivo~\cite{Siboo2023, Yu2022} en una amplia variedad de entornos y tareas.
+
+El algoritmo PPO se encuentra implementado en la librería de Python \texttt{Stable Baselines3}, que es una librería de aprendizaje por refuerzo que proporciona implementaciones de algoritmos de aprendizaje por refuerzo basados en PyTorch, y que es ampliamente utilizada~\cite{Raffin2021} en la comunidad de aprendizaje por refuerzo.
+Este tiene una compatibilidad total con la librería \texttt{Gymnasium}, que es la librería que se ha usado para crear el entorno de simulación, y con distintos tipos de espacios, que son cómo se han definido los estados, las acciones y las recompensas del entorno de simulación. En el caso de PPO, tiene compatibilidad con todos los espacios de \texttt{Gymnasium}, incluyendo espacios \textit{Box}, \textit{Discrete}, \textit{MultiDiscrete} y \textit{MultiBinary}, junto con la capacidad de multiprocesamiento, lo que permite entrenar el agente en múltiples entornos de simulación al mismo tiempo, mejorando así la eficiencia del entrenamiento y reduciendo el tiempo necesario para entrenar el agente.
 Busca un equilibrio entre la simplicidad y el rendimiento del mismo, proporcionando una implementación más sencilla que otros algoritmos de optimización de políticas, como el algoritmo Trust Region Policy Optimization (TRPO), también permite una gran flexibilidad en la configuración del entorno, y durante el entrenamiento del agente suele mantener una gran estabilidad, lo que lo hace adecuado para este tipo de entornos y tareas.
 
 Las políticas disponibles del algoritmo PPO son:
 \begin{itemize}
-    \item \textbf{MlpPolicy:} Alias de ActorCriticPolicy.
-    \item \textbf{CnnPolicy:} Alias de ActorCriticCnnPolicy.
-    \item \textbf{MultiInputPolicy:} Alias de MultiInputActorCriticPolicy.
+    \item \textbf{MlpPolicy:} Alias de \texttt{ActorCriticPolicy}.
+    \item \textbf{CnnPolicy:} Alias de \texttt{ActorCriticCnnPolicy}.
+    \item \textbf{MultiInputPolicy:} Alias de \texttt{MultiInputActorCriticPolicy}.
 \end{itemize}
 La política que se ha usado en el entrenamiento del agente es la \texttt{MultiInputPolicy} ya que es la única de las 3 que permite usar múltiples entradas, lo que es necesario para el entorno de simulación.
 
@@ -38,21 +40,23 @@ Para calcular los descartados, el agente cuenta todos los paquetes que no han po
 
 \subsubsection{Función de recompensa}
 La función de recompensa utilizada es la siguiente: 
+
 \[
-\text{reward} = 
+\text{\textit{reward}} = 
 \begin{cases}
-    -c \cdot \text{des}^2 + c_3 \cdot (\text{o\_ant} - \text{o\_act}) \cdot \text{o\_act}, & \text{si } \text{des} > 0 \text{ y } \text{act} = \text{PERMITIR} \\
-    -c_2 \cdot \text{des} + c_3 \cdot (\text{o\_ant} - \text{o\_act}) \cdot \text{o\_act}, & \text{si } \text{des} > 0 \text{ y } \text{act} \ne \text{PERMITIR} \\
-    (1 - \text{o\_act}) \cdot c_4 + c_5, & \text{si } \text{des} <= 0 \text{ y } \text{act} = \text{PERMITIR} \\
-    (1 - \text{o\_act}) \cdot c_4, & \text{si } \text{des} <= 0 \text{ y } \text{act} \ne \text{PERMITIR}
+    -c \cdot \text{des}^2 + c_3 \cdot (\text{o\_an} - \text{o\_ac}) \cdot \text{o\_ac}, & \text{si } \text{des} > 0 \text{ y } \text{act} = \text{PERM} \\
+    -c_2 \cdot \text{des} + c_3 \cdot (\text{o\_an} - \text{o\_ac}) \cdot \text{o\_ac}, & \text{si } \text{des} > 0 \text{ y } \text{act} \ne \text{PERM} \\
+    (1 - \text{o\_ac}) \cdot c_4 + c_5, & \text{si } \text{des} <= 0 \text{ y } \text{act} = \text{PERM} \\
+    (1 - \text{o\_ac}) \cdot c_4, & \text{si } \text{des} <= 0 \text{ y } \text{act} \ne \text{PERM}
 \end{cases}
 \]
+
 Las variables que se usan en la función de recompensa son:
 \begin{itemize}
     \item \textbf{des:} Número de paquetes descartados en el instante actual de tiempo. Es un número entero mayor o igual que 0.
-    \item \textbf{o\_ant:} Ocupación de la cola de paquetes en el instante anterior, es decir, la ocupación de la cola de paquetes antes de tomar la acción actual. Es un número flotante entre 0 y 1.
-    \item \textbf{o\_act:} Ocupación de la cola de paquetes en el instante actual. Es un número flotante entre 0 y 1.
-    \item \textbf{act:} Acción tomada por el agente, que puede ser PERMITIR o DENEGAR el flujo de paquetes.
+    \item \textbf{o\_an:} Ocupación de la cola de paquetes en el instante anterior, es decir, la ocupación de la cola de paquetes antes de tomar la acción actual. Es un número flotante entre 0 y 1.
+    \item \textbf{o\_ac:} Ocupación de la cola de paquetes en el instante actual. Es un número flotante entre 0 y 1.
+    \item \textbf{act:} Acción tomada por el agente, que puede ser PERMITIR (PERM en la función) o DENEGAR el flujo de paquetes.
 \end{itemize}
 
 Donde los parámetros a configurar son:
@@ -64,25 +68,29 @@ Donde los parámetros a configurar son:
     \item \textbf{c5:} Parámetro de recompensa que se suma a la recompensa cuando no hay paquetes descartados y se permite el tráfico.
 \end{itemize}
 
-Para la optimización de la función de recompensa se ha visualizado la función de recompensa como dos hiperplanos, uno con la acción permitir y otro con la acción denegar. 
-\imagen{reward_funct}{Función de recompensa del agente}{1.0}
+Para la optimización de la función de recompensa se ha visualizado la función de recompensa como dos hiperplanos, uno con la acción permitir y otro con la acción denegar. Este gráfico interactivo se encuentra en la web en la sección de visualización de parámetros, representado en la \textbf{Figura~\ref{fig:reward_funct}}.
 
-Donde el plano amarillo representa la acción de denegar, en el que tiene una pendiente poco pronunciada en comparación con el plano de permitir el tráfico.
+\imagen{reward_funct}{Función de recompensa del agente}{0.55}
+
+El parámetro de precisión indica la cantidad de puntos que dibuja por eje, en el que valores mayores mostrarán resultados más precisos, pero se aumenta el tiempo de carga de los planos. Por otro lado, el parámetro de tolerancia indica las unidades de diferencia que tiene que haber en un punto entre los dos planos para que dibuje un punto rojo para indicar una ``intersección'' entre los planos.
+
+
+Donde el plano amarillo representa la acción de denegar, en él tiene una pendiente poco pronunciada en comparación con el plano de permitir  tráfico.
 Los puntos rojos indican las regiones del plano donde la recompensa es muy parecida entre los dos planos.
 
 \subsubsection{Entrenamiento del agente}
-Para la evaluación del entrenamiento del agente se han usado las métricas de recompensa media, que indica cómo ha ido evolucionando la recompensa media a lo largo del tiempo, y \textit{explained variance}, una métrica importante para comprobar si el agente está aprendiendo o no, que indica la calidad de las predicciones, en las que valores negativos indican que el agente obtendría mejores resultados si tomara siempre la misma acción, en el que el mejor resultado posible es 1, indicando que las predicciones del agente son perfectas. ~\cite{JonathanHui2023}
-En este caso estas son las estadísticas obtenidas durante el entrenamiento del agente:
+Para la evaluación del entrenamiento del agente se han usado las métricas de recompensa media, que indica cómo ha ido evolucionando la recompensa media a lo largo del tiempo, y \textit{explained variance}, una métrica importante para comprobar si el agente está aprendiendo o no, que indica la calidad de las predicciones, en las que valores negativos indican que el agente obtendría mejores resultados si tomara siempre la misma acción, en que el mejor resultado posible es 1~\cite{JonathanHui2023}, indicando que las predicciones del agente son perfectas. 
+Las estadísticas obtenidas durante el entrenamiento del agente son las siguientes:
 
-\imagen{training}{Estadísticas del entrenamiento del agente}{1.0}
+\imagen{training}{Estadísticas del entrenamiento del agente}{0.75}
 
-Como se puede observar en la imagen anterior, la recompensa media ha ido aumentando a lo largo del tiempo, mejorando con el tiempo. En cambio, la explained variance ha sido más variable, aunque con un valor relativamente bueno.
+Como se puede observar en la imagen anterior, la recompensa media ha ido aumentando a lo largo del tiempo, mejorando con el tiempo. En cambio, la \textit{explained variance} ha sido más variable, aunque con un valor relativamente bueno.
 
 \subsubsection{Evaluación del agente}
-Para la evaluación del agente ya entrenado, se genera un entorno de simulación, en el que se guardan los estados de los generadores de paquetes, para posteriormente poderlo comparar con las acciones tomadas por el agente, y así poder evaluar su rendimiento.
+Para la evaluación del agente ya entrenado, se genera un entorno de simulación, en el que se guardan los estados de los generadores de paquetes, para posteriormente, poderlo comparar con las acciones tomadas por el agente y así poder evaluar su rendimiento.
 Durante las predicciones del agente en el entorno, también se han guardado otros datos relevantes, como la ocupación de la cola en cada instante o la acción tomada.
 
-\imagen{RewardsActions}{Estadísticas de la evaluación del agente}{1.0}
+\imagen{RewardsActions}{Estadísticas de la evaluación del agente}{0.75}
 
 Como se puede ver en la imagen anterior, el fondo rojo indica que está en un estado de ataque, mandando paquetes de denegación de servicio hacia el agente, y el fondo blanco, lo contrario, es decir, generando tráfico benigno. En verde se puede ver el porcentaje de ocupación de la cola de paquetes, y en azul las acciones tomadas, donde 0 indica que el agente ha permitido el tráfico y 1 que lo ha denegado. Se puede apreciar que el agente ha aprendido a denegar el tráfico para que no sature la cola de paquetes, cumpliendo con el objetivo del proyecto, que es evitar la saturación de la cola de paquetes y denegar el tráfico de denegación de servicio, permitiendo así que el tráfico benigno pueda ser procesado.
 
@@ -90,14 +98,14 @@ Como se puede ver en la imagen anterior, el fondo rojo indica que está en un es
 
 
 \subsection{Despliegue de la aplicación web}
-Para el despliegue de la aplicación web se ha usado un servidor virtual en Amazon Web Services (AWS) EC2, con una imagen de AMI de Amazon Linux 2023, y con un tamaño de instancia t3.medium, que dispone de los recursos necesarios para el despliegue y la ejecución de la aplicación.
-Para facilitar el despliegue y la gestión de la aplicación, se ha usado Docker y Docker Compose, que permiten crear contenedores separados para cada parte de la aplicación, con cada uno sus dependencias, facilitando así su despliegue y gestión.
+Para el despliegue de la aplicación web se ha usado un servidor virtual en \textbf{Amazon Web Services (AWS) EC2}, con una imagen de AMI de Amazon Linux 2023, y con un tamaño de instancia t3.medium, que dispone de los recursos necesarios para el despliegue y la ejecución de la aplicación.
+Para facilitar el despliegue y la gestión de la aplicación, se ha usado \textbf{Docker} y \textbf{Docker Compose}, que permiten crear contenedores separados para cada parte de la aplicación, con cada uno sus dependencias, facilitando así su despliegue y gestión.
 La arquitectura de la aplicación web se ha diseñado para que sea escalable y modular, permitiendo añadir nuevas funcionalidades en el futuro sin afectar al resto de la aplicación.
 \imagen{architecture}{Arquitectura de la aplicación web}{1.0}
 
 Los contenedores que se han creado son:
 \begin{itemize}
-    \item \textbf{Web:} Contiene la aplicación web desarrollada en Java con Spring Boot 3, que se encarga de servir las páginas web al usuario, y realizar toda la gestión de los modelos, junto con la visualización de información sobre el proyecto. El contenedor final generado utiliza una contrucción en multi-etapas, que en la primera etapa compila el proyecto en un archivo JAR, y en la segunda etapa se ejecuta el archivo JAR generado, permitiendo así reducir el tamaño del contenedor final, pudiendose ahorrar dependencias solo necesarias para la etapa de compilación.
+    \item \textbf{Web:} Contiene la aplicación web desarrollada en Java con Spring Boot 3, que se encarga de servir las páginas web al usuario, y realizar toda la gestión de los modelos, junto con la visualización de información sobre el proyecto. El contenedor final generado utiliza una construcción en multi-etapas, que en la primera etapa compila el proyecto en un archivo JAR, y en la segunda etapa se ejecuta el archivo JAR generado, permitiendo así reducir el tamaño del contenedor final, pudiéndose ahorrar dependencias solo necesarias para la etapa de compilación.
     \item \textbf{API:} Contiene la API REST desarrollada en Python con Flask, que se encarga de servir los datos necesarios desde Python para la aplicación web.
     \item \textbf{Base de datos:} Contiene la base de datos MySQL, que almacena los datos necesarios para la aplicación web y la API REST. Que usa un volumen de Docker para persistir los datos, de manera que si el contenedor se elimina, los datos no se pierden.
 \end{itemize}
@@ -117,13 +125,13 @@ Para garantizar la seguridad del código, se han seguido las siguientes práctic
     \item \textbf{Revisión de dependencias:} Se ha realizado una revisión automática de las dependencias utilizadas en el proyecto, para asegurarse de que no contienen vulnerabilidades conocidas. Utilizando Dependabot, que es una herramienta de GitHub que permite detectar vulnerabilidades en las dependencias del proyecto y sugerir actualizaciones para solucionarlas.
 
     \item \textbf{Revisión de código:} Se ha realizado una revisión de código mediante pull requests, donde se revisa el código automáticamente con GitHub Copilot, SonarQube y CodeQL analysis, para detectar posibles errores y vulnerabilidades en el código.
-    También se ha utilizado herramientas de análisis estático de código de GitHub como Code Scanning y Secret Scanning, que permiten detectar posibles errores y vulnerabilidades en el código, así como secretos expuestos en el código, como contraseñas, claves API, etc, pudiendo llegar a bloquear el commit si se detecta algún secreto expuesto.
+    También se han utilizado herramientas de análisis estático de código de GitHub como Code Scanning y Secret Scanning, que permiten detectar posibles errores y vulnerabilidades en el código, así como secretos expuestos en el código, como contraseñas, claves API, etc, pudiendo llegar a bloquear el \textit{commit} si se detecta algún secreto expuesto.
 
-    \item \textbf{Gestión de Secretos:} Para la gestión de secretos se ha utilizado un archivo \texttt{.env} que contiene las variables de entorno necesarias para la aplicación, como las credenciales de la base de datos, las claves API, etc. Este archivo no se deberís de incluir en el repositorio de Git, para evitar que los secretos queden expuestos, debiendo ser añadido al archivo \texttt{.gitignore} para evitar que se suba al repositorio. Sin embargo, para que se pueda utilizar y probar el proyecto por parte del tribunal se ha incluido el archivo \texttt{.env}, que contienen las variables de entorno mínimas para el funcionamiento del proyecto, pero no contiene los secretos reales, como credenciales SSH para subir contenido al servidor y a GitHub y claves API de Cloudflare y de Groq. Para poder usar la funcionalidad total de la parte web se debe de acceder a la url de la aplicación web, que es \url{https://www.cesarrv.com}.
+    \item \textbf{Gestión de Secretos:} En la gestión de secretos se ha utilizado un archivo \texttt{.env} que contiene las variables de entorno necesarias para la aplicación, como las credenciales de la base de datos, las claves API, etc. Este archivo no se debería incluir en el repositorio de Git para evitar que los secretos queden expuestos, debiendo ser añadido al archivo \texttt{.gitignore} para evitar que se suba al repositorio. Sin embargo, para que se pueda utilizar y probar el proyecto por parte del tribunal se ha incluido el archivo \texttt{.env}, que contienen las variables de entorno mínimas del funcionamiento del proyecto, pero no contiene los ``secretos reales'', como credenciales SSH para subir contenido al servidor y a GitHub y claves API de Cloudflare y de Groq. Si se desea usar la funcionalidad total de la parte web se debe de acceder a la \textbf{url} de la aplicación web, que es \url{https://www.cesarrv.com}.
 \end{itemize}
 \imagen{secrets}{Secretos usados en las acciones de GitHub}{1.0}
 
-Los secretos usados en las acciones de GitHub son los mostrados en la \textbf{Figura~\ref{fig:secrets}}, que son los necesarios para el funcionamiento del proyecto, como las credenciales de AWS, la clave API de Groq, y el token de Sonar y las claves SSH para poder subir contenido al servidor y a GitHub.
+Los secretos usados en las acciones de GitHub son los mostrados en la \textbf{Figura~\ref{fig:secrets}}, siendo los necesarios en el funcionamiento del proyecto, como las credenciales de AWS, la clave API de Groq, y el token de Sonar y las claves SSH que permiten subir contenido al servidor y a GitHub.
 
 \subsubsection{Seguridad en la infraestructura}
 
@@ -131,18 +139,18 @@ En cuanto a la seguridad de la aplicación web, se han implementado las siguient
 \begin{itemize}
     \item \textbf{Autenticación y autorización:} Se ha implementado un sistema de autenticación con Spring Boot Security, en el que permite gestionar los usuarios y sus roles, así como proteger las rutas de la aplicación web.
     \item \textbf{Protección contra ataques CSRF:} Se ha implementado protección contra ataques CSRF implementada por Spring Boot Security.
-    \item \textbf{Cifrado de datos:} Se ha guardado el hash de las contraseñas de los usuarios en la base de datos, utilizando el algoritmo BCrypt, que es un algoritmo de cifrado de contraseñas seguro y ampliamente utilizado. Esto permite proteger las contraseñas de los usuarios en caso de que la base de datos sea comprometida.
+    \item \textbf{Cifrado de datos:} Se ha guardado el \textit{hash} de las contraseñas de los usuarios en la base de datos, utilizando el algoritmo \textbf{BCrypt}, que es un algoritmo de cifrado de contraseñas seguro y ampliamente utilizado. Esto permite proteger las contraseñas de los usuarios en caso de que la base de datos sea comprometida.
 \end{itemize}
 
 
 \subsubsection{Uso de Cloudflare}
 En la aplicación web se ha usado Cloudflare como servicio de protección, estadísticas, rendimiento y personalización de reglas, con el objetivo de mitigar ataques, mejorar el rendimiento, mejorar la seguridad general de la aplicación y optimización de costes.
-También se ha aprovechado para comprar el dominio de \url{www.cesarrv.com} a través de Cloudflare, pudiendo así gestionar el dominio y los DNS desde la misma plataforma, facilitando la configuración de estos.
+También se ha aprovechado la compra del dominio de \url{www.cesarrv.com} a través de Cloudflare, pudiendo así gestionar el dominio y los DNS desde la misma plataforma, facilitando la configuración de estos.
 En cuanto a las solicitudes que recibe el dominio, aún redirigiendo al servidor apagado, recibe alrededor de 1000 solicitudes al día, de las cuales ninguna es legítima, ya que el dominio no está activo y el servidor donde se aloja la web no está activo. Esto indica que el dominio ha sido indexado por los motores de búsqueda y está siendo escaneado por bots maliciosos.
 \imagen{cloudflare_stats}{Estadísticas de Cloudflare del dominio cesarrv.com}{1.0}
-Como se puede observar en la imagen anterior, el dominio ha recibido un gran número de solicitudes. Otros datos a reseñar es que la mayoría de las solicitudes entragadas han estado guardadas en caché, lo que indica que Cloudflare ha podido servir las solicitudes sin necesidad de enviar la petición al servidor, mejorando así el rendimiento y reduciendo la carga y costos asociados del servidor.
+Como se puede observar en la imagen anterior, el dominio ha recibido un gran número de solicitudes. Otros datos a reseñar es que la mayoría de las solicitudes entregadas han estado guardadas en caché, lo que indica que Cloudflare ha podido servir las solicitudes sin necesidad de enviar la petición al servidor, mejorando así el rendimiento y reduciendo la carga y costos asociados del servidor.
 
-Los principales escaneos que se han detectado son:
+Los principales escaneos detectados son:
 \begin{itemize}
     \item \textbf{Escaneos de git:} De las peticiones recibidas uno de los patrones más comunes es el de escanear el repositorio de git, buscando archivos sensibles como \texttt{.git/config}, \texttt{.git/HEAD}, \texttt{.git/index}, etc. Estos archivos pueden contener información sensible sobre la configuración del repositorio, como las ramas, los usuarios, las contraseñas, etc.
     \item \textbf{Escaneos de WordPress:} Otro patrón común detectado es el de escanear la web en busca de vulnerabilidades relacionadas con WordPress, como la búsqueda de archivos como \texttt{wp-config.php}, \texttt{wp-login.php}, \texttt{/wp-includes/}, etc. Estos archivos y directorios pueden contener información sensible sobre la configuración de WordPress, como las contraseñas, los usuarios, etc.
@@ -166,13 +174,13 @@ En el que la función principal de cada una es:
 \begin{itemize}
     \item \textbf{Block by region:} Bloquea las solcicitudes que provienen de regiones geográficas específicas, en este caso, se han bloqueado las solicitudes que provienen de fuera de Europa, y países espacíficos dentro de Europa que se han detectado que son origen de ataques, como Rusia, Ucrania, Irlanda, etc.
     \item \textbf{Block bots:} Bloquea las solicitudes que siguen patrones comunes por bots maliciosos, centrándose en los encabezados de las peticiones y el tipo de petición que hacen.
-    \item \textbf{All except Spain:} De todas las solicitudes que han pasado las anteriores reglas, si el país de la solicitud no es España, administra un desafío gestionado por Cloudflare ~\cite{CloudflareDocsTeam2025}, que requiere que el usuario resuelva un CAPTCHA para poder acceder al sitio web. Esto ayuda a filtrar las solicitudes legítimas de las maliciosas.
+    \item \textbf{All except Spain:} De todas las solicitudes que han pasado las anteriores reglas, si el país de la solicitud no es España, administra un desafío gestionado por Cloudflare~\cite{CloudflareDocsTeam2025}, que requiere que el usuario resuelva un CAPTCHA para poder acceder al sitio web. Esto ayuda a filtrar las solicitudes legítimas de las maliciosas.
     \item \textbf{Too Much Requests:} Limita las solicitudes que puede hacer un mismo usuario en un periodo de tiempo determinado, en este caso, se ha configurado para que un usuario no pueda hacer más de 40 solicitudes cada 10 segundos, lo que ayuda a prevenir ataques de denegación de servicio (DoS) y ataques de escaneo por fuerza bruta.
 \end{itemize}
 
-Para la parte de seguridad frente a ataques, Cloudflare se ha configurado para evitar y/o mitigar distintos tipos comunes de ataques:
+La parte de seguridad frente a ataques, Cloudflare se ha configurado con el objetivo de evitar y/o mitigar distintos tipos comunes de ataques:
 \begin{itemize}
-    \item \textbf{Ataques de denegación de servicio (DoS y DDoS):} Cloudflare ayuda a mitigar ataques de denegación de servicio (DoS y DDoS) mediante la filtración de solicitudes con fines maliciosos, la limitación de solicitudes y la protección contra bots maliciosos. Además si se detecta un ataque se puede activar el modo "I'm Under Attack" ~\cite{CloudflareTeam2025}, que activa una protección adicional contra ataques DDoS, requiriendo que los usuarios resuelvan un desafío antes de acceder al sitio web.
+    \item \textbf{Ataques de denegación de servicio (DoS y DDoS):} Cloudflare ayuda a mitigar ataques de denegación de servicio (DoS y DDoS) mediante la filtración de solicitudes con fines maliciosos, la limitación de solicitudes y la protección contra bots maliciosos. Además si se detecta un ataque se puede activar el modo \textit{I'm Under Attack}~\cite{CloudflareTeam2025}, que activa una protección adicional contra ataques DDoS, requiriendo que los usuarios resuelvan un desafío antes de acceder al sitio web.
     
     \item \textbf{Ataques XSS:} Cloudflare agrega ciertos encabezados de seguridad a las respuestas HTTP que proporcionan protección contra este tipo de ataques.
 

@@ -1,0 +1,12 @@
+es.cesar.app
+es.cesar.app.config
+es.cesar.app.config.details
+es.cesar.app.controller
+es.cesar.app.dto
+es.cesar.app.dto.response
+es.cesar.app.exception
+es.cesar.app.mappers
+es.cesar.app.model
+es.cesar.app.repository
+es.cesar.app.service
+es.cesar.app.util

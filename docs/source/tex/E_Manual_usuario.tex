@@ -34,7 +34,7 @@ Para la parte de aprendizaje por refuerzo, se necesita tener instalado Python~\c
 \begin{verbatim}
 python -m venv venv
 \end{verbatim}
-Para crear un entorno virtual donde tener los paquetes instalados. Una vez creado, se debe activar el entorno, en este caso, el comando es para Windows con cmd:
+Para crear un entorno virtual donde tener los paquetes instalados. Una vez creado, se debe activar el entorno, en el que, en este caso, el comando es para Windows con cmd:
 \begin{verbatim}
 venv\Scripts\activate
 \end{verbatim}
@@ -42,11 +42,11 @@ Para activarlo en linux se puede hacer con el comando:
 \begin{verbatim}
 source venv/bin/activate
 \end{verbatim}
-Por último para instalar todas las dependencias se debe de usar:
+Por último para instalar todas las dependencias se debe usar:
 \begin{verbatim}
     pip install -r RL/requirements.txt
 \end{verbatim}
-Cabe destacar que para la instalación de StableBaselines3 los paquetes de dependencias cambian dependiendo del sistema operativo, en este caso se han recogido en entorno Windows~\cite{stable}.
+Cabe destacar que para la instalación de StableBaselines3, los paquetes de dependencias cambian dependiendo del sistema operativo, en este caso, se han enumerado los paquetes en un entorno Windows~\cite{stable}.
 
 
 \section{Manual del usuario}
@@ -58,4 +58,4 @@ El manual de usuario que recorre la mayoría de la funcionalidad de la web se en
 Este video también se encuentra disponible en la web, en el apartado de ayuda(que se encuentra n el círculo abajo a la izquierda de la pantalla) en el que aparte del vídeo hay un chat en el que se puede hacer preguntas sobre el proyecto y un bot las responde. 
 Para más documentación, se recomienda al usuario acceder al apartado \textit{Sobre el proyecto} en el que se encontrará pdfs con documentación más concreta y extensa.
 
-Para el entrenamiento de modelos se ha realizado otro vídeo disponible en la carpeta \href{https://github.com/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning/tree/main/docs/video/RL.mp4}{\texttt{docs/video/RL.mp4}} donde se muestra cómo conseguir entrenar y visualizar un modelo entrenado. Si se quiere una mayor personalización del modelo se deben ajustar los parámetros de la función de recompensa, para eso, se puede modificar en la función reward en el archivo \href{https://github.com/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning/blob/main/RL/custom_env/router_env.py}{\texttt{RL/custom\_env/router\_env.py}}.
+Para el entrenamiento de modelos se ha realizado otro vídeo disponible en la carpeta \href{https://github.com/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning/tree/main/docs/video/RL.mp4}{\texttt{docs/video/RL.mp4}} donde se muestra cómo conseguir entrenar y visualizar un modelo entrenado. Si se quiere una mayor personalización del modelo se deben ajustar los parámetros de la función de recompensa, para eso, se puede modificar en la función \textit{reward} en el archivo \href{https://github.com/CesarRodrigu/GII-24.19-contramedidas-IoT-mediante-reinforcement-learning/blob/main/RL/custom_env/router_env.py}{\texttt{RL/custom\_env/router\_env.py}}.

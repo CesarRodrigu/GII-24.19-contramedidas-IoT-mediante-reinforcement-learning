@@ -4,12 +4,12 @@
 La especificación de diseño es una parte fundamental del desarrollo de software, ya que permite definir de forma detallada el comportamiento y la estructura del sistema a desarrollar. En este apéndice se presenta la especificación de diseño del proyecto, que incluye el diseño de datos, el diseño arquitectónico y el diseño procedimental.
 
 \section{Diseño de datos}
-Para la transferencia de datos entre el frontend y el backend se han utilizado las clases de transferencia de datos (DTOs) con ayuda de Thymeleaf. En cambio, para la transferencia de datos entre el backend y la API se ha utilizado JSON, ya que es un formato ligero y sencillo para la comunicación entre sistemas.
+Para la transferencia de datos entre el \textit{frontend} y el \textit{backend} se han utilizado las clases de transferencia de datos (DTOs) con ayuda de Thymeleaf~\cite{Thymeleaf}. En cambio, para la transferencia de datos entre el \textit{backend} y la API se ha utilizado JSON, ya que es un formato ligero y sencillo para la comunicación entre sistemas.
 
 La motivación de usar DTOs es:
 \begin{itemize}
-    \item \textbf{Reducción del acoplamiento:} Los DTOs permiten reducir el acoplamiento entre el frontend y el backend, lo que facilita la evolución y mantenimiento de la aplicación.
-    \item \textbf{Seguridad y optimización de la transferencia de datos:} Los DTOs permiten transferir solo los datos necesarios entre el frontend y el backend, lo que reduce el tamaño de las peticiones y respuestas, además de proporcionar una capa adicional de seguridad, ya que por ejemplo en el DTO de los usuarios no incluirá la contraseña de los mismos.
+    \item \textbf{Reducción del acoplamiento:} Los DTOs permiten reducir el acoplamiento entre el \textit{frontend} y el \textit{backend}, lo que facilita la evolución y mantenimiento de la aplicación.
+    \item \textbf{Seguridad y optimización de la transferencia de datos:} Los DTOs permiten transferir solo los datos necesarios entre el \textit{frontend} y el \textit{backend}, lo que reduce el tamaño de las peticiones y respuestas, además de proporcionar una capa adicional de seguridad, ya que por ejemplo en el DTO de los usuarios no incluirá la contraseña de los mismos.
     \item \textbf{Uso como formularios:} Los DTOs permiten definir de forma más clara los distintos tipos de validaciones de datos, por ejemplo, en el caso de los formularios, se pueden definir las validaciones necesarias para cada campo del formulario, útil por ejemplo para los formularios de registro.
 \end{itemize}
 
@@ -17,12 +17,12 @@ La motivación de usar DTOs es:
 
 
 
-Para la gestión de los datos de la base de datos se ha utilizado una base de datos relacional, en este caso MySQL. Se ha diseñado un esquema de base de datos que incluye las siguientes tablas:
+Para la gestión de los datos de la base de datos se ha utilizado una base de datos relacional, en este caso \textit{MySQL}. Se ha diseñado un esquema de base de datos que incluye las siguientes tablas:
 
 \begin{itemize}
-    \item \textbf{User}: Almacena información sobre los usuarios del sistema.
+    \item \textbf{\textit{User}}: Almacena información sobre los usuarios del sistema.
     \item \textbf{Role}: Define los roles de los usuarios.
-    \item \textbf{TrainedModel}: Almacena los modelos de IA entrenados y datos relacionados.
+    \item \textbf{\textit{TrainedModel}}: Almacena los modelos de IA entrenados y datos relacionados.
 \end{itemize}
 Que se relacionan entre sí de la siguiente manera: \textbf{Figura~\ref{fig:dbrelaciones}}
 \imagen{dbrelaciones}{Esquema de la base de datos del proyecto}
@@ -30,18 +30,20 @@ Que se relacionan entre sí de la siguiente manera: \textbf{Figura~\ref{fig:dbre
 Para el intercambio de datos se han definido las siguientes clases de datos:
 \imagen{dtos}{Clases de datos del proyecto}
 
-En el que se muestran las clases, con sus contructores, atributos, métodos y propiedades, junto con su visibilidad y tipos.
+En el que se muestran las clases, con sus constructores, atributos, métodos y propiedades, junto con su visibilidad y tipos.
 
 \section{Diseño arquitectónico}
 
-El diagrama de clases de alto nivel del proyecto muestra la estructura general del sistema, incluyendo las principales clases y sus relaciones. Este diagrama es una representación visual de cómo se organizan las clases en el sistema y cómo interactúan entre sí.
-\imagen{relacionesClases}{Diagrama de clases del proyecto}
+El diagrama de clases de alto nivel mostrado en la \textbf{Figura~\ref{fig:relacionesClases}}, muestra la estructura general del sistema, incluyendo las principales clases y sus relaciones. Este diagrama es una representación visual de cómo se organizan las clases en el sistema y cómo interactúan entre sí.
 
-Para facilitar la visualización de las dependencias, se ha utilizado una matriz de dependencias agrupadas por paquetes. En el que los paquetes que se muestran en las primera columna, 
-En cada columna, los paquetes siguen el mismo orden que en la primera columna, y se marcan en cada celda cúantas dependencias tiene un paquete con otro.
+\figuraApaisadaSinMarco{0.9}{relacionesClases}{Diagrama de clases de la web}{fig:relacionesClases}{}
+
+
+Para facilitar la visualización, se ha utilizado una matriz de dependencias agrupadas por paquetes. En el que estos se muestran en las primera columna. 
+En ellas, los paquetes siguen el mismo orden que en la primera columna, y se marcan en cada celda cuantas dependencias tiene un paquete con otro.
 
 \imagen{matrizDep}{Matriz de dependencias del proyecto}
-Como se puede observar en la matriz de la \textbf{Figura~\ref{fig:matrizDep}}, el paquete es.cesar.app.service tiene muchas dependencias, por lo que solo en este paquetes se han incluido las depencias de las clases individuales. En este caso la mayor cantidad de dependencias corresponden con la columna del paquete de los controladores(tercera columna). Por ejemplo, la clase UserService tiene dependencias con los paquetes de los controladores (es.cesar.app.controller) y configuración (es.cesar.app.config), es decir el paquetes de configuración(4 referencias) y controladores(29 referencias) dependen de la clase UserService, pero no al revés.
+Como se puede observar en la matriz de la \textbf{Figura~\ref{fig:matrizDep}}, el paquete \textit{es.cesar.app.service} tiene muchas dependencias, por lo que solo en este se han incluido las dependencias de las clases individuales. En este caso, la mayor cantidad de dependencias corresponden con la columna del paquete de los controladores (tercera columna). Por ejemplo, la clase UserService tiene dependencias con los paquetes de los controladores (\textit{es.cesar.app.controller}) y configuración (\textit{es.cesar.app.config}), es decir el paquete de configuración (4 referencias) y controladores (29 referencias) dependen de la clase \textit{UserService}, pero no al revés.
 
 En la parte de la aplicación web, se ha utilizado el patrón de diseño Modelo-Vista-Controlador (MVC) para separar la lógica de negocio, la presentación y el control de flujo de la aplicación. Este patrón permite una mayor modularidad, facilita el mantenimiento y mejora la evolución del sistema. 
 El mapa de navegación es una representación visual de las diferentes vistas de la aplicación y cómo se relacionan entre sí. En este caso, el mapa de navegación muestra las diferentes páginas de la aplicación web y cómo se accede a ellas desde otras páginas.
@@ -50,31 +52,28 @@ El mapa de navegación es una representación visual de las diferentes vistas de
 La \textbf{Figura~\ref{fig:mapanavegacion}} muestra la estructura de navegación de la aplicación web, incluyendo las diferentes vistas y cómo se conectan entre sí.
 
 \section{Diseño procedimental}
-El diseño procedimental de este proyecto se ha centrado en estructurar el código de forma modular, facilitando así el desarrollo, mantenimiento y la posible extensión del sistema. En el que, para conseguir esto, se han utilizado buenas prácticas de programación y patrones de diseño. 
+El diseño procedimental de este proyecto se ha centrado en estructurar el código de forma modular, facilitando así el desarrollo, mantenimiento y la posible extensión del sistema. En el que, para conseguir esto, se han utilizado buenas prácticas de programación y patrones de diseño. Para facilitar la visualización del proceso de una solicitud de un modelo por parte del usuario se muestra un diagrama de secuencia que se puede ver en la \textbf{Figura~\ref{fig:secuencia}}.
+\imagen{secuencia}{Diagrama de secuencia del proceso de solicitud modelo.}
 
 \subsection{Módulos}
-Se ha realizado la división en 3 módulos:
-\begin{itemize}
-    \item RL
-    \item app
-    \item docs
-\end{itemize}
-En el que cada módulo tiene el mismo nombre que en el repositorio.
+Se ha realizado la división en 3 módulos principales, RL, app y docs.
+
+Cada módulo tiene el mismo nombre que en el repositorio.
 En el módulo de RL se encuentra todo lo relacionado con el aprendizaje por refuerzo, en el que proporciona en la carpeta principal lo relacionado con el entrenamiento y visualización de gráficas del modelo, y el sub-módulo de api, que proporciona una API REST para que desde la web pueda obtener datos de este módulo.
 
-En el módulo app proporciona todo lo necesario de la aplicación web hecha con Spring Boot, en el que está subdividida en módulos, separando la configuración, los controladores, los archivos de transferencia de datos, los servicios etc.
+En el módulo \textit{app} proporciona todo lo necesario de la aplicación web hecha con \textit{Spring Boot}, en el que está subdividida en módulos, separando la configuración, los controladores, los archivos de transferencia de datos, los servicios etc.
 
 En el módulo docs, proporciona todo lo relacionado con la generación de la documentación del proyecto, en el que encuentra los archivos base, y los archivos compilados.
 
-Los módulos anteriores se unen mediante docker-compose (menos el de la documentación), creando un contenedor para la API, y otro para la aplicación web, junto a estos, también necesita un contenedor de una base de datos MySQL para persistir los datos de la web, garantizando un diseño modular y escalable.
+Los módulos anteriores se unen mediante \textit{docker-compose} (menos el de la documentación), creando un contenedor para la API, y otro para la aplicación web, junto a estos, también necesita un contenedor de una base de datos \textit{MySQL} para persistir los datos de la web, garantizando un diseño modular y escalable.
 
 
 \subsection{Patrones de diseño aplicados}
 Para el diseño procedimental es importante el uso de patrones de diseño que faciliten la reutilización del código y la separación de responsabilidades. En este proyecto se han utilizado los siguientes patrones de diseño:
 \begin{itemize}
-    \item \textbf{Método plantilla(template method): } Este patrón se ha utilizado para definir los generadores de paquetes de datos para el entrenamiento de los modelos de IA. Definiendo una vez la estructura del generador de paquetes, y sobrescribiendo en las subclases los pesos de los tamaños de los paquetes de datos.
-    \item \textbf{Estrategia(strategy): } En los generadores de tráfico, este patrón permite que se puedan definir diferentes estrategias de generación de paquetes de datos, en este caso de tráfico benignos y DoS, que se pueden intercambiar fácilmente sin afectar al resto del sistema.
-    \item \textbf{Máquina de estados(state machine): } Este patrón se ha utilizado para gestionar los diferentes estados del tráfico, en el que hay estado de ataque y normal, intercambiando en cada estado el generador de paquetes de datos correspondiente. Permitiendo que se puedan definir diferentes estados y modificar las transiciones entre ellos, facilitando la gestión del flujo de la aplicación.
-    \item \textbf{Singleton: } Este patrón se ha utilizado para la clase de instanciación de la API, que asegura que solo haya una instancia de la clase en toda la aplicación.
+    \item \textbf{Método plantilla(\textit{template method}): } Este patrón se ha utilizado para definir los generadores de paquetes de datos para el entrenamiento de los modelos de IA. Definiendo una vez la estructura del generador de paquetes, y sobrescribiendo en las subclases los pesos de los tamaños de los paquetes de datos.
+    \item \textbf{Estrategia(\textit{strategy}): } En los generadores de tráfico, este patrón permite que se puedan definir diferentes estrategias de generación de paquetes de datos, en este caso de tráfico benignos y DoS, que se pueden intercambiar fácilmente sin afectar al resto del sistema.
+    \item \textbf{Máquina de estados\textit{(state machine}): } Se ha utilizado para gestionar los diferentes estados del tráfico, en el que hay estado de ataque y normal, intercambiando en cada estado el generador de paquetes de datos correspondiente. Permitiendo que se puedan definir diferentes estados y modificar las transiciones entre ellos, facilitando la gestión del flujo de la aplicación.
+    \item \textbf{\textit{Singleton}: } Este patrón se ha utilizado para la clase de instanciación de la API, que asegura que solo haya una instancia de la clase en toda la aplicación.
 \end{itemize}
 El uso de estos patrones permite una mayor modularidad, reutilización del código y facilita el mantenimiento y evolución del sistema, asegurando una mayor calidad de código.

@@ -16,28 +16,45 @@ Para lograr este objetivo, se han establecido los siguientes objetivos:
 \end{itemize}
 
 \section{Catálogo de requisitos}
+\FloatBarrier
 En el proyecto se han identificado los requisitos funcionales y no funcionales, desarrollados en la \textbf{Tabla~\ref{tabla:requisitosfuncionales}} y la \textbf{Tabla~\ref{tabla:requisitosnofuncionales}} respectivamente. Estos requisitos son esenciales para el correcto funcionamiento del sistema y deben ser cumplidos para garantizar los objetivos propuestos.
+\tablaApaisadaSmall
+  {Tabla de requisitos funcionales}
+  {l p{8em} p{30em} c}
+  {requisitosfuncionales}
+  {Número & Requerimiento & Descripción & Prioridad \\}
+  {
+  RF1   & Registro de usuarios                      & Se permitirá registrarse nuevos usuarios al sistema.                                                                                                           & Alta  \\
+  RF1.1 & Validación de datos de registro           & El sistema validará que el nombre de usuario electrónico no esté en uso y que la contraseña cumpla con las políticas de seguridad.                                        & Alta  \\
+  RF2   & Inicio de sesión                          & Los usuarios registrados podrán acceder con sus credenciales y ver sus modelos guardados.                                                                     & Alta  \\
+  RF2.1 & Mantener la sesión                & Los usuarios podrán mantener la sesión iniciada en la aplicación.                                                              & Baja \\
+  RF3   & Panel de administración de usuarios       & Solo administradores podrán gestionar usuarios (editar, borrar).                                                                                              & Media \\
+  RF3.1 & Asignación de roles                       & El administrador podrá asignar diferentes roles a los usuarios (admin, user).                                                                       & Media \\
+  RF4   & Importación y exportación de datos        & Se podrá importar y exportar los datos disponibles en la web.                                                                                                 & Baja  \\
+  RF4.1 & Exportación en formato zip         & El sistema permitirá exportar los datos de los modelos en formato zip.                                                                                       & Media  \\
+  RF4.2 & Importación con validación                & La extensión de los archivos será validada para asegurar su integridad.                                                                                             & Media \\
+  RF5   & Documentación del sistema                 & La web incluirá toda la información relacionada sobre el proyecto.                                                                                             & Media \\
+  RF5.1 & Ayuda                        & Se incluirá un apartado de ayuda a los usuarios del sistema.                                                                                                     & Media \\
+  RF6   & Visualización de los datos del agente     & Se podrán visualizar datos relacionados con el agente, incluyendo datos de entrenamiento como del agente actuando.                                             & Alta  \\
+  RF6.1 & Gráficas de rendimiento                   & Se mostrarán gráficas sobre el rendimiento del agente durante su entrenamiento y ejecución.                                                                  & Alta  \\
+  }
 
-\tablaSmall{Tabla de requisitos funcionales}{l p{6em} p{15em} c}{requisitosfuncionales}{Número & Requerimiento & Descripción & Prioridad \\}{ 
-RF1 & Registro de usuarios                  & Se permitirá registrarse nuevos usuarios al sistema.                                                                                                           & Alta  \\
-RF2 & Inicio de sesión                      & Los usuarios registrados en el sistema podrán acceder con las credenciales que introdujo en el registro, pudiendo acceder a los modelos guardados previamente. & Alta  \\
-RF3 & Panel de administración de usuarios   & Solo los usuarios con permisos de administrador podrán acceder a la gestión de usuarios, pudiendo borrar, y editar los usuarios registrados en el sistema.     & Media \\
-RF4 & Importación y exportación de datos      & Se podrá importar y exportar los datos disponibles en la web.                                                                                                  & Baja  \\
-RF5 & Documentación del sistema             & La web incluirá toda la información relacionada sobre el proyecto.                                                                                             & Media \\
-RF6 & Visualización de los datos del agente & Se podrán visualizar datos relacionados con el agente, incluyendo datos de entrenamiento como del agente actuando.                                             & Alta  \\
+  
+\tablaApaisadaSmall{Tabla de requisitos no funcionales}{l p{8em} p{30em} c}{requisitosnofuncionales}{Número & Requerimiento & Descripción & Prioridad \\}{ 
+  RNF1   & Facilidad de uso                            & Las interfaces de usuario deben ser simples y adecuadas para todo tipo de usuarios.                                          & Alta  \\
+  RNF1.1 & Accesibilidad                               & La interfaz debe estar localizada tanto para Inglés como para Español                                              & Media \\
+  RNF2   & Rendimiento de la web                       & El tiempo de carga de la web no debe ser superior a 1 segundo para las operaciones más comunes.                              & Media \\
+  RNF2.1 & Optimización de recursos                    & Se deben minimizar las peticiones al servidor y optimizar el tamaño de los recursos (CSS, JS, imágenes).                     & Media \\
+  RNF3   & Respuesta ante fallos                       & Si ocurre un fallo, debe tener el menor impacto posible en la web, mostrando un mensaje de error al usuario.                 & Alta  \\
+  RNF4   & Seguridad                                   & Un usuario solo debe poder acceder a sus modelos, y solo los administradores pueden gestionar usuarios.                      & Alta  \\
+  RNF4.1 & Protección contra inyecciones               & El sistema debe de implementar protección para prevenir ataques como SQL injection y XSS.                                             & Alta  \\
+  RNF5   & Minimizar paquetes descartados por el agente & El agente deberá priorizar permitir el tráfico antes que denegarlo.                                                           & Alta  \\
 } 
-
-
-\tablaSmall{Tabla de requisitos no funcionales}{l p{6em} p{15em} c}{requisitosnofuncionales}{Número & Requerimiento & Descripción & Prioridad \\}{ 
-RNF1 & Facilidad de uso                                      & Las interfaces de usuario deben ser simples y adecuadas para todo tipo de usuarios.                                                          & Alta  \\
-RNF2 & Rendimiento de la web                                 & El tiempo de carga de la web no debe ser superior a 1 segundo para las operaciones más comunes.                                              & Media \\
-RNF3 & Respuesta ante fallos                                 & Si ocurre un fallo, debe tener el menor impacto posible en la web, mostrando un mensaje de error al usuario con el motivo del error.         & Alta  \\
-RNF4 & Seguridad                                             & Un usuario solo debe poder acceder a sus modelos y solo los usuarios con permisos de administrador podrán hacer la gestión de usuarios. & Alta  \\
-RNF5 & Minimizar los paquetes que se descartan por el agente & El agente deberá priorizar permitir el tráfico antes que denegarlo, intentando que los paquetes que se descartan sean los mínimos posibles.  & Alta  \\
-} 
-
+\FloatBarrier
 \section{Especificación de requisitos}
 En esta sección se detallan los casos de uso del sistema, que describen las principales interacciones entre los usuarios y el sistema para cumplir con los requisitos funcionales identificados. Cada caso de uso incluye una descripción, precondiciones, acciones, postcondiciones, excepciones e importancia.
+En la \textbf{Figura~\ref{fig:casosuso}} queda reflejado el diagramas de casos de uso, importante para reflejar la interacción de los distintos tipos de actores(usuarios) con los casos de uso.
+\imagen{casosuso}{Diagrama de casos de uso de la aplicación web}
 
 \begin{table}[p]
 	\centering

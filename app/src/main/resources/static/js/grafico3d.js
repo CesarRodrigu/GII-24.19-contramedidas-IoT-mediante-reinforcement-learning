@@ -9,24 +9,17 @@ const tamPaquete = 200;
 
 
 function reward(descartados, ocu_actual, action, ocu_ant, coeficientes) {
-    let {c, c2, c3, c4, c5} = coeficientes; // Define c5 with a default value
-    //console.log("coeficientes", c, c2, c3, c4, c5);
-    //Mirar la ocupacion actual que sale negativa
-    //console.log("action, actual, anterior", action, ocu_actual, ocu_ant);
-    //console.log("descartados", descartados);
-
+    let {c, c2, c3, c4, c5} = coeficientes;
     let reward = 0.0;
     if (descartados > 0) {
         if (action === Action.PERMITIR) {
             reward -= descartados ** 2 * c + c5;
-            //c5 puede ser + o -
         } else {
             reward -= descartados * c2;
         }
 
         let mejora = ocu_ant - ocu_actual;
         reward += mejora * ocu_actual * c3;
-        //Mirar a ver si es cuadratico y hacerlo segun accion
     } else {
         reward += (1.0 - ocu_actual) * c4;
     }
@@ -72,9 +65,8 @@ function calcular_ocu_actual(ocu_ant, paquetes_entrantes, action) {
     );
 }
 
-// Generar datos para el gráfico de superficie con una acción seleccionada
 function generarDatosSuperficie(x, y, coeficientes, accion) {
-    let recompensas = []; // Matriz de recompensas
+    let recompensas = [];
 
     let minZ = Infinity;
     let maxZ = -Infinity;
@@ -103,20 +95,19 @@ function generarDatosSuperficie(x, y, coeficientes, accion) {
     return {recompensas, minZ, maxZ};
 }
 
-// Crear el gráfico 3D con las acciones seleccionadas
 function crearPlanoSuperficie(x, y, coeficientes, accion) {
-    let datos = generarDatosSuperficie(x, y, coeficientes, accion); // Acción "Permitir"
+    let datos = generarDatosSuperficie(x, y, coeficientes, accion); 
     let trace = {
         x: x,
         y: y,
         z: datos.recompensas,
         type: "surface",
         colorscale: "Viridis",
-        cmin: datos.minZ, // Ajuste dinámico del rango mínimo
-        cmax: datos.maxZ, // Ajuste dinámico del rango máximo
+        cmin: datos.minZ, 
+        cmax: datos.maxZ, 
         opacity: 0.7,
         colorbar: {
-            title: "Recompensa", // Título de la barra de color
+            title: "Recompensa", 
             tickvals: [datos.minZ, datos.maxZ],
             ticktext: [`${datos.minZ.toFixed(2)}`, `${datos.maxZ.toFixed(2)}`],
         },
@@ -143,24 +134,20 @@ function calcularInterseccion(datosPermitir, datosDenegar, tolerancia) {
     console.log(datosPermitir.x == datosDenegar.x);
     let puntosInterseccion = {x: [], y: [], z: []};
 
-    // console.log("datosPermitir.z", datosPermitir.z);
-    // console.log("datosDenegar.z", datosDenegar.z);
+
     x.forEach((xi, indexi) => {
         y.forEach((yi, indexj) => {
             let z1 = datosPermitir.z[indexj][indexi];
             let z2 = datosDenegar.z[indexj][indexi];
-            // console.log("z1, z2", z1, z2);
 
             if (Math.abs(z1 - z2) <= tolerancia) {
                 puntosInterseccion.x.push(xi);
                 puntosInterseccion.y.push(yi);
                 puntosInterseccion.z.push((z1 + z2) / 2);
-                // console.log("Intersecciones", xi, yi, z1, z2);
             }
         });
     });
 
-    // console.log("puntosInterseccion", puntosInterseccion);
     return puntosInterseccion;
 }
 
@@ -173,7 +160,6 @@ function crearGrafico3D(precision = 10, tolerancia = 100) {
         c5: parseFloat(document.getElementById("c5").value),
     };
 
-    // Obtenemos si se ha seleccionado cada checkbox
     let mostrarPermitir = document.getElementById("checkboxPermitir").checked;
     let mostrarDenegar = document.getElementById("checkboxDenegar").checked;
 
@@ -186,11 +172,9 @@ function crearGrafico3D(precision = 10, tolerancia = 100) {
     const max_lim = document.getElementById("lim").value;
 
     for (let p = 0.0; p <= max_lim; p += max_lim / precision) {
-        // Paquetes entrantes en %
         x.push(roundDecimal(p, 2));
     }
     for (let o = 0.0; o <= 1.0; o += 1 / precision) {
-        //Ocupacion
         y.push(roundDecimal(o, 2));
     }
     console.log("x, y", x, y);
@@ -231,9 +215,6 @@ function crearGrafico3D(precision = 10, tolerancia = 100) {
         traces.push(traceInterseccion);
     }
 
-    // Si no se selecciona ningún checkbox, mostramos un mensaje o mantenemos el gráfico vacío
-
-    // Aplicamos el rango global de minZ y maxZ a ambos gráficos
     traces.forEach((trace) => {
         if (trace.name !== "Intersección") {
             trace.cmin = minZGlobal;
@@ -287,7 +268,6 @@ function crearGrafico3D(precision = 10, tolerancia = 100) {
     });
 }
 
-// Función de debounce para retrasar la ejecución de la actualización
 function debounce(func, wait) {
     let timeout;
     return function () {
@@ -298,10 +278,8 @@ function debounce(func, wait) {
     };
 }
 
-// Función para actualizar el gráfico al cambiar los sliders o checkboxes
 function actualizarGrafico() {
     actualizarSliders();
-    // Volver a crear el gráfico
     const precision = parseInt(document.getElementById("precision").value, 10);
     const tolerancia = parseInt(document.getElementById("tol").value, 10);
     crearGrafico3D(precision, tolerancia);
@@ -317,18 +295,16 @@ function actualizarSliders() {
 }
 
 const actualizarGraficoDebounced = debounce(() => {
-    actualizarSliders(); // Actualiza los sliders antes de crear el gráfico
+    actualizarSliders(); 
     actualizarGrafico();
-}, 100); // Tiempo en milisegundos
+}, 100); 
 
 document.addEventListener("DOMContentLoaded", () => {
     actualizarSliders();
-    // Eventos para los sliders
     document.querySelectorAll("input[type=range]").forEach((slider) => {
         slider.addEventListener("input", actualizarGraficoDebounced);
     });
 
-    // Eventos para los checkboxes
     document
         .getElementById("checkboxPermitir")
         .addEventListener("change", actualizarGrafico);
@@ -341,7 +317,6 @@ document.addEventListener("DOMContentLoaded", () => {
     crearGrafico3D(precision, tolerancia);
 });
 
-// Verificar si estamos en un entorno Node.js
 if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
     module.exports = {
         reward,
